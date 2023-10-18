@@ -11,21 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import mate.academy.rickandmorty.dto.external.CharacterInfoDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class CharactersClient {
+@Service
+public class CharactersClientService {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<CharacterInfoDto> loadCharacters() {
         try {
-            var characterResponseDto = getCharactersFromResponse(BASE_URL);
+            var characterResponseDto = retrieveResponse(BASE_URL);
             var characters = new ArrayList<>(characterResponseDto.results());
             String nextPageUrl = characterResponseDto.info().next();
             while (nextPageUrl != null) {
-                characterResponseDto = getCharactersFromResponse(nextPageUrl);
+                characterResponseDto = retrieveResponse(nextPageUrl);
                 characters.addAll(characterResponseDto.results());
                 nextPageUrl = characterResponseDto.info().next();
             }
@@ -35,10 +35,9 @@ public class CharactersClient {
         }
     }
 
-    private CharacterResponseDto getCharactersFromResponse(String url)
+    private CharacterResponseDto retrieveResponse(String url)
             throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request;
-        request = HttpRequest.newBuilder()
+        HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(new URI(url))
                 .build();

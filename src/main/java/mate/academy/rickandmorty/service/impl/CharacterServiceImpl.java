@@ -9,14 +9,14 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
-import mate.academy.rickandmorty.service.CharactersClient;
+import mate.academy.rickandmorty.service.CharactersClientService;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
-    private final CharactersClient charactersClient;
+    private final CharactersClientService charactersClient;
     private final CharacterMapper characterMapper;
 
     @PostConstruct
