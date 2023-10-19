@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     private static final int FIRST_INDEX = 1;
-    private static final int CHARACTERS_AVAILABLE = 826;
+    private static long CHARACTERS_AVAILABLE;
 
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -36,6 +36,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     private Long generateRandomId() {
+        if (CHARACTERS_AVAILABLE == 0) {
+            CHARACTERS_AVAILABLE = characterRepository.count();
+        }
         return ThreadLocalRandom.current().nextLong(FIRST_INDEX, CHARACTERS_AVAILABLE + 1);
     }
 }

@@ -1,8 +1,11 @@
 package mate.academy.rickandmorty.service.impl;
 
 import jakarta.annotation.PostConstruct;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,9 @@ public class CharacterClientService {
 
     @PostConstruct
     public void saveCharactersToDb() {
-        characterClient.getCharacters().stream()
+        List<Character> characters = characterClient.getCharacters().stream()
                 .map(characterMapper::toEntity)
-                .forEach(characterRepository::save);
+                .collect(Collectors.toList());
+        characterRepository.saveAll(characters);
     }
 }
