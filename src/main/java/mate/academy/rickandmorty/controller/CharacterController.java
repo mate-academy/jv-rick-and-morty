@@ -6,6 +6,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +36,8 @@ public class CharacterController {
             description = "Search all characters whose name contains the search string."
     )
     @GetMapping("/search")
-    public List<CharacterDto> searchByName(@RequestParam String name) {
-        return characterService.searchCharacters(name);
+    public List<CharacterDto> searchByName(
+            @RequestParam String name, @PageableDefault(sort = "id", size = 5) Pageable pageable) {
+        return characterService.searchCharacters(name, pageable);
     }
 }

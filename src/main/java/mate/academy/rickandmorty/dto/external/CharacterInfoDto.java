@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CharacterInfoDto(
-        @JsonProperty("id") Long externalId, String name, String status, String gender
-) {
+        @JsonProperty("id") Long externalId,
+        String name,
+        String status,
+        String gender) {
 }
