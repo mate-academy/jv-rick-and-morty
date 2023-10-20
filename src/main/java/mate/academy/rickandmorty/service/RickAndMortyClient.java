@@ -30,7 +30,7 @@ public class RickAndMortyClient {
                     .send(request, HttpResponse.BodyHandlers.ofString());
             ListCharacterDto listCharacterDto = objectMapper
                     .readValue(response.body(), ListCharacterDto.class);
-            return listCharacterDto.getCharacterResponseDto();
+            return listCharacterDto.getResults();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

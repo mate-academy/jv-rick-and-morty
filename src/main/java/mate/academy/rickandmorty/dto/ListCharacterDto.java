@@ -8,5 +8,5 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class ListCharacterDto {
-    private List<CharacterResponseDto> characterResponseDto;
+    private List<CharacterResponseDto> results;
 }
