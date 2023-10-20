@@ -1,13 +1,12 @@
 package mate.academy.rickandmorty;
 
+import java.util.List;
 import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import mate.academy.rickandmorty.service.RickAndMortyClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.List;
 
 @SpringBootApplication
 public class Application {
