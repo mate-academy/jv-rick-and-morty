@@ -48,7 +48,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
             lastCharacterIndex += characterRepository.saveAll(entityList).size();
             saveNextCharacters(page, responseDto, httpClient);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error occurred during receiving response", e);
         }
     }
 
