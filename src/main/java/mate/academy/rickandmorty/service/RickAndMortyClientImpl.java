@@ -7,11 +7,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.ListOfCharacterResponseDto;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
-import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
@@ -21,9 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RickAndMortyClientImpl implements RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/%s";
-    private static final int FIRST_CHARACTER_INDEX = 1;
-    private static final int ONE = 1;
-    private int lastCharacterIndex;
+    private int characterSize;
     private final CharacterRepository characterRepository;
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
@@ -45,7 +40,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
                     response.body(), ListOfCharacterResponseDto.class
             );
             List<Character> entityList = characterMapper.toEntityList(responseDto.getResults());
-            lastCharacterIndex += characterRepository.saveAll(entityList).size();
+            characterSize += characterRepository.saveAll(entityList).size();
             saveNextCharacters(page, responseDto, httpClient);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error occurred during receiving response", e);
@@ -53,22 +48,8 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
     }
 
     @Override
-    public CharacterDto getRandomCharacter() {
-        long characterId
-                = new Random().nextLong(lastCharacterIndex - FIRST_CHARACTER_INDEX + ONE)
-                + FIRST_CHARACTER_INDEX;
-        return characterRepository.findCharacterByExternalId(characterId)
-                .map(characterMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "There is no character by external id: " + characterId)
-                );
-    }
-
-    @Override
-    public List<CharacterDto> getCharacterByName(String string) {
-        return characterMapper.toDtoList(
-                characterRepository.findCharacterByNameContaining(string)
-        );
+    public int getCharactersSize() {
+        return characterSize;
     }
 
     private void saveNextCharacters(
@@ -90,7 +71,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
                         response.body(), ListOfCharacterResponseDto.class
                 );
                 List<Character> entityList = characterMapper.toEntityList(responseDto.getResults());
-                lastCharacterIndex += characterRepository.saveAll(entityList).size();
+                characterSize += characterRepository.saveAll(entityList).size();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Error occurred during receiving response", e);
             }
