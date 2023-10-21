@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RickAndMortyClientImpl implements RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/%s";
-    private int characterSize;
     private final CharacterRepository characterRepository;
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
@@ -40,16 +39,11 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
                     response.body(), ListOfCharacterResponseDto.class
             );
             List<Character> entityList = characterMapper.toEntityList(responseDto.getResults());
-            characterSize += characterRepository.saveAll(entityList).size();
+            characterRepository.saveAll(entityList);
             saveNextCharacters(page, responseDto, httpClient);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error occurred during receiving response", e);
         }
-    }
-
-    @Override
-    public int getCharactersSize() {
-        return characterSize;
     }
 
     private void saveNextCharacters(
@@ -71,7 +65,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
                         response.body(), ListOfCharacterResponseDto.class
                 );
                 List<Character> entityList = characterMapper.toEntityList(responseDto.getResults());
-                characterSize += characterRepository.saveAll(entityList).size();
+                characterRepository.saveAll(entityList);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Error occurred during receiving response", e);
             }

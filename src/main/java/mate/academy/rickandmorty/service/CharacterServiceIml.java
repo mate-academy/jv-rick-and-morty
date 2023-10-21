@@ -14,17 +14,16 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceIml implements CharacterService {
     private static final int FIRST_CHARACTER_INDEX = 1;
     private static final int ONE = 1;
-    private final RickAndMortyClient rickAndMortyClient;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
     @Override
     public CharacterDto getRandomCharacter() {
-        int charactersSize = rickAndMortyClient.getCharactersSize();
+        long charactersSize = characterRepository.count();
         long characterId
                 = new Random().nextLong(charactersSize - FIRST_CHARACTER_INDEX + ONE)
                 + FIRST_CHARACTER_INDEX;
-        return characterRepository.findCharacterByExternalId(characterId)
+        return characterRepository.findById(characterId)
                 .map(characterMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "There is no character by external id: " + characterId)
