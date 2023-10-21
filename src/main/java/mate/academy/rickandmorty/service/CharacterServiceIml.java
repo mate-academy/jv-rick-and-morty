@@ -20,13 +20,13 @@ public class CharacterServiceIml implements CharacterService {
     @Override
     public CharacterDto getRandomCharacter() {
         long charactersSize = characterRepository.count();
-        long characterId
+        long randomId
                 = new Random().nextLong(charactersSize - FIRST_CHARACTER_INDEX + ONE)
                 + FIRST_CHARACTER_INDEX;
-        return characterRepository.findById(characterId)
+        return characterRepository.findById(randomId)
                 .map(characterMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "There is no character by external id: " + characterId)
+                        "There is no character by id: " + randomId)
                 );
     }
 
