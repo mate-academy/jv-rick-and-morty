@@ -9,9 +9,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.RequestDto;
 import mate.academy.rickandmorty.dto.external.RequestResultsDto;
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?page=";
+    private static final int INITIAL_PAGE = 1;
 
     private final ObjectMapper objectMapper;
 
@@ -32,7 +30,7 @@ public class CharacterClient {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(BASE_URL + 1))
+                .uri(URI.create(BASE_URL + INITIAL_PAGE))
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(
@@ -44,23 +42,15 @@ public class CharacterClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        ExecutorService executorService = Executors.newFixedThreadPool(pages);
         List<CompletableFuture<List<RequestResultsDto>>> futureRequests = new ArrayList<>();
-        for (int i = 2; i <= pages; i++) {
-            Future<List<RequestResultsDto>> future = executorService.submit(
-                    new CustomThread(httpClient, objectMapper, i));
+        for (int i = INITIAL_PAGE + 1; i <= pages; i++) {
+            int page = i;
             CompletableFuture<List<RequestResultsDto>> completableFuture =
-                    CompletableFuture.supplyAsync(() -> {
-                        try {
-                            return future.get();
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                    CompletableFuture.supplyAsync(() ->
+                            new CustomThread(httpClient, objectMapper, page).call()
+            );
             futureRequests.add(completableFuture);
         }
-        executorService.shutdown();
         List<RequestResultsDto> additionalCharacters = futureRequests.stream()
                 .map(CompletableFuture::join)
                 .flatMap(List::stream)
