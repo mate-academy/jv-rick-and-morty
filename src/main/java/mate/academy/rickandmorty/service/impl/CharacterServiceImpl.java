@@ -64,10 +64,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     private void initCounts(HttpClient httpClient) throws IOException, InterruptedException {
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(String.format(URL,1)))
-                .build();
+        HttpRequest httpRequest = getCharacterRequest(1);
         HttpResponse<String> httpResponse = httpClient.send(httpRequest,
                 HttpResponse.BodyHandlers.ofString());
         CharacterMetaInformationResponseDto responseDto = objectMapper
@@ -78,12 +75,16 @@ public class CharacterServiceImpl implements CharacterService {
 
     private CharacterEndpointResponseDto getCharactersFromApi(HttpClient httpClient, int page)
             throws IOException, InterruptedException {
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(String.format(URL, page)))
-                .build();
+        HttpRequest httpRequest = getCharacterRequest(page);
         HttpResponse<String> httpResponse = httpClient.send(httpRequest,
                 HttpResponse.BodyHandlers.ofString());
         return objectMapper.readValue(httpResponse.body(), CharacterEndpointResponseDto.class);
+    }
+
+    private HttpRequest getCharacterRequest(int page) {
+        return HttpRequest.newBuilder()
+               .GET()
+                .uri(URI.create(String.format(URL, page)))
+                .build();
     }
 }
