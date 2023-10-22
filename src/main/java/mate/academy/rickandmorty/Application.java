@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-    private static CharacterService characterService;
     private static RickAndMortyClient rickAndMortyClient;
+    private static CharacterService characterService;
 
     @Autowired
     public Application(CharacterService service, RickAndMortyClient client) {

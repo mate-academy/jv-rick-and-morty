@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
-    private static int listSize;
-    private static final Random RANDOM = new Random();
+    private int listSize;
+    private final Random random = new Random();
     private final CharacterRepository characterRepository;
     private final CharacterMapper mapper;
 
     @Override
     public CharacterDto getRandomCharacter() {
-        int id = RANDOM.nextInt(listSize) + 1;
+        int id = random.nextInt(listSize) + 1;
         return mapper.toDto(characterRepository.findById((long) id).orElseThrow(
                 () -> new RuntimeException("Characters not found by id: " + id))
         );
