@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterClient;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;

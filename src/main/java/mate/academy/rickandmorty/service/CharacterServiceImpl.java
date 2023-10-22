@@ -3,9 +3,9 @@ package mate.academy.rickandmorty.service;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.model.CharacterEntity;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +15,16 @@ public class CharacterServiceImpl implements CharacterService {
     private static final Random RANDOM = new Random();
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
-    private int numberOfCharacters;
 
     @Override
-    public CharacterResponseDto getById(Long id) {
+    public CharacterResponseDto getCharacterById(Long id) {
         return characterMapper.toDto(characterRepository.getReferenceById(id));
     }
 
     @Override
     public CharacterResponseDto getRandomCharacter() {
-        Long id = RANDOM.nextLong(numberOfCharacters);
-        return getById(id);
+        Long id = RANDOM.nextLong(characterRepository.count());
+        return getCharacterById(id);
     }
 
     @Override
@@ -35,10 +34,9 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public void saveAllCharacters(List<CharacterResponseDto> characterResponseDtos) {
-        List<CharacterEntity> characters = characterResponseDtos.stream()
+        List<Character> characters = characterResponseDtos.stream()
                 .map(characterMapper::toEntity)
                 .toList();
-        numberOfCharacters = characters.size();
         characterRepository.saveAll(characters);
     }
 }

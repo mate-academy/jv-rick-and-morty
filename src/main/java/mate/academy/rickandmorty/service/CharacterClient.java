@@ -8,8 +8,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.ListCharacterDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.ListOfCharacterResponseDto;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Component;
 public class CharacterClient {
     private static final String URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
+    private final CharacterRepository characterRepository;
+    private final CharacterMapper characterMapper;
 
     public List<CharacterResponseDto> getCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -27,11 +31,18 @@ public class CharacterClient {
         try {
             HttpResponse<String> httpResponse = httpClient.send(httpRequest,
                     HttpResponse.BodyHandlers.ofString());
-            ListCharacterDto listCharacterDto = objectMapper.readValue(httpResponse.body(),
-                    ListCharacterDto.class);
-            return listCharacterDto.getResults();
+            System.out.println(httpResponse.body());
+            ListOfCharacterResponseDto listOfCharacterResponseDto = objectMapper.readValue(
+                    httpResponse.body(),
+                    ListOfCharacterResponseDto.class
+            );
+            return listOfCharacterResponseDto.getResults().stream().toList();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void saveCharacters(List<CharacterResponseDto> characterResponseDtos) {
+        characterRepository.saveAll(characterMapper.toSetOfEntity((characterResponseDtos)));
     }
 }

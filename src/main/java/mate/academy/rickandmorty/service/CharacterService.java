@@ -1,12 +1,12 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CharacterService {
-    CharacterResponseDto getById(Long id);
+    CharacterResponseDto getCharacterById(Long id);
 
     CharacterResponseDto getRandomCharacter();
 
