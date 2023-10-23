@@ -39,10 +39,9 @@ public class CharacterController {
 
     @GetMapping("/download/all")
     @Operation(summary = "Download all characters",
-            description = "Download a list of all available characters from "
-                    + "https://rickandmortyapi.com/api/character/")
+            description = "Download a list of all available characters")
     public List<Character> downloadAll() {
-        return characterService.downloadAllCharacters();
+        return characterService.saveAll();
     }
 
     @GetMapping

@@ -7,11 +7,9 @@ import mate.academy.rickandmorty.model.Character;
 import org.springframework.data.domain.Pageable;
 
 public interface CharacterService {
-    List<Character> downloadAllCharacters();
+    List<Character> saveAll();
 
     CharacterDto findByRandomId();
-
-    void deleteAllCharacters();
 
     List<CharacterDto> searchCharactersByName(CharacterSearchParametersDto searchParametersDto,
                                               Pageable pageable);
