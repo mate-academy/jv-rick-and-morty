@@ -30,7 +30,8 @@ public class CharacterController {
     @GetMapping("/")
     @Operation(summary = "Get list of characters where name contains passed parameter",
             description = "Find and return all characters where name contains passed parameter")
-    public List<CharacterResponseDto> getAllByContainingName(@ParameterObject Pageable pageable, @RequestParam String name) {
+    public List<CharacterResponseDto> getAllByContainingName(
+            @ParameterObject Pageable pageable, @RequestParam String name) {
         return service.findAllByNameContaining(name, pageable);
     }
 }
