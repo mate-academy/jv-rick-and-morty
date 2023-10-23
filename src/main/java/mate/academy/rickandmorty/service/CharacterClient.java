@@ -1,5 +1,5 @@
 package mate.academy.rickandmorty.service;
 
 public interface CharacterClient {
-    public void getCharacterMetaInfo();
+    public void initCharacterInfo();
 }

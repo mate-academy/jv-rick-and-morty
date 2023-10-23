@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,51 +19,43 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CharacterClientImpl implements CharacterClient {
-    private static final String FORMATED_STRING = "?page=";
+    private static final String FORMATTED_STRING = "?page=";
     @Value("${external.url}")
     private String baseUrl;
     private final ObjectMapper objectMapper;
     private final CharacterRepository repository;
     private final CharacterMapper characterMapper;
+    private final HttpClient client = HttpClient.newHttpClient();
 
     @Override
-    public void getCharacterMetaInfo() {
+    public void initCharacterInfo() {
         int index = 1;
-        String url = baseUrl.formatted(FORMATED_STRING + index++);
-        HttpClient client = HttpClient.newHttpClient();
+        fetchCharacterData(index);
+    }
+
+    private void fetchCharacterData(int index) {
+        String url = baseUrl.formatted(FORMATTED_STRING + index);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(url))
                 .build();
-        try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            CharactersResultListDto dataDto = objectMapper.readValue(response.body(),
-                    CharactersResultListDto.class);
-            List<Character> model = characterMapper.toModel(dataDto.getResults());
-            repository.saveAll(model);
-            saveCharacters(dataDto, client, index);
-        } catch (IOException | InterruptedException e) {
-            throw new RequestException("Error occurred during receiving response.", e);
-        }
-    }
 
-    private void saveCharacters(CharactersResultListDto dataDto, HttpClient client, int index) {
-        while (dataDto.getInfo().getNext() != null) {
-            String url = baseUrl.formatted(FORMATED_STRING + index++);
-            HttpRequest request = HttpRequest.newBuilder()
-                    .GET()
-                    .uri(URI.create(url))
-                    .build();
-            try {
-                HttpResponse<String> response = client.send(request,
-                        HttpResponse.BodyHandlers.ofString());
-                dataDto = objectMapper.readValue(response.body(), CharactersResultListDto.class);
-                List<Character> model = characterMapper.toModel(dataDto.getResults());
-                repository.saveAll(model);
-            } catch (IOException | InterruptedException e) {
-                throw new RequestException("Error occurred during receiving response.", e);
-            }
-        }
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenApply(json -> {
+                    try {
+                        return objectMapper.readValue(json, CharactersResultListDto.class);
+                    } catch (Exception e) {
+                        throw new RequestException("Error parsing JSON response", e);
+                    }
+                })
+                .thenAccept(dataDto -> {
+                    List<Character> model = characterMapper.toModel(dataDto.getResults());
+                    repository.saveAll(model);
+
+                    if (dataDto.getInfo().getNext() != null) {
+                        fetchCharacterData(index + 1);
+                    }
+                });
     }
 }
