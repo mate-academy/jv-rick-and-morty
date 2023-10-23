@@ -9,24 +9,27 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.ListOfCharacterResponseDto;
+import mate.academy.rickandmorty.exception.RespondException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class RickAndMortyClientImpl implements RickAndMortyClient {
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character/%s";
     private final CharacterRepository characterRepository;
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
+    @Value("${base.url}")
+    private String baseUrl;
 
     @Override
     public void fetchAllCharactersFromThirdPartyApi() {
         int page = 1;
         HttpClient httpClient = HttpClient.newHttpClient();
-        String url = BASE_URL.formatted("?page=" + page++);
+        String url = baseUrl.formatted("?page=" + page++);
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(url))
@@ -42,7 +45,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
             characterRepository.saveAll(entityList);
             saveNextCharacters(page, responseDto, httpClient);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Error occurred during receiving response", e);
+            throw new RespondException("Error occurred during receiving response", e);
         }
     }
 
@@ -52,7 +55,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
             HttpClient httpClient
     ) {
         while (responseDto.getInfo().getNext() != null) {
-            String url = BASE_URL.formatted("?page=" + page++);
+            String url = baseUrl.formatted("?page=" + page++);
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(url))
@@ -67,7 +70,7 @@ public class RickAndMortyClientImpl implements RickAndMortyClient {
                 List<Character> entityList = characterMapper.toEntityList(responseDto.getResults());
                 characterRepository.saveAll(entityList);
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException("Error occurred during receiving response", e);
+                throw new RespondException("Error occurred during receiving response", e);
             }
         }
     }
