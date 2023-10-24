@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -26,7 +27,12 @@ public class ApiClient {
     private final ObjectMapper objectMapper; 
     @Value("${mate.academy.rickandmorty.baseUrl}")
     private String baseUrl;
-    
+
+    @PostConstruct
+    public void init() {
+        getListAllCharacters();
+    }
+
     public void getListAllCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()

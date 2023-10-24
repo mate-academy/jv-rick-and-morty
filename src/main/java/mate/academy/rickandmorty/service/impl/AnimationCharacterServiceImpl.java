@@ -20,7 +20,7 @@ public class AnimationCharacterServiceImpl implements AnimationCharacterService 
     @Override
     public List<AnimationCharacterResponseDto> findAllBySearchString(String searchString) {
         return repository
-                .findAllByNameLike("%" + searchString + "%")
+                .findAllByNameContains(searchString)
                 .stream()
                 .map(mapper::toDto)
                 .toList();
@@ -28,8 +28,8 @@ public class AnimationCharacterServiceImpl implements AnimationCharacterService 
 
     @Override
     public AnimationCharacterResponseDto getRandomCharacter() {
-        Long countOfRecords = repository.getCountOfRecords();
-        Long randomId = new Random().nextLong(1L, countOfRecords);
+        long countOfRecords = repository.count();
+        long randomId = new Random().nextLong(1L, countOfRecords);
         Optional<AnimationCharacter> optionalCharacter = repository.findById(randomId);
         if (optionalCharacter.isPresent()) {
             return mapper.toDto(optionalCharacter.get());

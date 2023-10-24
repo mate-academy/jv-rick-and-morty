@@ -24,5 +24,4 @@ public interface AnimationCharacterMapper {
     default String genderFromAnimationCharacter(Gender gender) {
         return gender.getName().getTitle();
     }
-
 }
