@@ -39,7 +39,7 @@ public class ApiClient {
             CharacterResponseMetaDto metaMap = objectMapper.readValue(
                     response.body(), CharacterResponseMetaDto.class);
             int countOfPages = Integer.parseInt(metaMap.info().get("pages"));
-            for (int i = 1; i <= 1; i++) {
+            for (int i = 1; i <= countOfPages; i++) {
                 httpRequest = HttpRequest.newBuilder()
                         .GET()
                         .uri(URI.create(baseUrl + "/?page=" + i))
