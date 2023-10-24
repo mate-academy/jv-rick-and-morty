@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.dto.internal.CharacterSearchParametersDto;
-import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +34,6 @@ public class CharacterController {
     List<CharacterDto> searchCharactersByName(CharacterSearchParametersDto searchParametersDto,
                                         Pageable pageable) {
         return characterService.searchCharactersByName(searchParametersDto, pageable);
-    }
-
-    @GetMapping("/download/all")
-    @Operation(summary = "Download all characters",
-            description = "Download a list of all available characters")
-    public List<Character> downloadAll() {
-        return characterService.saveAll();
     }
 
     @GetMapping
