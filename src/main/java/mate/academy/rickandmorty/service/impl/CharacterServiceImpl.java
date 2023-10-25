@@ -1,8 +1,11 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.ExternalCharResponseDto;
 import mate.academy.rickandmorty.dto.internal.InternalCharListDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -19,20 +22,23 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper mapper;
 
     @Override
+    @PostConstruct
     public void save() {
         List<Character> characters = new ArrayList<>();
         int pageAmount = 42;
-        for (int i = 1; i < pageAmount + 1; i++) {
-            InternalCharListDto dtoList = client.getAllCharacters(i);
-            if (repository.findAll().isEmpty()) {
-                characters.addAll(
-                        dtoList.getResults().stream()
-                                .map(mapper::toEntity)
-                                .toList()
-                );
+        if (repository.findAll().isEmpty()) {
+            for (int i = 1; i < pageAmount + 1; i++) {
+                InternalCharListDto dtoList = client.getAllCharacters(i);
+                if (repository.findAll().isEmpty()) {
+                    characters.addAll(
+                            dtoList.getResults().stream()
+                                    .map(mapper::toEntity)
+                                    .toList()
+                    );
+                }
             }
+            repository.saveAll(characters);
         }
-        repository.saveAll(characters);
     }
 
     @Override
@@ -46,5 +52,15 @@ public class CharacterServiceImpl implements CharacterService {
         }
         throw new RuntimeException("Can't get all characters with this search string: "
                 + searchString);
+    }
+
+    @Override
+    public ExternalCharResponseDto getRandomCharacter() {
+        Random random = new Random();
+        int maxCharAmount = 826;
+        return mapper.toDto(
+                repository.findById(random.nextLong(maxCharAmount))
+                        .orElseThrow(RuntimeException::new)
+        );
     }
 }
