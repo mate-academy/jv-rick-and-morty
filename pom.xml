@@ -91,12 +91,17 @@
 						</goals>
 					</execution>
 				</executions>
+
+
 				<configuration>
 
 					<configLocation>${maven.checkstyle.plugin.configLocation}</configLocation>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 					<linkXRef>false</linkXRef>
+					<sourceDirectories>
+						<sourceDirectory>src/main/java</sourceDirectory>
+					</sourceDirectories>
 				</configuration>
 			</plugin>
 		</plugins>
