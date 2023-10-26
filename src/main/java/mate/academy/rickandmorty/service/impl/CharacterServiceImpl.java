@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private final static int CLIENT_API_CHAR_TABLE_PAGE_NUMBER = 42;
-    private final static int CLIENT_API_TOTAL_CHAR_AMOUNT = 826;
+    private static final int CLIENT_API_CHAR_TABLE_PAGE_NUMBER = 42;
+    private static final int CLIENT_API_TOTAL_CHAR_AMOUNT = 826;
     private final RickAndMortyClient client;
     private final CharacterRepository repository;
     private final CharacterMapper mapper;
