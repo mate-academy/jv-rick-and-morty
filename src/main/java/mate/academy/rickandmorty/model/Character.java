@@ -20,14 +20,14 @@ public class Character {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Long externalId;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String name;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String status;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String species;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String gender;
 }

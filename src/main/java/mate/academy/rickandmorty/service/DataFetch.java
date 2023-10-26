@@ -1,38 +1,36 @@
-package mate.academy.rickandmorty;
+package mate.academy.rickandmorty.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterRequestDto;
-import mate.academy.rickandmorty.service.CharacterService;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataFetchRunner implements CommandLineRunner {
+@RequiredArgsConstructor
+public class DataFetch {
     private final CharacterService characterService;
     private final ObjectMapper objectMapper;
+    private final Environment environment;
 
-    public DataFetchRunner(CharacterService characterService, ObjectMapper objectMapper) {
-        this.characterService = characterService;
-        this.objectMapper = objectMapper;
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
+    @PostConstruct
+    public void fetchData() throws Exception {
         HttpClient httpClient = HttpClient.newHttpClient();
-        String apiUrl = "https://rickandmortyapi.com/api/character";
+        String apiUrl = environment.getProperty("api-url");
         fetchAndSaveCharacters(httpClient, apiUrl);
     }
 
     private void fetchAndSaveCharacters(
-                HttpClient httpClient, String apiUrl) throws IOException,
+            HttpClient httpClient, String apiUrl) throws IOException,
             InterruptedException {
         boolean hasMorePages = true;
 
@@ -53,7 +51,8 @@ public class DataFetchRunner implements CommandLineRunner {
                 if (resultsNode.isArray()) {
                     List<CharacterRequestDto> characters = objectMapper.convertValue(
                             resultsNode,
-                            new TypeReference<>() {}
+                            new TypeReference<>() {
+                            }
                     );
                     characterService.addAll(characters);
 
