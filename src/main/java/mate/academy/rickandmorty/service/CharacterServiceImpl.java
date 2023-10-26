@@ -10,7 +10,6 @@ import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
