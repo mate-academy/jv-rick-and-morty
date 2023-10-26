@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
 import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
+    private final static int CLIENT_API_CHAR_TABLE_PAGE_NUMBER = 42;
+    private final static int CLIENT_API_TOTAL_CHAR_AMOUNT = 826;
     private final RickAndMortyClient client;
     private final CharacterRepository repository;
     private final CharacterMapper mapper;
@@ -24,18 +25,15 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     @PostConstruct
     public void save() {
-        List<Character> characters = new ArrayList<>();
-        int pageAmount = 42;
-        if (repository.findAll().isEmpty()) {
-            for (int i = 1; i < pageAmount + 1; i++) {
+        List<Character> characters = repository.findAll();
+        if (characters.isEmpty()) {
+            for (int i = 1; i < CLIENT_API_CHAR_TABLE_PAGE_NUMBER + 1; i++) {
                 InternalCharListDto dtoList = client.getAllCharacters(i);
-                if (repository.findAll().isEmpty()) {
-                    characters.addAll(
-                            dtoList.getResults().stream()
-                                    .map(mapper::toEntity)
-                                    .toList()
-                    );
-                }
+                characters.addAll(
+                        dtoList.getResults().stream()
+                                .map(mapper::toEntity)
+                                .toList()
+                );
             }
             repository.saveAll(characters);
         }
@@ -57,9 +55,8 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public ExternalCharResponseDto getRandomCharacter() {
         Random random = new Random();
-        int maxCharAmount = 826;
         return mapper.toDto(
-                repository.findById(random.nextLong(maxCharAmount))
+                repository.findById(random.nextLong(CLIENT_API_TOTAL_CHAR_AMOUNT))
                         .orElseThrow(RuntimeException::new)
         );
     }
