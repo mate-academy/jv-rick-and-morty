@@ -21,14 +21,14 @@ public class CharacterController {
     @Operation(summary = "Get a character",
             description = "Get a character by random id")
     @GetMapping("/random")
-    public CharacterDto getCharacterById() {
+    public CharacterDto getCharacterByRandomId() {
         return characterService.getCharacterByRandomId();
     }
 
     @Operation(summary = "Search a character",
             description = "Get a list of character by name")
     @GetMapping("/search")
-    public List<CharacterDto> search(String name) {
+    public List<CharacterDto> searchByName(String name) {
         return characterService.searchByName(name);
     }
 }

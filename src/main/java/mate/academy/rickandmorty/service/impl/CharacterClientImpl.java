@@ -50,7 +50,7 @@ public class CharacterClientImpl implements CharacterClient {
             }
             return characterResponseDtoList;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't get character data from API.",e);
         }
     }
 }
