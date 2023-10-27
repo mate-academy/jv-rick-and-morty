@@ -14,5 +14,5 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface PersonageMapper {
     PersonageResponseDto toDto(Personage personage);
 
-    Personage fromExternalResultToPersonage(Result result);
+    Personage toPersonage(Result result);
 }

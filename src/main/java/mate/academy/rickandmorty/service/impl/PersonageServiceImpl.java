@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.PersonageResponseDto;
@@ -26,7 +27,8 @@ public class PersonageServiceImpl implements PersonageService {
 
     @Override
     public PersonageResponseDto getRandomPersonage() {
-        Personage randomPersonage = personageRepository.findRandomPersonage();
+        Personage randomPersonage = personageRepository.findRandomPersonage()
+                .orElseThrow(() -> new EntityNotFoundException("Can't get random personage"));
         return personageMapper.toDto(randomPersonage);
     }
 }

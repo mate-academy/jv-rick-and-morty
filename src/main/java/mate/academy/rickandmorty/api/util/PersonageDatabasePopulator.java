@@ -7,15 +7,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DbLoader {
+public class PersonageDatabasePopulator {
     private final RickAndMortyApiClient rickAndMortyApiClient;
     private final PersonageRepository personageRepository;
 
     @PostConstruct
     public void init() {
-        if (personageRepository.count() == 0) {
-            personageRepository.saveAll(rickAndMortyApiClient.getAllPersonages());
+        if (personageRepository.count() != 0) {
+            personageRepository.deleteAll();
         }
+        personageRepository.saveAll(rickAndMortyApiClient.getAllPersonages());
     }
 
 }
