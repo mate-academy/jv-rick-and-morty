@@ -1,10 +1,11 @@
 package mate.academy.rickandmorty.dto.external;
 
-public record CharacterInfoDto(
-        Long externalId,
-        String name,
-        String status,
-        String gender
-) {
+import lombok.Data;
 
+@Data
+public class CharacterInfoDto {
+    private Long id;
+    private String name;
+    private String status;
+    private String gender;
 }

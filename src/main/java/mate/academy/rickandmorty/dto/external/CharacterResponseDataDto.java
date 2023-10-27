@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class CharacterResponseDataDto {
-    private CharacterMetaDataDto characterMetaDataDto;
+    private CharacterMetaDataDto info;
     private List<CharacterInfoDto> results;
 }
