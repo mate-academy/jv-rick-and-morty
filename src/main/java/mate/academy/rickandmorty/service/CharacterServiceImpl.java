@@ -13,27 +13,28 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
-    private final CharacterRepository repository;
-    private final CharacterMapper mapper;
+    private final CharacterRepository characterRepository;
+    private final CharacterMapper characterMapper;
 
     @Override
     public List<CharacterResponseDto> addAll(List<CharacterRequestDto> dto) {
-        return repository.saveAll(dto.stream()
-                        .map(mapper::toEntity)
+        return characterRepository.saveAll(dto.stream()
+                        .map(characterMapper::toEntity)
                         .collect(Collectors.toList()))
-                .stream().map(mapper::toDto)
+                .stream().map(characterMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CharacterResponseDto generateRandomCharacter() {
-        return mapper.toDto(repository.getRandomCharacter());
+        return characterMapper.toDto(characterRepository.getRandomCharacter());
     }
 
     @Override
     public List<CharacterResponseDto> searchCharactersByName(
             String searchString, Pageable pageable) {
-        return repository.searchByNameContainsIgnoreCase(searchString, pageable).stream().map(
-                mapper::toDto).collect(Collectors.toList());
+        return characterRepository.searchByNameContainsIgnoreCase(
+                searchString, pageable).stream().map(
+                characterMapper::toDto).collect(Collectors.toList());
     }
 }

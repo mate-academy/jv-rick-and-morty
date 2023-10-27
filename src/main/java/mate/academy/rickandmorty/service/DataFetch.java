@@ -12,7 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterRequestDto;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 public class DataFetch {
     private final CharacterService characterService;
     private final ObjectMapper objectMapper;
-    private final Environment environment;
+    @Value("${api-url}")
+    private String apiUrl;
 
     @PostConstruct
     public void fetchData() throws Exception {
         HttpClient httpClient = HttpClient.newHttpClient();
-        String apiUrl = environment.getProperty("api-url");
         fetchAndSaveCharacters(httpClient, apiUrl);
     }
 

@@ -13,8 +13,8 @@ import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,7 +36,7 @@ public class CharacterController {
                             + "    \"species\": \"Human\",\n"
                             + "    \"gender\": \"Male\"\n"
                             + "}"))})
-    @GetMapping("/generate_random")
+    @GetMapping("/generate-random")
     public CharacterResponseDto generateRandom() {
         return service.generateRandomCharacter();
     }
@@ -64,10 +64,10 @@ public class CharacterController {
                             + "        \"gender\": \"Female\"\n"
                             + "    }\n"
                             + "]"))})
-    @GetMapping("/search_by_name/{name}")
+    @GetMapping("/search-by-name")
     public List<CharacterResponseDto> searchByName(
             @Parameter(description = "search string")
-            @PathVariable String name,
+            @RequestParam String name,
             @Parameter(description = "Pageable object")
             Pageable pageable) {
         return service.searchCharactersByName(name, pageable);
