@@ -12,25 +12,20 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterInfoDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class CharacterClientImpl implements CharacterClient {
+    private static final String API_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
     private final List<CharacterResponseDto> characterResponseDtoList = new ArrayList<>();
-    @Value("${mate.academy.rickandmorty.url}")
-    private String apiUrl;
 
     @Override
     public List<CharacterResponseDto> getCharactersIntoDB() {
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .build();
+        HttpRequest httpRequest = getRequest(API_URL);
 
         try {
             HttpResponse<String> response = httpClient.send(httpRequest,
@@ -39,10 +34,7 @@ public class CharacterClientImpl implements CharacterClient {
                     .readValue(response.body(), CharacterInfoDto.class);
             int count = Integer.parseInt(characterInfoDto.info().get("count"));
             for (int i = 1; i <= count; i++) {
-                httpRequest = HttpRequest.newBuilder()
-                        .GET()
-                        .uri(URI.create(apiUrl + "/" + i))
-                        .build();
+                httpRequest = getRequest(API_URL + "/" + i);
                 response = httpClient.send(httpRequest,
                         HttpResponse.BodyHandlers.ofString());
                 characterResponseDtoList.add(objectMapper.readValue(response.body(),
@@ -52,5 +44,12 @@ public class CharacterClientImpl implements CharacterClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Can't get character data from API.",e);
         }
+    }
+
+    private HttpRequest getRequest(String url) {
+        return HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .build();
     }
 }
