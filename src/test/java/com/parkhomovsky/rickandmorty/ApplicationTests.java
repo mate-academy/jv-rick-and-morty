@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty;
+package com.parkhomovsky.rickandmorty;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
