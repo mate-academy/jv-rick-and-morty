@@ -38,8 +38,8 @@ public class RickAndMortyClientApi {
                     CharacterResponseDataDto.class);
             return dataDto.getResults().stream().toList();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("An error occurred while fetching "
+                    + "character data from the Rick and Morty API",e);
         }
-
     }
 }
