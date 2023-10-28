@@ -29,21 +29,15 @@ public class PersonalityController {
         return personalityService.getRandomPersonality();
     }
 
-    @GetMapping
-    @Operation(summary = "Get All",
-            description = "Getting all personalities")
-    public List<PersonalityDto> getAllPersonalities(
+    @Operation(summary = "Search characters.",
+            description = "Search characters by params")
+    @GetMapping("/search")
+    public List<PersonalityDto> search(
+            PersonalitySearchParametersDto params,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String[] sort) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        return personalityService.getAll(pageable);
-    }
-
-    @Operation(summary = "Search characters.",
-            description = "Search characters by params")
-    @GetMapping("/search")
-    public List<PersonalityDto> search(PersonalitySearchParametersDto params, Pageable pageable) {
-        return personalityService.search(params,pageable);
+        return personalityService.search(params, pageable);
     }
 }

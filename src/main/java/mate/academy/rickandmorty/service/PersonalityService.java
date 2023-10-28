@@ -11,7 +11,5 @@ public interface PersonalityService {
 
     PersonalityDto getRandomPersonality();
 
-    List<PersonalityDto> getAll(Pageable pageable);
-
     List<PersonalityDto> search(PersonalitySearchParametersDto params, Pageable pageable);
 }

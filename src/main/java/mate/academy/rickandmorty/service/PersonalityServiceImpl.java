@@ -44,13 +44,6 @@ public class PersonalityServiceImpl implements PersonalityService {
     }
 
     @Override
-    public List<PersonalityDto> getAll(Pageable pageable) {
-        return personalityRepository.findAll(pageable).stream()
-                .map(personMapper::toPersonalityDtoFromEntity)
-                .toList();
-    }
-
-    @Override
     public List<PersonalityDto> search(
             PersonalitySearchParametersDto params,
             Pageable pageable
