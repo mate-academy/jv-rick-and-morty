@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class InternalCharListDto {
+    @JsonProperty("info")
+    private InfoDto info;
     @JsonProperty("results")
     private List<InternalCharResponseDto> results;
 }

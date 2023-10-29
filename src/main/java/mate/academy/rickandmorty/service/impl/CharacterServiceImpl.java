@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private static final int CLIENT_API_CHAR_TABLE_PAGE_NUMBER = 42;
-    private static final int CLIENT_API_TOTAL_CHAR_AMOUNT = 826;
+    private long clientApiTotalCharAmount = 826;
     private final RickAndMortyClient client;
     private final CharacterRepository repository;
     private final CharacterMapper mapper;
@@ -26,9 +25,12 @@ public class CharacterServiceImpl implements CharacterService {
     @PostConstruct
     public void save() {
         List<Character> characters = repository.findAll();
+        long pageNum = 1;
         if (characters.isEmpty()) {
-            for (int i = 1; i < CLIENT_API_CHAR_TABLE_PAGE_NUMBER + 1; i++) {
+            for (int i = 1; i < pageNum + 1; i++) {
                 InternalCharListDto dtoList = client.getAllCharacters(i);
+                pageNum = dtoList.getInfo().pages();
+                clientApiTotalCharAmount = dtoList.getInfo().count();
                 characters.addAll(
                         dtoList.getResults().stream()
                                 .map(mapper::toEntity)
@@ -56,7 +58,7 @@ public class CharacterServiceImpl implements CharacterService {
     public ExternalCharResponseDto getRandomCharacter() {
         Random random = new Random();
         return mapper.toDto(
-                repository.findById(random.nextLong(CLIENT_API_TOTAL_CHAR_AMOUNT))
+                repository.findById(random.nextLong(clientApiTotalCharAmount))
                         .orElseThrow(RuntimeException::new)
         );
     }
