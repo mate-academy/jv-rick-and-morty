@@ -9,9 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NameSpecificationProvider implements SpecificationProvider<Personality> {
-    private static final String NAME_KEY = "name";
-
+public class NameSpecificationKeyProviderProvider
+        implements SpecificationProvider<Personality>, SpecificationKeyConstantsProvider {
     @Override
     public String getKey() {
         return NAME_KEY;

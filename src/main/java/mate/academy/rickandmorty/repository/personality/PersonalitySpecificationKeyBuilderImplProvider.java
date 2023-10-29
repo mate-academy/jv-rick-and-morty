@@ -5,16 +5,14 @@ import mate.academy.rickandmorty.dto.internal.PersonalitySearchParametersDto;
 import mate.academy.rickandmorty.model.Personality;
 import mate.academy.rickandmorty.repository.SpecificationBuilder;
 import mate.academy.rickandmorty.repository.SpecificationProviderManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import mate.academy.rickandmorty.repository.personality.specification.SpecificationKeyConstantsProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PersonalitySpecificationBuilderImpl implements SpecificationBuilder<Personality> {
-    private static final String NAME_KEY = "name";
-
-    @Autowired
+public class PersonalitySpecificationKeyBuilderImplProvider
+        implements SpecificationBuilder<Personality>, SpecificationKeyConstantsProvider {
     private final SpecificationProviderManager<Personality> personalitySpecificationProviderManager;
 
     @Override

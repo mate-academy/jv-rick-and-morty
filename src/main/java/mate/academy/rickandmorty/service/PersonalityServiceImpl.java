@@ -9,7 +9,7 @@ import mate.academy.rickandmorty.dto.internal.PersonalitySearchParametersDto;
 import mate.academy.rickandmorty.dto.mapper.PersonMapper;
 import mate.academy.rickandmorty.model.Personality;
 import mate.academy.rickandmorty.repository.personality.PersonalityRepository;
-import mate.academy.rickandmorty.repository.personality.PersonalitySpecificationBuilderImpl;
+import mate.academy.rickandmorty.repository.personality.PersonalitySpecificationKeyBuilderImplProvider;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class PersonalityServiceImpl implements PersonalityService {
     private final PersonalityRepository personalityRepository;
     private final RickAndMortyHttpClient rickAndMortyHttpClient;
     private final PersonMapper personMapper;
-    private final PersonalitySpecificationBuilderImpl personalitySpecificationBuilder;
+    private final PersonalitySpecificationKeyBuilderImplProvider personalitySpecificationBuilder;
 
     @PostConstruct
     public void init() {
@@ -44,13 +44,13 @@ public class PersonalityServiceImpl implements PersonalityService {
     }
 
     @Override
-    public List<PersonalityDto> search(
+    public List<PersonalityDto> searchBy(
             PersonalitySearchParametersDto params,
             Pageable pageable
     ) {
         final Specification<Personality> personalitySpecification
                 = personalitySpecificationBuilder.build(params);
-        return personalityRepository.findAll(personalitySpecification,pageable)
+        return personalityRepository.findAll(personalitySpecification, pageable)
                 .stream()
                 .map(personMapper::toDto)
                 .toList();

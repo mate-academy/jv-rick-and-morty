@@ -18,4 +18,12 @@ public class CharacterDto {
     private List<String> episode;
     private String url;
     private String created;
+
+    public void setStatus(String status) {
+        this.status = status.toUpperCase();
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender.toUpperCase();
+    }
 }

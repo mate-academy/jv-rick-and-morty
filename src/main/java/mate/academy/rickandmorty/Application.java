@@ -11,8 +11,5 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        logger.info("API Documentation Overview link: http://localhost:8080/api/swagger-ui/index.html#/");
-        logger.info("Get random personality link: " + "http://localhost:8080/api/personalities/random");
-        logger.info("Search link: " + "http://localhost:8080/api/personalities/search?name=Alien&name=Baby");
     }
 }

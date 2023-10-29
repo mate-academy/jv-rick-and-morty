@@ -32,12 +32,12 @@ public class PersonalityController {
     @Operation(summary = "Search characters.",
             description = "Search characters by params")
     @GetMapping("/search")
-    public List<PersonalityDto> search(
+    public List<PersonalityDto> searchBy(
             PersonalitySearchParametersDto params,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String[] sort) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        return personalityService.search(params, pageable);
+        return personalityService.searchBy(params, pageable);
     }
 }

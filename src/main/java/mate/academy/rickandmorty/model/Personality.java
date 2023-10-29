@@ -23,23 +23,27 @@ public class Personality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private Long externalId;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private Status status;
+    @Column(nullable = false)
     private Gender gender;
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     public enum Status {
-        Alive,
-        Dead,
-        unknown
+        ALIVE,
+        DEAD,
+        UNKNOWN;
     }
 
     public enum Gender {
-        Female,
-        Male,
-        Genderless,
-        unknown
+        FEMALE,
+        MALE,
+        GENDERLESS,
+        UNKNOWN
     }
 }
