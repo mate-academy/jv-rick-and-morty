@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-characters-table
+      author: V.Sukhov
+      changes:
+        - createTable:
+            tableName: characters
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: external_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(65)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gender
+                  type: varchar(65)
+                  constraints:
+                    nullable: false
