@@ -1,16 +1,16 @@
 package mate.academy.rickandmorty.repository;
 
 import java.util.List;
-import mate.academy.rickandmorty.models.RickMorty;
+import mate.academy.rickandmorty.models.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RickMortyRepository extends JpaRepository<RickMorty, Long> {
-    List<RickMorty> findRickMortiesByNameContainingIgnoreCase(String name);
+public interface RickMortyRepository extends JpaRepository<Character, Long> {
+    List<Character> findRickMortiesByNameContainingIgnoreCase(String name);
 
-    RickMorty findRickMortyById(Long externalId);
+    Character findRickMortyById(Long externalId);
 
     @Query(value = "SELECT MAX(id) FROM characters;",nativeQuery = true)
     Long getMaxId();

@@ -10,7 +10,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "characters")
-public class RickMorty {
+public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

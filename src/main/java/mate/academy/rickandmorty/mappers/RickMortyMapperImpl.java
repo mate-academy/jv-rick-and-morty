@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.mappers;
 
-import mate.academy.rickandmorty.dto.RickMortyDtoResponse;
-import mate.academy.rickandmorty.models.RickMorty;
+import mate.academy.rickandmorty.dto.CharacterDtoResponse;
+import mate.academy.rickandmorty.models.Character;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,28 +9,28 @@ public class RickMortyMapperImpl implements RickMortyMapper {
     public RickMortyMapperImpl() {
     }
 
-    public RickMorty toModel(RickMortyDtoResponse rickMortyDtoRequest) {
+    public Character toModel(CharacterDtoResponse rickMortyDtoRequest) {
         if (rickMortyDtoRequest == null) {
             return null;
         } else {
-            RickMorty rickMorty = new RickMorty();
+            Character character = new Character();
             if (rickMortyDtoRequest.getExternalId() != null) {
-                rickMorty.setExternalId(rickMortyDtoRequest.getExternalId());
+                character.setExternalId(rickMortyDtoRequest.getExternalId());
             }
 
             if (rickMortyDtoRequest.getName() != null) {
-                rickMorty.setName(rickMortyDtoRequest.getName());
+                character.setName(rickMortyDtoRequest.getName());
             }
 
             if (rickMortyDtoRequest.getStatus() != null) {
-                rickMorty.setStatus(rickMortyDtoRequest.getStatus());
+                character.setStatus(rickMortyDtoRequest.getStatus());
             }
 
             if (rickMortyDtoRequest.getGender() != null) {
-                rickMorty.setGender(rickMortyDtoRequest.getGender());
+                character.setGender(rickMortyDtoRequest.getGender());
             }
 
-            return rickMorty;
+            return character;
         }
     }
 }

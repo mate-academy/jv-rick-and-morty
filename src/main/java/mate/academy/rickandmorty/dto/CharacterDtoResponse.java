@@ -1,11 +1,15 @@
 package mate.academy.rickandmorty.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterDtoResponse {
-    private List<RickMortyDtoResponse> results;
+    @JsonProperty(value = "id")
+    private Long externalId;
+    private String name;
+    private String status;
+    private String gender;
 }
