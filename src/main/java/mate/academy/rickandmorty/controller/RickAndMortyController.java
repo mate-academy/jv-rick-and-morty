@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.PersonageResponseDto;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Controller to get personages",
+        description = "In this controller you can get random personages and personages by name")
 @RequiredArgsConstructor
 @RequestMapping("/rick-and-morty")
 public class RickAndMortyController {
