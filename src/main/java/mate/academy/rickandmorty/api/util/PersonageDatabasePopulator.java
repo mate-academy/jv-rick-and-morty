@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PersonageDatabasePopulator {
-    private final RickAndMortyApiClient rickAndMortyApiClient;
+    private final RickAndMortyClient rickAndMortyApiClient;
     private final PersonageRepository personageRepository;
 
     @PostConstruct

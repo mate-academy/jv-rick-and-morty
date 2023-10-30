@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class ThirdPartyApiConfiguration {
+public class ApiClientConfiguration {
     @Bean
-    public RestTemplate getRestTemplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

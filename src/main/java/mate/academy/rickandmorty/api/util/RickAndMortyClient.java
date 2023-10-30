@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
-public class RickAndMortyApiClient {
+public class RickAndMortyClient {
     private final PersonageMapper personageMapper;
     private final RestTemplate restTemplate;
     @Value("${rick-and-morty.api.url}")
