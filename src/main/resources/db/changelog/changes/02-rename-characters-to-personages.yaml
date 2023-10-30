@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: rename-characters-to-personages
+      author: teract10s
+      changes:
+        - renameTable:
+            oldTableName: characters
+            newTableName: personages
