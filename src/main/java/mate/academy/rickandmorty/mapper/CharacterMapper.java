@@ -16,5 +16,5 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface CharacterMapper {
     CharacterDto toDto(Character character);
 
-    Character toEntity(CharacterResponseDto characterResponseDto);
+    Character toCharacter(CharacterResponseDto characterResponseDto);
 }

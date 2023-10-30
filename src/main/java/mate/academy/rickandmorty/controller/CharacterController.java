@@ -32,6 +32,6 @@ public class CharacterController {
                     + "whose name contains the search string")
     @GetMapping(value = "/search")
     public List<CharacterDto> searchCharactersByName(@RequestParam String name) {
-        return characterService.getCharacterByNameContaining(name);
+        return characterService.getCharacterByName(name);
     }
 }

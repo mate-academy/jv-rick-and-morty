@@ -1,55 +1,41 @@
 package mate.academy.rickandmorty.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.List;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.CharacterResponseDtoList;
-import mate.academy.rickandmorty.dto.MetaInfo;
 import mate.academy.rickandmorty.exception.DataProcessingException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
 public class CharacterClient {
-    private static final String URL = "https://rickandmortyapi.com/api/character";
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    @Value("${rick-and-morty-url}")
+    private String url;
     private final CharacterMapper characterMapper;
     private final CharacterRepository characterRepository;
+    private final RestTemplate restTemplate;
 
     public void getCharacters() {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(URL))
-                .build();
         try {
-            HttpResponse<String> response
-                    = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            MetaInfo metaInfo = objectMapper.readValue(response.body(), MetaInfo.class);
-            int countOfPages = Integer.parseInt(metaInfo.info().get("pages"));
-            for (int i = 1; i <= countOfPages; i++) {
-                httpRequest = HttpRequest.newBuilder()
-                        .GET()
-                        .uri(URI.create(URL + "/?page=" + i))
-                        .build();
-                response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-                List<Character> list = objectMapper
-                        .readValue(response.body(), CharacterResponseDtoList.class)
-                        .results().stream()
-                        .map(characterMapper::toEntity)
-                        .toList();
-                list.forEach(c -> c.setExternalId(c.getId()));
-                characterRepository.saveAll(list);
+            CharacterResponseDtoList characterResponseDtoList
+                    = restTemplate.getForObject(url, CharacterResponseDtoList.class);
+            ArrayList<CharacterResponseDto> characters
+                    = new ArrayList<>(characterResponseDtoList.results());
+            String nextUrl = characterResponseDtoList.info().next();
+            while (nextUrl != null) {
+                characterResponseDtoList
+                        = restTemplate.getForObject(nextUrl, CharacterResponseDtoList.class);
+                characters.addAll(characterResponseDtoList.results());
+                nextUrl = characterResponseDtoList.info().next();
             }
+            characterRepository.saveAll(characters.stream()
+                    .map(characterMapper::toCharacter)
+                    .toList());
         } catch (Exception e) {
             throw new DataProcessingException("Can't load characters");
         }
