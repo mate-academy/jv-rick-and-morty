@@ -1,16 +1,21 @@
 package mate.academy.rickandmorty.model;
 
-public enum Gender {
+import java.util.Arrays;
 
-    MALE, FEMALE, GENDERLESS, UNKNOWN;
+public enum Gender {
+    MALE("Male"), FEMALE("Female"), GENDERLESS("Genderless"), UNKNOWN("Unknown");
+
+    private final String name;
+
+    Gender(String name) {
+        this.name = name;
+    }
 
     public static Gender getFromString(String string) {
-        return switch (string) {
-            case "Male" -> MALE;
-            case "Female" -> FEMALE;
-            case "Genderless" -> GENDERLESS;
-            case "unknown" -> UNKNOWN;
-            default -> throw new IllegalArgumentException("Illegal gender");
-        };
+        return Arrays.stream(values())
+            .filter(status -> status.name.equalsIgnoreCase(string))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Illegal gender"));
     }
+
 }

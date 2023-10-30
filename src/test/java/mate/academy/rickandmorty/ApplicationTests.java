@@ -35,7 +35,7 @@ public class ApplicationTests {
             "Alive", "Human", "Male");
         when(characterService.generateRandomCharacter()).thenReturn(expectedCharacter);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/characters/generate-random")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/characters/generate")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content()
@@ -52,7 +52,7 @@ public class ApplicationTests {
         when(characterService.searchCharactersByName(searchName, PageRequest.of(0, 10)))
             .thenReturn(expectedCharacters);
 
-        String url = "/api/characters/search-by-name?name=%s&page=%s&size=%s";
+        String url = "/api/characters/search/by-name?name=%s&page=%s&size=%s";
         mockMvc.perform(MockMvcRequestBuilders.get(String.format(url, searchName, 0, 10))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())

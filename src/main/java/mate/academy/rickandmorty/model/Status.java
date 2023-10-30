@@ -1,5 +1,7 @@
 package mate.academy.rickandmorty.model;
 
+import java.util.Arrays;
+
 public enum Status {
     ALIVE("Alive"), DEAD("Dead"), UNKNOWN("Unknown");
 
@@ -10,12 +12,10 @@ public enum Status {
     }
 
     public static Status getFromString(String string) {
-        return switch (string) {
-            case "Alive" -> ALIVE;
-            case "Dead" -> DEAD;
-            case "unknown" -> UNKNOWN;
-            default -> throw new IllegalArgumentException("Illegal status");
-        };
+        return Arrays.stream(values())
+            .filter(status -> status.name.equalsIgnoreCase(string))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Illegal status"));
     }
 
     @Override

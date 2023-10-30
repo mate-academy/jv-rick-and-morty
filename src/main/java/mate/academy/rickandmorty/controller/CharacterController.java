@@ -36,7 +36,7 @@ public class CharacterController {
                             + "    \"species\": \"Human\",\n"
                             + "    \"gender\": \"Male\"\n"
                             + "}"))})
-    @GetMapping("/generate-random")
+    @GetMapping("/random")
     public CharacterResponseDto generateRandom() {
         return service.generateRandomCharacter();
     }
@@ -64,7 +64,8 @@ public class CharacterController {
                             + "        \"gender\": \"Female\"\n"
                             + "    }\n"
                             + "]"))})
-    @GetMapping("/search-by-name")
+
+    @GetMapping("/search/by-name")
     public List<CharacterResponseDto> searchByName(
             @Parameter(description = "search string")
             @RequestParam String name,
