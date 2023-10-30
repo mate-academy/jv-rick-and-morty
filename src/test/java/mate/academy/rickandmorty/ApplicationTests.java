@@ -35,7 +35,7 @@ public class ApplicationTests {
             "Alive", "Human", "Male");
         when(characterService.generateRandomCharacter()).thenReturn(expectedCharacter);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/characters/generate")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/characters/random")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content()
