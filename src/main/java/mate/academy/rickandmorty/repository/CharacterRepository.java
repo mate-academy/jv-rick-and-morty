@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RickMortyRepository extends JpaRepository<Character, Long> {
+public interface CharacterRepository extends JpaRepository<Character, Long> {
     List<Character> findRickMortiesByNameContainingIgnoreCase(String name);
 
     Character findRickMortyById(Long externalId);

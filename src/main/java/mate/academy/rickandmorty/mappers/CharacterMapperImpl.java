@@ -5,8 +5,8 @@ import mate.academy.rickandmorty.models.Character;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RickMortyMapperImpl implements RickMortyMapper {
-    public RickMortyMapperImpl() {
+public class CharacterMapperImpl implements CharacterMapper {
+    public CharacterMapperImpl() {
     }
 
     public Character toModel(CharacterDtoResponse rickMortyDtoRequest) {
