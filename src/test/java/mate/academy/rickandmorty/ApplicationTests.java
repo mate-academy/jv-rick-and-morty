@@ -29,22 +29,17 @@ public class ApplicationTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     public void testGenerateRandomCharacter() throws Exception {
         CharacterResponseDto expectedCharacter = new CharacterResponseDto(3L, 3L, "Rick Sanchez",
-                "Alive", "Human", "Male");
+            "Alive", "Human", "Male");
         when(characterService.generateRandomCharacter()).thenReturn(expectedCharacter);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/characters/generate-random")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .json(objectMapper.writeValueAsString(expectedCharacter)));
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedCharacter)));
     }
 
     @Test
@@ -53,15 +48,15 @@ public class ApplicationTests {
 
         List<CharacterResponseDto> expectedCharacters = new ArrayList<>();
         expectedCharacters.add(new CharacterResponseDto(1L, 1L, "Character1", "Alive", "Human", "Male"));
-        expectedCharacters.add(  new CharacterResponseDto(2L, 2L, "Character2", "Dead", "Alien", "Female"));
+        expectedCharacters.add(new CharacterResponseDto(2L, 2L, "Character2", "Dead", "Alien", "Female"));
         when(characterService.searchCharactersByName(searchName, PageRequest.of(0, 10)))
-                .thenReturn(expectedCharacters);
+            .thenReturn(expectedCharacters);
 
         String url = "/api/characters/search-by-name?name=%s&page=%s&size=%s";
-        mockMvc.perform(MockMvcRequestBuilders.get( String.format(url, searchName, 0, 10))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .json(objectMapper.writeValueAsString(expectedCharacters)));
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format(url, searchName, 0, 10))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedCharacters)));
     }
 }
