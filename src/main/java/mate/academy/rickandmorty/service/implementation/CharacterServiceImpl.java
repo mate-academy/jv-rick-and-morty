@@ -48,18 +48,13 @@ public class CharacterServiceImpl implements CharacterService {
         } catch (IOException e) {
             throw new CustomException("Wrong path!!!", e);
         }
-
         CharactersDtoResponse charactersDtoResponse = restTemplate.getForObject(properties
                         .getProperty("character-url"),
                 CharactersDtoResponse.class);
-        if (charactersDtoResponse != null) {
-            characterRepository.saveAll(charactersDtoResponse.getResults()
-                    .stream()
-                    .map(rickMortyMapper::toModel)
-                    .collect(Collectors.toList()));
-        } else {
-            throw new CustomException("Characters response object is NULL!!");
-        }
+        characterRepository.saveAll(Objects.requireNonNull(charactersDtoResponse).getResults()
+                .stream()
+                .map(rickMortyMapper::toModel)
+                .collect(Collectors.toList()));
     }
 
     public List<Character> getAllCharactersByName(String name) {
