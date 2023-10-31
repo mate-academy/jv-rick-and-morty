@@ -22,11 +22,8 @@ public class CharacterService {
         );
     }
 
-    public List<ResponseCharacterDto> getAllByNames(String names) {
-        List<String> listName = characterRepository.getAllNames().stream()
-                .filter(names::contains)
-                .toList();
-        return characterRepository.getAllByNameIn(listName).stream()
+    public List<ResponseCharacterDto> getAllByNames(String namePattern) {
+        return characterRepository.getAllByNameIn(namePattern).stream()
                 .map(characterMapper::toDto)
                 .toList();
     }

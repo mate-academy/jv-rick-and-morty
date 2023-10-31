@@ -24,14 +24,14 @@ public class CharacterController {
         return characterService.getRandom();
     }
 
-    @GetMapping("/{names}")
+    @GetMapping("/{namePattern}")
     @Operation(
             summary = "Get characters by names",
             description = "Get list of characters by names"
     )
     public List<ResponseCharacterDto> getAllByString(
-            @PathVariable String names
+            @PathVariable String namePattern
     ) {
-        return characterService.getAllByNames(names);
+        return characterService.getAllByNames(namePattern);
     }
 }

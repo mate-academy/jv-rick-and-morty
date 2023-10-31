@@ -15,10 +15,12 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     Optional<Character> findRandomCharacter();
 
     @Query("""
-            SELECT c.name
-            FROM Character c
+    FROM Character c
+    WHERE c.name IN (
+    SELECT name
+    FROM Character
+    WHERE :names LIKE CONCAT('%', name, '%')
+    )
             """)
-    List<String> getAllNames();
-
-    List<Character> getAllByNameIn(List<String> name);
+    List<Character> getAllByNameIn(String namePattern);
 }
