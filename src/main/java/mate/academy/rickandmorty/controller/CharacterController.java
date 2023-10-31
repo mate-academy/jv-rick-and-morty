@@ -6,6 +6,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
         description = "Endpoints for receiving Rick and Morty characters from DB")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "api/characters")
+@RequestMapping(value = "characters")
 public class CharacterController {
     private final CharacterService characterService;
 
@@ -31,7 +34,9 @@ public class CharacterController {
             description = "Returns a list of all characters "
                     + "whose name contains the search string")
     @GetMapping(value = "/search")
-    public List<CharacterDto> searchCharactersByName(@RequestParam String name) {
-        return characterService.getCharacterByName(name);
+    public List<CharacterDto> searchCharactersByName(
+            @ParameterObject @PageableDefault(size = 5) Pageable pageable,
+            @RequestParam String name) {
+        return characterService.getCharacterByName(name, pageable);
     }
 }

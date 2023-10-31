@@ -6,6 +6,7 @@ import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public List<CharacterDto> getCharacterByName(String name) {
-        return characterRepository.findCharacterByNameContaining(name)
+    public List<CharacterDto> getCharacterByName(String name, Pageable pageable) {
+        return characterRepository.findCharacterByNameContaining(name, pageable)
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
