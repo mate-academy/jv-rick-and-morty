@@ -19,7 +19,7 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     WHERE c.name IN (
     SELECT name
     FROM Character
-    WHERE :names LIKE CONCAT('%', name, '%')
+    WHERE :namePattern LIKE CONCAT('%', name, '%')
     )
             """)
     List<Character> getAllByNameIn(String namePattern);
