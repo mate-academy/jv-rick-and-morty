@@ -2,9 +2,8 @@ package mate.academy.rickandmorty.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
 import mate.academy.rickandmorty.dto.internal.CharacterRespondDto;
@@ -44,6 +43,14 @@ public class CharacterService {
                 () -> new RuntimeException("Cannot find character with id: " + randomId));
 
         return characterMapper.toDto(byId);
+    }
+
+    public List<CharacterRespondDto> getMatchedCharacter(String string) {
+        List<Character> matchesCharacters = characterRepository.findAllByNameMatchesRegex(string);
+
+        return matchesCharacters.stream()
+                .map(characterMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 }
