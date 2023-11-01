@@ -25,11 +25,12 @@ public class RickAndMortyClient {
                 .GET()
                 .uri(URI.create(url))
                 .build();
+
         try {
             String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
             return objectMapper.readValue(body, ListOfCharacterResponseDto.class);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Cannot send request on " + url);
         }
     }
 
@@ -38,10 +39,10 @@ public class RickAndMortyClient {
         List<CharacterDto> accum = new ArrayList<>();
 
         do {
-            ListOfCharacterResponseDto fetchPage = fetchPage(url);
+            ListOfCharacterResponseDto fetchedPage = fetchPage(url);
 
-            url = fetchPage.getInfo().getNext();
-            accum.addAll(fetchPage.getCharacters());
+            url = fetchedPage.getInfo().getNext();
+            accum.addAll(fetchedPage.getCharacters());
         } while (url != null);
 
         return accum;
