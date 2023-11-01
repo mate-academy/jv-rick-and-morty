@@ -26,7 +26,7 @@ public class CharacterController {
     }
 
     @Operation(summary = "Get all character that contain some \"string\"")
-    @GetMapping("/{string}")
+    @GetMapping("/search/{string}")
     public List<CharacterRespondDto> getAllCharacterByMatch(@PathVariable String string) {
         return characterService.getMatchedCharacter(string);
     }
