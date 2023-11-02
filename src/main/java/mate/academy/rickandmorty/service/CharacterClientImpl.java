@@ -1,16 +1,15 @@
 package mate.academy.rickandmorty.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.external.ResponseDataDto;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.ResponseDataDto;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CharacterClientImpl implements CharacterClient {

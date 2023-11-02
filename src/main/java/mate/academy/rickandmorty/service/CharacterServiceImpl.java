@@ -1,5 +1,7 @@
 package mate.academy.rickandmorty.service;
 
+import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
@@ -8,9 +10,6 @@ import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
-
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -18,6 +17,7 @@ public class CharacterServiceImpl implements CharacterService {
     private static final Random RANDOM = new Random();
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
+
     @Override
     public CharacterDto getRandomCharacter() {
         int id = RANDOM.nextInt(countCharacters) + 1;
