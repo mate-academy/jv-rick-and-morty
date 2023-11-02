@@ -5,7 +5,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class CharacterResponseDto {
+public class ExternalCharacterDto {
     private Long id;
     private String name;
     private String status;

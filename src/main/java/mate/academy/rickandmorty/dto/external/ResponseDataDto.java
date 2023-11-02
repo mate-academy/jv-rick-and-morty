@@ -7,5 +7,5 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class ResponseDataDto {
-    private List<CharacterResponseDto> results;
+    private List<ExternalCharacterDto> results;
 }

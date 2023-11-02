@@ -1,7 +1,5 @@
 package mate.academy.rickandmorty;
 
-import java.util.List;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterClient;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,5 @@ public class Application {
     public static void main(String[] args) {
 
         SpringApplication.run(Application.class, args);
-        List<CharacterResponseDto> characters = characterClient.getCharacters();
-        characterService.saveAll(characters);
     }
 }

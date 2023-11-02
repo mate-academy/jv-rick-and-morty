@@ -1,8 +1,8 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 
 public interface CharacterClient {
-    List<CharacterResponseDto> getCharacters();
+    List<ExternalCharacterDto> getCharacters();
 }

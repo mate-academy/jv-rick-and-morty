@@ -6,9 +6,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.List;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.external.ResponseDataDto;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +21,7 @@ public class CharacterClientImpl implements CharacterClient {
     }
 
     @Override
-    public List<CharacterResponseDto> getCharacters() {
+    public List<ExternalCharacterDto> getCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -30,9 +30,9 @@ public class CharacterClientImpl implements CharacterClient {
         try {
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            ResponseDataDto responseDataDto =
-                    objectMapper.readValue(response.body(), ResponseDataDto.class);
-            return responseDataDto.getResults();
+
+            return Collections.singletonList(objectMapper.readValue(response.body(),
+                            ExternalCharacterDto.class));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

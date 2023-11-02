@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CharacterController {
     private final CharacterService characterService;
 
-    @GetMapping
+    @GetMapping(value = "/random")
     @Operation(summary = "Get random character",
             description = "Get a random characters from Rick and Morty world")
     public CharacterDto getRandomChar() {
