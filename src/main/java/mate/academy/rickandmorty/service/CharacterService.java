@@ -1,13 +1,13 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
+import mate.academy.rickandmorty.dto.internal.InternalCharacterDto;
 
 public interface CharacterService {
-    CharacterDto getRandomCharacter();
+    InternalCharacterDto getRandomCharacter();
 
-    void saveAll(List<CharacterResponseDto> listDto);
+    void saveAll(List<ExternalCharacterDto> listDto);
 
-    List<CharacterDto> findByName(String name);
+    List<InternalCharacterDto> findByName(String name);
 }

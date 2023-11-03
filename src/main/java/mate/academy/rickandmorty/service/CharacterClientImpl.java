@@ -8,8 +8,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.external.ResponseDataDto;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDataDto;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class CharacterClientImpl implements CharacterClient {
     private static final String CHARACTER_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
 
-    public List<CharacterResponseDto> getCharacters() {
+    public List<ExternalCharacterDto> getCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -27,9 +27,9 @@ public class CharacterClientImpl implements CharacterClient {
         try {
             HttpResponse<String> response = httpClient.send(
                     request, HttpResponse.BodyHandlers.ofString());
-            ResponseDataDto responseDataDto = objectMapper.readValue(
-                    response.body(), ResponseDataDto.class);
-            return responseDataDto.getResults();
+            ExternalCharacterDataDto externalCharacterDataDto = objectMapper.readValue(
+                    response.body(), ExternalCharacterDataDto.class);
+            return externalCharacterDataDto.getResults();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
