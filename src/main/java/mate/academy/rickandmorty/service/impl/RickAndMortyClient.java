@@ -10,10 +10,11 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
 import mate.academy.rickandmorty.dto.external.RickAndMortyResponseDto;
+import mate.academy.rickandmorty.exeption.UnableGettingAllCharactersException;
+import mate.academy.rickandmorty.exeption.UnableGettingCountOfCharactersException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,8 +22,6 @@ import org.springframework.stereotype.Component;
 public class RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/%s";
     private static final Long FIRST_CHARACTER = 1L;
-    @Getter
-    private static Long LAST_CHARACTER;
     private final ObjectMapper objectMapper;
 
     private Long getCountOfCharacter() {
@@ -38,13 +37,15 @@ public class RickAndMortyClient {
             return objectMapper.readValue(response.body(), RickAndMortyResponseDto.class)
                     .getInfo().getCount();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new UnableGettingCountOfCharactersException("Can`t get "
+                    + "count of characters by url " + formatted, e);
         }
     }
 
     public List<CharacterDto> getCharacters() {
-        LAST_CHARACTER = getCountOfCharacter();
-        String allIds = LongStream.range(FIRST_CHARACTER, LAST_CHARACTER + 1)
+        long lastCharacter = getCountOfCharacter();
+        String allIds = LongStream
+                .range(FIRST_CHARACTER, lastCharacter + 1)
                 .mapToObj(String::valueOf)
                 .collect(Collectors.joining(","));
         String formatted = String.format(BASE_URL,allIds);
@@ -59,7 +60,8 @@ public class RickAndMortyClient {
             return objectMapper.readValue(response.body(),
                     new TypeReference<>() {});
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new UnableGettingAllCharactersException("Can`t get all character by url "
+                    + formatted, e);
         }
     }
 }
