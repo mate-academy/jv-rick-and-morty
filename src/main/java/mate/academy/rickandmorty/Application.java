@@ -1,7 +1,5 @@
 package mate.academy.rickandmorty;
 
-import mate.academy.rickandmorty.service.CharacterClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

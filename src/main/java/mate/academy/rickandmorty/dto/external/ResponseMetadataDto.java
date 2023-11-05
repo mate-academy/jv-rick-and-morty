@@ -1,8 +1,7 @@
 package mate.academy.rickandmorty.dto.external;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+import lombok.Data;
 
 @Data
 public class ResponseMetadataDto {
