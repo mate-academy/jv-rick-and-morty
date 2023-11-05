@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RickAndMortyClient {
     private static final String CHARACTER_URL = "https://rickandmortyapi.com/api/character";
+    private static final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
 
     public List<CharacterResponseDto> getCharacters() {
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(CHARACTER_URL))
@@ -31,7 +31,7 @@ public class RickAndMortyClient {
                     .readValue(response.body(), ListCharacterDto.class);
             return listCharacterDto.getResults();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't get list of characters by request", e);
         }
     }
 }

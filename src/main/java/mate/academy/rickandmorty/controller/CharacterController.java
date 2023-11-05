@@ -18,7 +18,7 @@ public class CharacterController {
 
     @Operation(summary = "Get random character",
             description = "Get a random characters from Rick and Morty world")
-    @GetMapping("/random")
+    @GetMapping
     public CharacterDto getRandomCharacter() {
         return characterService.getRandomCharacter();
     }
@@ -30,3 +30,4 @@ public class CharacterController {
         return characterService.findByName(name);
     }
 }
+
