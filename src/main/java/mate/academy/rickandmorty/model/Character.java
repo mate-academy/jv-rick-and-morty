@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "rick_and_morty_characters")
+@Table(name = "characters")
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

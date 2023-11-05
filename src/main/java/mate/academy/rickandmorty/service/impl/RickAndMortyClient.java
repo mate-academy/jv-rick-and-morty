@@ -2,6 +2,7 @@ package mate.academy.rickandmorty.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -15,6 +16,7 @@ import mate.academy.rickandmorty.dto.external.CharacterDto;
 import mate.academy.rickandmorty.dto.external.RickAndMortyResponseDto;
 import mate.academy.rickandmorty.exeption.UnableGettingAllCharactersException;
 import mate.academy.rickandmorty.exeption.UnableGettingCountOfCharactersException;
+import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,6 +25,12 @@ public class RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/%s";
     private static final Long FIRST_CHARACTER = 1L;
     private final ObjectMapper objectMapper;
+    private final CharacterService characterService;
+
+    @PostConstruct
+    public void fetchData() {
+        characterService.saveAllCharacters(getCharacters());
+    }
 
     private Long getCountOfCharacter() {
         String formatted = String.format(BASE_URL, "");
@@ -43,7 +51,7 @@ public class RickAndMortyClient {
     }
 
     public List<CharacterDto> getCharacters() {
-        long lastCharacter = getCountOfCharacter();
+        Long lastCharacter = getCountOfCharacter();
         String allIds = LongStream
                 .range(FIRST_CHARACTER, lastCharacter + 1)
                 .mapToObj(String::valueOf)

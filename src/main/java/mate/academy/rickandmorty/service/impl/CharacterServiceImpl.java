@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
 import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private static Long MAX_ID_OF_CHARACTER = 826L;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
@@ -28,10 +26,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterResponseDto getRandomCharacter() {
-        Random random = new Random();
-        return characterMapper.toResponseDto(characterRepository
-                .findById(random.nextLong(MAX_ID_OF_CHARACTER))
-                .orElseThrow(() -> new RuntimeException("Can`t found random character")));
+        return characterMapper.toResponseDto(characterRepository.findRandomCharacter());
     }
 
     @Override
