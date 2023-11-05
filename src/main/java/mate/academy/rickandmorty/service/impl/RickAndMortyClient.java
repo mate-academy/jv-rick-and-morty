@@ -56,7 +56,7 @@ public class RickAndMortyClient {
                 .range(FIRST_CHARACTER, lastCharacter + 1)
                 .mapToObj(String::valueOf)
                 .collect(Collectors.joining(","));
-        String formatted = String.format(BASE_URL,allIds);
+        String formatted = String.format(BASE_URL, allIds);
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
