@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CharacterController {
     private final CharacterServiceImpl characterService;
 
-    @GetMapping("/random")
+    @GetMapping("/character/random")
     @Operation(summary = "Get random character", description = "Get random character")
     public String getRandomCharacter() {
         Character randomCharacter = characterService.getRandomCharacter();
