@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.service;
+package mate.academy.rickandmorty.init;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -11,21 +11,23 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.exception.DataProcessException;
-import mate.academy.rickandmorty.mapper.Mapper;
+import mate.academy.rickandmorty.mapper.DtoMapper;
 import mate.academy.rickandmorty.model.Character;
-import mate.academy.rickandmorty.repository.Repository;
+import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DataDownLoadService {
+public class InitDataBase implements CommandLineRunner {
     private static final String URL = "https://rickandmortyapi.com/api/character/";
     private static final int NUMBER_OF_CHARACTERS = 20;
-    private final Mapper mapper;
+    private final DtoMapper mapper;
     private final ObjectMapper jasonMapper;
-    private final Repository repository;
+    private final CharacterRepository characterRepository;
 
-    public void getAllCharactersFromApi() {
+    @Override
+    public void run(String... args) {
         HttpClient client = HttpClient.newHttpClient();
         List<Character> characters = new ArrayList<>();
         for (int i = 1; i <= NUMBER_OF_CHARACTERS; i++) {
@@ -46,7 +48,7 @@ public class DataDownLoadService {
             }
         }
         try {
-            repository.saveAllAndFlush(characters);
+            characterRepository.saveAllAndFlush(characters);
         } catch (Exception e) {
             throw new DataProcessException("Cannot save characters to DB", e);
         }
