@@ -12,16 +12,17 @@ import mate.academy.rickandmorty.model.external.CharacterResultDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataLoadOnStartup {
+public class RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
+    private final HttpClient httpClient;
 
-    public DataLoadOnStartup(ObjectMapper objectMapper) {
+    public RickAndMortyClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+        this.httpClient = HttpClient.newHttpClient();
     }
 
-    public List<CharacterResultDto> getDataByApi() {
-        HttpClient httpClient = HttpClient.newHttpClient();
+    public List<CharacterResultDto> getCharacters() {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(BASE_URL))

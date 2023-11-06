@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.model.internal.Character;
-import mate.academy.rickandmorty.service.CharacterService;
+import mate.academy.rickandmorty.service.CharacterServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class CharacterController {
-    private final CharacterService characterService;
+    private final CharacterServiceImpl characterService;
 
     @GetMapping("/random")
     @Operation(summary = "Get random character", description = "Get random character")
@@ -25,11 +25,11 @@ public class CharacterController {
         return randomCharacter.toString();
     }
 
-    @GetMapping("/naming")
+    @GetMapping("/search")
     @Operation(summary = "Get all character which contain arguments",
             description = "Get all character which contain arguments")
-    public String getCharactersContaining(@RequestParam String args) {
-        List<Character> characters = characterService.searchCharactersByName(args);
+    public String searchCharactersByName(@RequestParam String nameContains) {
+        List<Character> characters = characterService.searchCharactersByName(nameContains);
         return characters.toString();
     }
 }
