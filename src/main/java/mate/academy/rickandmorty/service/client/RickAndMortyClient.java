@@ -8,22 +8,20 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.external.CharacterResultsResponseDto;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=%s";
     private static final int PAGES = 42;
     private final ObjectMapper objectMapper;
-
-    public RickAndMortyClient(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    private final HttpClient httpClient;
 
     public List<CharacterResultsResponseDto> getAllCharacters() {
-        HttpClient httpClient = HttpClient.newHttpClient();
         List<CharacterResultsResponseDto> characterDtos = new ArrayList<>();
         for (int i = 1; i <= PAGES; i++) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
