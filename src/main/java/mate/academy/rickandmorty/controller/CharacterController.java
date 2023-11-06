@@ -2,9 +2,8 @@ package mate.academy.rickandmorty.controller;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.model.Character;
-import mate.academy.rickandmorty.repository.CharacterRepository;
-import mate.academy.rickandmorty.service.CharacterClientImpl;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,7 @@ public class CharacterController {
     }
 
     @GetMapping("/search")
-    public List<Character> getCharactersByName(String name) {
+    public List<CharacterDto> getCharactersByName(String name) {
         return characterService.getCharactersByName(name);
     }
 

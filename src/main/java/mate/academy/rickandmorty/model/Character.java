@@ -1,14 +1,14 @@
 package mate.academy.rickandmorty.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "characters")
@@ -16,11 +16,21 @@ import lombok.NoArgsConstructor;
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
-    @JsonProperty("id")
+    @Column(name = "id")
+    private Long internalId;
+    @JsonSetter("id")
     private Long externalId;
     private String name;
     private String status;
     private String gender;
+
+    @JsonGetter("id")
+    public Long getInternalId() {
+        return internalId;
+    }
+
+    @JsonGetter("externalId")
+    public Long getExternalId() {
+        return externalId;
+    }
 }

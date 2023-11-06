@@ -20,7 +20,8 @@ public class CharacterClientImpl implements CharacterClient {
     private ObjectMapper objectMapper;
 
     public List<Character> getCharacters() {
-        CharacterResponseDto characterResponseDto = getCharactersFromSinglePage(URI.create(INITIAL_URL));
+        URI uri = URI.create(INITIAL_URL);
+        CharacterResponseDto characterResponseDto = getCharactersFromSinglePage(uri);
         if (characterResponseDto == null || characterResponseDto.getResults().isEmpty()) {
             throw new RuntimeException("Occurred an error while pulling characters.");
         }
