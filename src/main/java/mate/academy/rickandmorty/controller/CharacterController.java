@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Rick and Morty API")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/characters")
 @AllArgsConstructor
 public class CharacterController {
     private CharacterService characterService;

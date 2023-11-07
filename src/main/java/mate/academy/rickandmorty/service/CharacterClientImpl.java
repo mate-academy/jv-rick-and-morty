@@ -8,9 +8,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.model.Character;
+import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +21,13 @@ import org.springframework.stereotype.Component;
 public class CharacterClientImpl implements CharacterClient {
     private static final String INITIAL_URL = "https://rickandmortyapi.com/api/character";
     private ObjectMapper objectMapper;
+    private CharacterRepository repository;
+
+    @PostConstruct
+    private void init() {
+        List<Character> characters = getCharacters();
+        repository.saveAll(characters);
+    }
 
     public List<Character> getCharacters() {
         URI uri = URI.create(INITIAL_URL);

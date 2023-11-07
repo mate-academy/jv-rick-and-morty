@@ -13,15 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private CharacterClient client;
     private CharacterRepository repository;
     private CharacterMapper mapper;
-
-    @PostConstruct
-    private void init() {
-        List<Character> characters = client.getCharacters();
-        repository.saveAll(characters);
-    }
 
     @Override
     public List<Character> getAll() {
