@@ -1,6 +1,5 @@
 package mate.academy.rickandmorty.service;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,9 @@ public class CharacterServiceImpl implements CharacterService {
     private CharacterMapper mapper;
 
     @Override
-    public List<Character> getAll() {
-        return repository.findAll();
+    public List<CharacterDto> getAll() {
+        List<Character> characters = repository.findAll();
+        return mapper.map(characters);
     }
 
     @Override
@@ -29,13 +29,12 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character saveRandomCharacter() {
+    public CharacterDto getRandomCharacter() {
         long bound = repository.count();
         long randomLong = new Random().nextLong(bound);
         Character character = repository.findById(randomLong)
                 .orElseThrow(() -> new RuntimeException(
                         "Occurred an error while pulling random character"));
-        character.setInternalId(null);
-        return repository.save(character);
+        return mapper.characterToCharacterDto(character);
     }
 }

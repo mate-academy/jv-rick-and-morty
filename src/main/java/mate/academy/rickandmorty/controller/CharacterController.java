@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
-import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ public class CharacterController {
 
     @Operation(summary = "Get all available characters.")
     @GetMapping
-    public List<Character> getCharacters() {
+    public List<CharacterDto> getCharacters() {
         return characterService.getAll();
     }
 
@@ -32,8 +31,8 @@ public class CharacterController {
 
     @Operation(summary = "Generate and save random existing character.")
     @GetMapping("/random")
-    public Character saveRandomCharacter() {
-        Character character = characterService.saveRandomCharacter();
+    public CharacterDto getRandomCharacter() {
+        CharacterDto character = characterService.getRandomCharacter();
         return character;
 
     }
