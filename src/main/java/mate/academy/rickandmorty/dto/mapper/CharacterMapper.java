@@ -12,8 +12,6 @@ public interface CharacterMapper {
     @Mapping(target = "id", source = "externalId")
     CharacterDto characterToCharacterDto(Character character);
 
-    Character characterDtoToCharacter(CharacterDto characterDto);
-
     List<CharacterDto> map(List<Character> characters);
 
 }
