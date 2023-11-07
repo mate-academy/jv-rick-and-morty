@@ -23,6 +23,8 @@ public class CharacterClient {
 
     private final CharacterMapper characterMapper;
 
+    private final HttpClient client;
+
     public List<Character> getAllCharacters() {
         List<Character> characters = new ArrayList<>();
 
@@ -38,7 +40,6 @@ public class CharacterClient {
     }
 
     public CharacterResponseDataDto getDataByPage(int page) {
-        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(BASE_URL.formatted(page)))

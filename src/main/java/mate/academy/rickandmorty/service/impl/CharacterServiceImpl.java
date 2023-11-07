@@ -17,10 +17,11 @@ public class CharacterServiceImpl implements CharacterService {
 
     private final CharacterMapper characterMapper;
 
+    private final Random random;
+
     @Override
     public CharacterDto getRandomCharacter() {
-        Random random = new Random();
-        return characterMapper.toDto(characterRepository.findById(
+        return characterMapper.toDto(characterRepository.findByExternalId(
                 random.nextLong(characterRepository.count()) + 1L).get());
     }
 
