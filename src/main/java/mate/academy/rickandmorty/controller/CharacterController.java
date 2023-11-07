@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Api for searching characters of Rick and Morty series",
         description = "Helps to find characters by name or provides a random character")
-public class CharactersController {
+public class CharacterController {
     private final ClientService clientService;
 
     @GetMapping(value = "/random")

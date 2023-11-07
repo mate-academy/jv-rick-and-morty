@@ -19,16 +19,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class InitDataBase implements CommandLineRunner {
+public class DataBaseInitializer implements CommandLineRunner {
     private static final String URL = "https://rickandmortyapi.com/api/character/";
     private static final int NUMBER_OF_CHARACTERS = 20;
     private final DtoMapper mapper;
     private final ObjectMapper jasonMapper;
     private final CharacterRepository characterRepository;
+    private final HttpClient client;
 
     @Override
     public void run(String... args) {
-        HttpClient client = HttpClient.newHttpClient();
         List<Character> characters = new ArrayList<>();
         for (int i = 1; i <= NUMBER_OF_CHARACTERS; i++) {
             HttpRequest request = HttpRequest.newBuilder()
