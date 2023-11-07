@@ -8,6 +8,7 @@ import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.ClientService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,7 +28,7 @@ public class CharacterController {
     @GetMapping
     @Operation(summary = "Get a character by name",
             description = "Provides a list of characters by providing string")
-    public List<Character> getCharactersBySequence(String name) {
+    public List<Character> getCharactersBySequence(@RequestParam String name) {
         return clientService.getCharactersWithNameContaining(name);
     }
 }

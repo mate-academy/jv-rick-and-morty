@@ -11,12 +11,16 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ClientService {
-    private static final long NUMBER_OF_CHARACTERS = 20;
-    private CharacterRepository characterRepository;
+    private long numberOfCharacters = -1;
+    private final CharacterRepository characterRepository;
     private final Random random;
 
     public Character getRandomCharacter() {
-        Long randomId = random.nextLong(NUMBER_OF_CHARACTERS) + 1;
+        if (numberOfCharacters == -1) {
+            numberOfCharacters = initNumberOfCharacters();
+        }
+
+        Long randomId = random.nextLong(numberOfCharacters) + 1;
         return characterRepository.findById(randomId)
                 .orElseThrow(() ->
                         new DataProcessException("Cannot find a character by id " + randomId));
@@ -24,5 +28,14 @@ public class ClientService {
 
     public List<Character> getCharactersWithNameContaining(String sequence) {
         return characterRepository.findAllByNameContaining(sequence);
+    }
+
+    private long initNumberOfCharacters() {
+        try {
+            return characterRepository.findAll().size();
+        } catch (Exception e) {
+            throw new DataProcessException("Cannot read all characters to "
+                    + "initialize a variable", e);
+        }
     }
 }

@@ -9,7 +9,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.ResponseDto;
 import mate.academy.rickandmorty.exception.DataProcessException;
 import mate.academy.rickandmorty.mapper.DtoMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -20,8 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DataBaseInitializer implements CommandLineRunner {
-    private static final String URL = "https://rickandmortyapi.com/api/character/";
-    private static final int NUMBER_OF_CHARACTERS = 20;
+    private static final String URL = "https://rickandmortyapi.com/api/character";
     private final DtoMapper mapper;
     private final ObjectMapper jasonMapper;
     private final CharacterRepository characterRepository;
@@ -30,22 +29,22 @@ public class DataBaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<Character> characters = new ArrayList<>();
-        for (int i = 1; i <= NUMBER_OF_CHARACTERS; i++) {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .GET()
-                    .uri(URI.create(URL + i))
-                    .build();
-            try {
-                HttpResponse<String> response = client.send(request,
-                        HttpResponse.BodyHandlers.ofString());
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(URL))
+                .build();
+        try {
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
 
-                CharacterResponseDto responseDto = jasonMapper.readValue(response.body(),
-                        CharacterResponseDto.class);
+            ResponseDto responseDto = jasonMapper.readValue(response.body(),
+                    ResponseDto.class);
 
-                characters.add(mapper.responseDtoToCharacter(responseDto));
-            } catch (IOException | InterruptedException e) {
-                throw new DataProcessException("Cannot get data from API", e);
-            }
+            characters = responseDto.getResults().stream()
+                    .map(mapper::characterDtoToCharacter)
+                    .toList();
+        } catch (IOException | InterruptedException e) {
+            throw new DataProcessException("Cannot get data from API", e);
         }
         try {
             characterRepository.saveAllAndFlush(characters);
