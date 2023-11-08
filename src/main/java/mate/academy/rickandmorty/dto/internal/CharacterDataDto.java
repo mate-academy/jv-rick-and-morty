@@ -10,6 +10,4 @@ public class CharacterDataDto {
     private String name;
     private String status;
     private String gender;
-
-
 }
