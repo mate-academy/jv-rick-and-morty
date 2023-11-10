@@ -15,10 +15,10 @@ import java.util.Random;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
+    private final Random random = new Random();
 
     @Override
     public CharacterDto getRandomCharacter() {
-        Random random = new Random();
         Long index = random.nextLong(characterRepository.count());
         Character character = characterRepository.findById(index).orElseThrow(()
                 -> new EntityNotFoundException("Can't get a random character"));

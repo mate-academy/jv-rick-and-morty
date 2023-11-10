@@ -6,8 +6,9 @@ import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
-import java.io.IOException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -45,16 +46,13 @@ public class CharacterClientImpl implements CharacterClient {
                 CharacterResponseDataDto dtos
                         = objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
                 for (CharacterResponseDto dto : dtos.getResults()) {
-                    Character character = new Character();
-                    character.setExternalId(dto.id());
-                    character.setName(dto.name());
-                    character.setStatus(dto.status());
-                    character.setGender(dto.gender());
+                    CharacterMapper characterMapper = Mappers.getMapper(CharacterMapper.class);
+                    Character character = characterMapper.toCharacter(dto);
                     characterRepository.save(character);
                 }
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not get characters ", e);
         }
     }
 }

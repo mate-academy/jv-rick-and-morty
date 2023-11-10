@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rick-and-morty")
+@RequestMapping("/characters")
 @RequiredArgsConstructor
-public class RickAndMortyController {
+public class CharacterController {
     private final CharacterService characterService;
 
     @GetMapping("/random-character")

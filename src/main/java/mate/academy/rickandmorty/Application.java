@@ -16,7 +16,7 @@ public class Application {
     }
 
     @PostConstruct
-    void getAllDataBase() {
+    void dataBaseLaunch() {
         characterClient.getAllCharacters();
     }
 }
