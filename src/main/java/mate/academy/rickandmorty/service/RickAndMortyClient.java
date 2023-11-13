@@ -20,11 +20,11 @@ public class RickAndMortyClient {
 
     public List<CharacterRateDto> getAllCharacter() {
         HttpClient httpClient = HttpClient.newHttpClient();
-        int i = 1;
-        List<CharacterRateDto> allCharacter = new ArrayList<>();
-        while (i > 0) {
-            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(BASE_URL + i))
-                    .build();
+        int page = 1;
+        List<CharacterRateDto> fetchedCharacters = new ArrayList<>();
+        while (page > 0) {
+            HttpRequest httpRequest = HttpRequest.newBuilder().GET()
+                    .uri(URI.create(BASE_URL + page)).build();
             try {
                 HttpResponse<String> response = httpClient.send(httpRequest,
                         HttpResponse.BodyHandlers.ofString());
@@ -33,12 +33,12 @@ public class RickAndMortyClient {
                 if (dataDto.name() == null) {
                     break;
                 }
-                allCharacter.add(dataDto);
+                fetchedCharacters.add(dataDto);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            i++;
+            page++;
         }
-        return allCharacter;
+        return fetchedCharacters;
     }
 }

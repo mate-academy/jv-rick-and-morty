@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -40,5 +41,10 @@ public class RickAndMortyServiceImpl implements RickAndMortyService {
         Character randomCharacter = rickAndMortyRepository.findById(random.nextLong(count))
                 .orElseThrow(() -> new RuntimeException("Can't find random character"));
         return characterMapper.toDto(randomCharacter);
+    }
+
+    @PostConstruct
+    public void unit() {
+        saveAll(client.getAllCharacter());
     }
 }
