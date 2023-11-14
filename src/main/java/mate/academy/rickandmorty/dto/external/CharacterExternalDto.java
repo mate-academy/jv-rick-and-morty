@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterExternalDto {
-    private String id;
+    private Long id;
     private String name;
     private String status;
     private String gender;

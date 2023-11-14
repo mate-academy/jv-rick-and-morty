@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/character/api")
+@RequestMapping("/api/character")
 @Tag(name = "Character API", description = "API endpoints for managing characters.")
 public class CharacterController {
     private final CharacterService characterService;

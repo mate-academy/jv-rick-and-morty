@@ -5,7 +5,6 @@ import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.config.CharacterMapper;
 import mate.academy.rickandmorty.dto.CharacterSearchParam;
-import mate.academy.rickandmorty.dto.external.CharacterExternalDto;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.repository.SpecificationBuilder;
@@ -18,14 +17,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final Random random;
     private final CharacterMapper characterMapper;
-
-    @Override
-    public void saveAllCharacter(List<CharacterExternalDto> listDto) {
-        characterRepository.deleteAll();
-        characterRepository.saveAll(listDto.stream()
-                                        .map(characterMapper::mapToCharacter)
-                                        .toList());
-    }
 
     @Override
     public Character getRandomCharacter() {
