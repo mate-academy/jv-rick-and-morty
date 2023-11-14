@@ -4,9 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CartoonCharacterDto;
 import mate.academy.rickandmorty.dto.CreateCartoonCharacterRequestDto;
-import mate.academy.rickandmorty.exceptions.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CartoonCharacterMapper;
-import mate.academy.rickandmorty.model.CartoonCharacter;
 import mate.academy.rickandmorty.repository.CartoonCharacterRepository;
 import mate.academy.rickandmorty.service.CartoonCharacterService;
 import org.springframework.data.domain.Pageable;
@@ -32,11 +30,7 @@ public class CartoonCharacterServiceImpl implements CartoonCharacterService {
 
     @Override
     public List<CartoonCharacterDto> findByName(String name, Pageable pageable) {
-        List<CartoonCharacter> characters = repository.findAllByNameContains(pageable, name);
-        if (characters.isEmpty()) {
-            throw new EntityNotFoundException("Can't find characters with name: " + name);
-        }
-        return characters.stream()
+        return repository.findAllByNameContains(pageable, name).stream()
                 .map(mapper::toDto)
                 .toList();
     }

@@ -22,14 +22,14 @@ public class CartoonCharacterController {
     @Operation(summary = "Get random character",
             description = "Get random character from DB")
     @GetMapping(value = "/random")
-    public CartoonCharacterDto getByName() {
+    public CartoonCharacterDto getRandom() {
         return cartoonCharacterService.getRandom();
     }
 
     @Operation(summary = "Get characters by name",
             description = "Get characters list by name or part thereof")
     @GetMapping
-    public List<CartoonCharacterDto> getByName(@RequestParam String name, Pageable pageable) {
+    public List<CartoonCharacterDto> findByName(@RequestParam String name, Pageable pageable) {
         return cartoonCharacterService.findByName(name, pageable);
     }
 }
