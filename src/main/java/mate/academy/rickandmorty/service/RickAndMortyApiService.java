@@ -35,7 +35,7 @@ public class RickAndMortyApiService {
                     CharacterResponseDataDto.class);
             return responseDto.result();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Occurred an Error during fetching data from API", e);
         }
     }
 }
