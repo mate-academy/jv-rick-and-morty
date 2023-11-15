@@ -21,18 +21,17 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final RickAndMortyClient rickAndMortyClient;
-    @Value("${rick-and-morty.get.characters.url}")
+    @Value("${rick-and-morty.characters.url}")
     private String getCharactersUrl;
 
     @PostConstruct
     public void init() {
-        String url = getCharactersUrl;
         CharacterDataResponseDto data;
         do {
-            data = rickAndMortyClient.getAllCharacter(url);
+            data = rickAndMortyClient.getAllCharacter(getCharactersUrl);
             saveAll(data.results());
-            url = data.info().next();
-        } while (url != null);
+            getCharactersUrl = data.info().next();
+        } while (getCharactersUrl != null);
     }
 
     @Override
