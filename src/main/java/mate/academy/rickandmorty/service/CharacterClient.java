@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterClient {
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=";
     private final ObjectMapper objectMapper;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -42,14 +42,13 @@ public class CharacterClient {
                 listDto.addAll(responseDto.getResults());
                 url = responseDto.getInfo().next();
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error fetching characters: " + e.getMessage(), e);
             }
         }
         saveAllCharacter(listDto);
     }
 
     private void saveAllCharacter(List<CharacterExternalDto> listDto) {
-        characterRepository.deleteAll();
         characterRepository.saveAll(listDto.stream()
                                         .map(characterMapper::mapToCharacter)
                                         .toList());

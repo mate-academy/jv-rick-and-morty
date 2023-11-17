@@ -15,14 +15,15 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final SpecificationBuilder<Character> specificationBuilder;
     private final CharacterRepository characterRepository;
-    private final Random random;
+    private final Random random = new Random();
     private final CharacterMapper characterMapper;
 
     @Override
     public Character getRandomCharacter() {
         long size = characterRepository.count();
         Long id = random.nextLong(size);
-        return characterRepository.findById(id).get();
+        return characterRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Character not found with id: " + id));
     }
 
     @Override
