@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
@@ -11,8 +12,8 @@ public class Character {
     @Id
     @GeneratedValue
     private Long id;
+    private String externalId;
     @NonNull
-    @Column(unique = true)
     private String name;
     @NonNull
     private String status;

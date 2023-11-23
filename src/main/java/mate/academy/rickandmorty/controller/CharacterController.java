@@ -3,8 +3,6 @@ package mate.academy.rickandmorty.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterDto;
-import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,7 @@ public class CharacterController {
     @Operation(summary = "Get one random character",
             description = "Endpoint for getting random character of Rick and Morty")
     @GetMapping("/random")
-    public CharacterDto getRandomCharacterDto() {
+    public Character getRandomCharacterDto() {
         return characterService.getRandomCharacter();
     }
 
@@ -32,7 +30,7 @@ public class CharacterController {
             description = "Endpoint for getting "
                     + "all characters of Rick and Morty by input param")
     @GetMapping("/by-input")
-    public List<CharacterDto> getAllCharactersByParam(@RequestParam String name) {
-        return characterService.getDtoByParam(name);
+    public List<Character> getAllCharactersByParam(@RequestParam String name) {
+        return characterService.getCharactersByName(name);
     }
 }
