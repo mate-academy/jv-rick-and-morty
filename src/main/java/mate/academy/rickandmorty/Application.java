@@ -1,8 +1,12 @@
 package mate.academy.rickandmorty;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@EnableAutoConfiguration
+@ComponentScan(basePackages = "mate.academy.rickandmorty")
 @SpringBootApplication
 public class Application {
 
