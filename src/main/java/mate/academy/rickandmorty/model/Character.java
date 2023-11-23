@@ -1,7 +1,9 @@
 package mate.academy.rickandmorty.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -12,6 +14,7 @@ public class Character {
     @Id
     @GeneratedValue
     private Long id;
+    @NonNull
     private String externalId;
     @NonNull
     private String name;

@@ -1,5 +1,7 @@
 package mate.academy.rickandmorty.service.impl;
 
+import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.client.CharacterClient;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
@@ -8,9 +10,6 @@ import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<Character> getCharactersByName(String name) {
-        return characterRepository.getCharactersByName(name);
+        return characterRepository.findAllByNameContainingIgnoreCase(name);
     }
 
     @Override
