@@ -26,7 +26,7 @@ public class CharacterController {
     @GetMapping("/random")
     @Operation(summary = "Get random character",
             description = "Shows information about random character")
-    public CharacterResponseDto getCharacters() {
+    public CharacterResponseDto getRandomCharacter() {
         return rickAndMortyWiki.getRandomCharacter();
     }
 
