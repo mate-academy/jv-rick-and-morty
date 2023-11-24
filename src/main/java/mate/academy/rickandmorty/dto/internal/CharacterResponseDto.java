@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class MovieCharacterResponseDto {
+public class CharacterResponseDto {
     @Schema(description = "Character Id", example = "159")
     private Long id;
     @Schema(description = "Character external Id", example = "159")

@@ -1,15 +1,15 @@
 package mate.academy.rickandmorty.mapper;
 
-import mate.academy.rickandmorty.dto.external.CharacterResultDataDto;
-import mate.academy.rickandmorty.dto.internal.MovieCharacterResponseDto;
-import mate.academy.rickandmorty.model.MovieCharacter;
+import mate.academy.rickandmorty.dto.external.ApiCharacterResultDataDto;
+import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
+import mate.academy.rickandmorty.model.Character;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CharacterMapper {
     @Mapping(target = "externalId", source = "id")
-    MovieCharacter toModel(CharacterResultDataDto resultDataDto);
+    Character toModel(ApiCharacterResultDataDto resultDataDto);
 
-    MovieCharacterResponseDto toDto(MovieCharacter entity);
+    CharacterResponseDto toDto(Character entity);
 }

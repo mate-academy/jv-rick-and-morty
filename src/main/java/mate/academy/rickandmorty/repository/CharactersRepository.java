@@ -1,9 +1,9 @@
 package mate.academy.rickandmorty.repository;
 
 import java.util.List;
-import mate.academy.rickandmorty.model.MovieCharacter;
+import mate.academy.rickandmorty.model.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CharactersRepository extends JpaRepository<MovieCharacter, Long> {
-    List<MovieCharacter> findAllByName(String name);
+public interface CharactersRepository extends JpaRepository<Character, Long> {
+    List<Character> findAllByNameContaining(String name);
 }

@@ -3,7 +3,7 @@ package mate.academy.rickandmorty.dto.external;
 import lombok.Data;
 
 @Data
-public class CharacterResultDataDto {
+public class ApiCharacterResultDataDto {
     private Long id;
     private String status;
     private String species;
