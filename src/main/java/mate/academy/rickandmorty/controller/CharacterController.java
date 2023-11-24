@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CharacterController {
     private final RickAndMortyWiki rickAndMortyWiki;
 
-    @GetMapping("/random")
+    @GetMapping("/random-character")
     @Operation(summary = "Get random character",
             description = "Shows information about random character")
     public CharacterResponseDto getRandomCharacter() {
         return rickAndMortyWiki.getRandomCharacter();
     }
 
-    @GetMapping("/by-name")
+    @GetMapping
     @Operation(summary = "Find character by name",
             description = "Shows information about all characters with corresponding name")
     public List<CharacterResponseDto> findAllByName(@RequestParam String name, Pageable pageable) {
