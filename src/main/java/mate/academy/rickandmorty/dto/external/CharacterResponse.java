@@ -4,6 +4,6 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CharacterRequest {
-    private List<CharacterRequestDataDto> results;
+public class CharacterResponse {
+    private List<CharacterResponseDataDto> results;
 }

@@ -5,7 +5,6 @@ import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.client.CharacterClient;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
-import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterClient characterClient;
-    private final CharacterMapper characterMapper;
 
     @Override
     public List<Character> getCharactersByName(String name) {
@@ -25,7 +23,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Character getRandomCharacter() {
-        Long id = Long.valueOf(new Random().nextInt(826));
+        Long id = Long.valueOf(new Random()
+                .nextInt(characterClient.getInfoAboutApi().getInfo().getCount()));
         return characterRepository
                 .findById(id).orElseThrow(() -> new EntityNotFoundException(
                         "Can't get character by id " + id));
