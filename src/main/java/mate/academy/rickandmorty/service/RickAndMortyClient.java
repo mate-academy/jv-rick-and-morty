@@ -31,7 +31,7 @@ public class RickAndMortyClient {
         }
     }
 
-    public List<CharacterEntity> parseJsonString(String jsonString) throws IOException {
+    public List<CharacterEntity> parseCharactersJson(String jsonString) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         CharacterResponse characterResponse = objectMapper
                 .readValue(jsonString, CharacterResponse.class);

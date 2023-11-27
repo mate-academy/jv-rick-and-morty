@@ -26,4 +26,9 @@ public class CharacterServiceImpl implements CharacterService {
                 .toList();
     }
 
+    @Override
+    public CharacterEntity findByExternalId(String externalId) {
+        return characterRepository.findByExternalId(externalId);
+    }
+
 }

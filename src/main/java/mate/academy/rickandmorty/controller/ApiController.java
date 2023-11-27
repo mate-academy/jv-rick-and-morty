@@ -17,4 +17,9 @@ public class ApiController {
     public List<CharacterEntity> getCharactersByName(@RequestParam String name) {
         return characterService.findByNameContaining(name);
     }
+
+    @GetMapping("/external-id")
+    public CharacterEntity getCharactersByExternalId(@RequestParam String externalId) {
+        return characterService.findByExternalId(externalId);
+    }
 }

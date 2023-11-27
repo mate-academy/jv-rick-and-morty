@@ -7,5 +7,7 @@ public interface CharacterService {
     List<CharacterEntity> saveAll(List<CharacterEntity> characters);
 
     List<CharacterEntity> findByNameContaining(String name);
+
+    CharacterEntity findByExternalId(String externalId);
 }
 
