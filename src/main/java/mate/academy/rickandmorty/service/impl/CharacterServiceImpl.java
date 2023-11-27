@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterClient characterClient;
+    private final Random random = new Random();
+    private Integer count;
 
     @Override
     public List<Character> getCharactersByName(String name) {
@@ -23,10 +26,14 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Character getRandomCharacter() {
-        Long id = Long.valueOf(new Random()
-                .nextInt(characterClient.getInfoAboutApi().getInfo().getCount()));
+        Long id = Long.valueOf(random.nextInt(count));
         return characterRepository
                 .findById(id).orElseThrow(() -> new EntityNotFoundException(
                         "Can't get character by id " + id));
+    }
+
+    @PostConstruct
+    public void getCount() {
+        count = characterClient.getInfoAboutApi().getInfo().getCount();
     }
 }

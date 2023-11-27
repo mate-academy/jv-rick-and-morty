@@ -35,7 +35,7 @@ public class CharacterClient {
                     = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return objectMapper.readValue(response.body(), CharacterApiInfo.class);
         } catch (IOException | RuntimeException | InterruptedException e) {
-            throw new RuntimeException("Can't get info about external api");
+            throw new EntityNotFoundException("Can't get info about external api");
         }
     }
 
