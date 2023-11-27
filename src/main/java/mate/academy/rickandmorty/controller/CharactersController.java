@@ -28,7 +28,6 @@ public class CharactersController {
             description = "Randomly generates a wiki about one character")
     @GetMapping("/random")
     public CharacterDto getRandomCharacter() {
-
         return internalCharacterService.getRandomCharacter();
     }
 }

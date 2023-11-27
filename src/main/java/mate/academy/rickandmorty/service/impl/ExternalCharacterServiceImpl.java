@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ExternalCharacterServiceImpl implements ExternalCharacterService {
     private static final String RICK_AND_MORTY_URL = "https://rickandmortyapi.com/api/character";
-    private final List<ApiCharacterDto> allCharactersFromApi = new ArrayList<>();
+    private static final String NULL = "null";
+    private static final String FIELD_RESULT = "results";
+    private static final String FIELD_INFO = "info";
+    private static final int HTTP_OK = 200;
+    private final List<ApiCharacterDto> allCharactersFromApi;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
@@ -35,7 +38,7 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
     @PostConstruct
     public void fetchDataFromApi() {
         String apiUrl = RICK_AND_MORTY_URL;
-        while (!apiUrl.equals("null")) {
+        while (!apiUrl.equals(NULL)) {
             List<ApiCharacterDto> apiCharactersDto = fetchApiData(apiUrl);
             allCharactersFromApi.addAll(apiCharactersDto);
             apiUrl = getNextPageUrl(apiUrl);
@@ -47,8 +50,8 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
         try {
             HttpResponse<String> response = responseApi(apiUrl);
             JsonNode rootNode = objectMapper.readTree(response.body());
-            JsonNode resultsNode = rootNode.get("results");
-            if (!rootNode.has("results") && !rootNode.has("info")) {
+            JsonNode resultsNode = rootNode.get(FIELD_RESULT);
+            if (!rootNode.has(FIELD_RESULT) && !rootNode.has(FIELD_INFO)) {
                 throw new RuntimeException("JSON response does not contain"
                         + " 'results' or 'info' data.");
             }
@@ -70,7 +73,7 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
             HttpResponse<String> response = httpClient.send(httpRequest,
                     HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != HTTP_OK) {
                 throw new RuntimeException("HTTP Request failed with status code: "
                         + response.statusCode());
             }
@@ -85,7 +88,7 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
     private String getNextPageUrl(String apiUrl) {
         try {
             HttpResponse<String> response = responseApi(apiUrl);
-            JsonNode infoNode = objectMapper.readTree(response.body()).get("info");
+            JsonNode infoNode = objectMapper.readTree(response.body()).get(FIELD_INFO);
             return infoNode.get("next").asText();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
