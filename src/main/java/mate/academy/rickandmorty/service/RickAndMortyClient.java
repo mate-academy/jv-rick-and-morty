@@ -8,16 +8,21 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterResponse;
 import mate.academy.rickandmorty.model.CharacterEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RickAndMortyClient {
     private static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character";
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public String makeRequest() {
+    private final CharacterService characterService;
+
+    public void makeRequest() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
@@ -25,16 +30,15 @@ public class RickAndMortyClient {
                     .build();
             HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
+
+            List<CharacterEntity> characterResponse = objectMapper
+                    .readValue(response.body(), CharacterResponse.class)
+                    .getResults();
+
+            characterService.saveAll(characterResponse);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<CharacterEntity> parseCharactersJson(String jsonString) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        CharacterResponse characterResponse = objectMapper
-                .readValue(jsonString, CharacterResponse.class);
-        return characterResponse.getResults();
-    }
 }
