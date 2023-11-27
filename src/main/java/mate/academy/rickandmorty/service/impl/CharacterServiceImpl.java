@@ -19,6 +19,11 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterEntity> findByNameContaining(String name) {
-        return characterRepository.findByNameContaining(name);
+        return characterRepository
+                .findAll()
+                .stream()
+                .filter(character -> character.getName().contains(name))
+                .toList();
     }
+
 }

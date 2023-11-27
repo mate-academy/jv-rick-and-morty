@@ -16,12 +16,14 @@ public class ApiController {
     private final ApiService apiService;
     private final CharacterServiceImpl characterService;
 
-    @GetMapping
-    public List<CharacterEntity> fetchData(@RequestParam String name) throws IOException {
+    @GetMapping("/fetch-data")
+    public List<CharacterEntity> fetchData() throws IOException {
         String jsonResponse = apiService.fetchCharacters();
-        List<CharacterEntity> characters = apiService.parseJsonString(jsonResponse);
+        return apiService.parseJsonString(jsonResponse);
+    }
 
-        characterService.saveAll(characters);
+    @GetMapping("/characters")
+    public List<CharacterEntity> getCharactersByName(@RequestParam String name) {
         return characterService.findByNameContaining(name);
     }
 }
