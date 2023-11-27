@@ -13,11 +13,11 @@ import mate.academy.rickandmorty.model.CharacterEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ApiService {
+public class RickAndMortyClient {
     private static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character";
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    public String fetchCharacters() {
+    public String makeRequest() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()

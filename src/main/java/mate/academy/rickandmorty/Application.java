@@ -1,8 +1,7 @@
 package mate.academy.rickandmorty;
 
-import java.io.IOException;
 import mate.academy.rickandmorty.controller.ApiController;
-import mate.academy.rickandmorty.service.ApiService;
+import mate.academy.rickandmorty.service.RickAndMortyClient;
 import mate.academy.rickandmorty.service.impl.CharacterServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,17 +17,13 @@ public class Application {
 
     @Bean
     public CommandLineRunner loadData(
-            ApiService apiService,
+            RickAndMortyClient rickAndMortyClient,
             CharacterServiceImpl characterService
     ) {
         return args -> {
-            ApiController apiController = new ApiController(apiService, characterService);
+            ApiController apiController = new ApiController(characterService);
 
-            try {
-                apiController.fetchData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            rickAndMortyClient.makeRequest();
         };
     }
 }
