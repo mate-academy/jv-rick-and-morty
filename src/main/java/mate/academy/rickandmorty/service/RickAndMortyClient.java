@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterResponse;
 import mate.academy.rickandmorty.model.CharacterEntity;
@@ -16,13 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RickAndMortyClient {
-    private static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character";
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character/";
 
+    private final ObjectMapper objectMapper;
     private final CharacterService characterService;
+    private final HttpClient httpClient;
 
-    public void makeRequest() {
+    public void makeRequestAllCharacters() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
@@ -36,6 +37,28 @@ public class RickAndMortyClient {
                     .getResults();
 
             characterService.saveAll(characterResponse);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void makeRequestRandomCharacter() {
+        int maxNumber = 10;
+        int minNumber = 1;
+        int randomNumber = new Random().nextInt(maxNumber) + minNumber;
+        String getRandomCharacter = CHARACTERS_URL + randomNumber;
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(new URI(getRandomCharacter))
+                    .build();
+            HttpResponse<String> response = httpClient
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            CharacterEntity characterResponse = objectMapper
+                    .readValue(response.body(), CharacterEntity.class);
+
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

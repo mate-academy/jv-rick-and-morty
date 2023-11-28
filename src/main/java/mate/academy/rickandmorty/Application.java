@@ -15,7 +15,7 @@ public class Application {
     @Bean
     public CommandLineRunner loadData(RickAndMortyClient rickAndMortyClient) {
         return args -> {
-            rickAndMortyClient.makeRequest();
+            rickAndMortyClient.makeRequestAllCharacters();
         };
     }
 }
