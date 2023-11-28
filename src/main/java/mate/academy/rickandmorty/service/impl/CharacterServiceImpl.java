@@ -13,17 +13,18 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
 
     @Override
+    public List<CharacterEntity> getAll() {
+        return characterRepository.findAll();
+    }
+
+    @Override
     public List<CharacterEntity> saveAll(List<CharacterEntity> characters) {
         return characterRepository.saveAll(characters);
     }
 
     @Override
-    public List<CharacterEntity> findByNameContaining(String name) {
-        return characterRepository
-                .findAll()
-                .stream()
-                .filter(character -> character.getName().contains(name))
-                .toList();
+    public CharacterEntity findById(Long id) {
+        return characterRepository.findById(id).orElseThrow();
     }
 
     @Override

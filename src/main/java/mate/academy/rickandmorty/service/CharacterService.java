@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CharacterService {
+    List<CharacterEntity> getAll();
+
     List<CharacterEntity> saveAll(List<CharacterEntity> characters);
 
-    List<CharacterEntity> findByNameContaining(String name);
+    CharacterEntity findById(Long id);
 
     CharacterEntity findByExternalId(String externalId);
 }

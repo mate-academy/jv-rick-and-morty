@@ -42,26 +42,17 @@ public class RickAndMortyClient {
         }
     }
 
-    public void makeRequestRandomCharacter() {
-        int maxNumber = 10;
-        int minNumber = 1;
-        int randomNumber = new Random().nextInt(maxNumber) + minNumber;
-        String getRandomCharacter = CHARACTERS_URL + randomNumber;
+    public CharacterEntity makeRequestRandomCharacter() {
+        List<Long> characterIds = characterService
+                .getAll()
+                .stream()
+                .map(CharacterEntity::getId)
+                .toList();
 
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .GET()
-                    .uri(new URI(getRandomCharacter))
-                    .build();
-            HttpResponse<String> response = httpClient
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-            CharacterEntity characterResponse = objectMapper
-                    .readValue(response.body(), CharacterEntity.class);
-
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        return characterService
+                .findById(characterIds
+                        .get(new Random()
+                                .nextInt(characterIds.size())));
     }
 
 }
