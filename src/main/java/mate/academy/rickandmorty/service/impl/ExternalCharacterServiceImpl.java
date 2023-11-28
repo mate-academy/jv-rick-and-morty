@@ -19,6 +19,7 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.ExternalCharacterService;
+import org.apache.catalina.connector.Response;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,9 +27,9 @@ import org.springframework.stereotype.Component;
 public class ExternalCharacterServiceImpl implements ExternalCharacterService {
     private static final String RICK_AND_MORTY_URL = "https://rickandmortyapi.com/api/character";
     private static final String NULL = "null";
+    private static final String NEXT = "next";
     private static final String FIELD_RESULT = "results";
     private static final String FIELD_INFO = "info";
-    private static final int HTTP_OK = 200;
     private final List<ApiCharacterDto> allCharactersFromApi;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -56,7 +57,8 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
                         + " 'results' or 'info' data.");
             }
             return objectMapper.readValue(resultsNode.toString(),
-                    new TypeReference<List<ApiCharacterDto>>() {});
+                    new TypeReference<>() {
+                    });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +75,7 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
             HttpResponse<String> response = httpClient.send(httpRequest,
                     HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != HTTP_OK) {
+            if (response.statusCode() != Response.SC_OK) {
                 throw new RuntimeException("HTTP Request failed with status code: "
                         + response.statusCode());
             }
@@ -89,9 +91,9 @@ public class ExternalCharacterServiceImpl implements ExternalCharacterService {
         try {
             HttpResponse<String> response = responseApi(apiUrl);
             JsonNode infoNode = objectMapper.readTree(response.body()).get(FIELD_INFO);
-            return infoNode.get("next").asText();
+            return infoNode.get(NEXT).asText();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error processing JSON response: " + e.getMessage(), e);
         }
     }
 
