@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class InternalCharacterServiceImpl implements InternalCharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper charactersMapper;
-    private final Long randomLong = new Random().nextLong(characterRepository.count());
 
     @Override
     public List<CharacterDto> getCharactersByName(String name) {
@@ -25,9 +24,13 @@ public class InternalCharacterServiceImpl implements InternalCharacterService {
 
     @Override
     public CharacterDto getRandomCharacter() {
-        Character characters = characterRepository.findById(randomLong)
+        Character characters = characterRepository.findById(getRandomLong())
                 .orElseThrow(() -> new RuntimeException(
                         "An error while pulling a random character"));
         return charactersMapper.toDto(characters);
+    }
+
+    private Long getRandomLong() {
+        return new Random().nextLong(characterRepository.count());
     }
 }
