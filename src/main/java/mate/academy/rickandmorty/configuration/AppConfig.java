@@ -11,4 +11,3 @@ public class AppConfig {
         return HttpClient.newHttpClient();
     }
 }
-

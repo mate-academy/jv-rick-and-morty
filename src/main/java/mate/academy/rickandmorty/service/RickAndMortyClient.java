@@ -8,9 +8,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterResponse;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ public class RickAndMortyClient {
     private static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character/";
 
     private final ObjectMapper objectMapper;
+    private final CharacterMapper characterMapper;
     private final CharacterService characterService;
     private final HttpClient httpClient;
 
@@ -36,23 +37,9 @@ public class RickAndMortyClient {
                     .readValue(response.body(), CharacterResponse.class)
                     .getResults();
 
-            characterService.saveAll(characterResponse);
+            characterService.saveAll(characterMapper.toDtoList(characterResponse));
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public CharacterEntity makeRequestRandomCharacter() {
-        List<Long> characterIds = characterService
-                .getAll()
-                .stream()
-                .map(CharacterEntity::getId)
-                .toList();
-
-        return characterService
-                .findById(characterIds
-                        .get(new Random()
-                                .nextInt(characterIds.size())));
-    }
-
 }

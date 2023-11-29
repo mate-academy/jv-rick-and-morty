@@ -1,7 +1,10 @@
 package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterDto;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterEntity;
 import mate.academy.rickandmorty.repo.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -11,25 +14,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
+    private final CharacterMapper characterMapper;
 
-    @Override
-    public List<CharacterEntity> getAll() {
-        return characterRepository.findAll();
+    public CharacterDto getRandomCharacter() {
+        List<Long> characterIds = characterRepository
+                .findAll()
+                .stream()
+                .map(CharacterEntity::getId)
+                .toList();
+
+        Long randomCharacterId = characterIds.get(new Random().nextInt(characterIds.size()));
+        CharacterEntity characterEntity = characterRepository
+                .findById(randomCharacterId)
+                .orElseThrow();
+        return characterMapper.toDto(characterEntity);
     }
 
     @Override
-    public List<CharacterEntity> saveAll(List<CharacterEntity> characters) {
-        return characterRepository.saveAll(characters);
+    public List<CharacterDto> getCharactersByName(String name) {
+        return characterMapper.toDtoList(characterRepository.findByName(name));
     }
 
     @Override
-    public CharacterEntity findById(Long id) {
-        return characterRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public CharacterEntity findByExternalId(String externalId) {
-        return characterRepository.findByExternalId(externalId);
+    public List<CharacterEntity> saveAll(List<CharacterDto> characters) {
+        return characterRepository.saveAll(characterMapper.toEntityList(characters));
     }
 
 }
