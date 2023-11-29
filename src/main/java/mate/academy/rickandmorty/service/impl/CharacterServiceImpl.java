@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
+    private final static Random random = new Random();
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
@@ -23,7 +24,7 @@ public class CharacterServiceImpl implements CharacterService {
                 .map(CharacterEntity::getId)
                 .toList();
 
-        Long randomCharacterId = characterIds.get(new Random().nextInt(characterIds.size()));
+        Long randomCharacterId = characterIds.get(random.nextInt(characterIds.size()));
         CharacterEntity characterEntity = characterRepository
                 .findById(randomCharacterId)
                 .orElseThrow();
