@@ -11,7 +11,9 @@ import org.mapstruct.Mapping;
 public interface CharacterMapper {
     @Mapping(target = "externalId", source = "id")
     @Mapping(target = "id", ignore = true)
-    CharacterDto toInternalDto(ExternalCharacterDtoResult getAllCharactersFromExternalDataBase);
+    CharacterDto toInternalDto(ExternalCharacterDtoResult externalCharacterDtoResult);
+
     CharacterDto toDto(Character character);
+
     Character toModel(CharacterDto characterDto);
 }
