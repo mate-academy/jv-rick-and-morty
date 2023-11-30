@@ -1,26 +1,21 @@
 package mate.academy.rickandmorty.service;
 
 import jakarta.annotation.PostConstruct;
-//import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-//import lombok.extern.log4j.Log4j2;
+import lombok.extern.log4j.Log4j2;
 import mate.academy.rickandmorty.dto.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.external.ApiCharacterDto;
 import mate.academy.rickandmorty.dto.external.ApiResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-//@Log4j2
+@Log4j2
 @Service
 public class CharacterServiceImpl implements CharacterService {
     private final ApiService apiService;
@@ -29,8 +24,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @PostConstruct
     @Override
-    public void syncExternalCharacter() {
-        //log.info("syncExternalCharacter method was invoked at " + LocalDateTime.now());
+    public void loadCharactersFromExternalApi() {
+        log.info("syncExternalCharacter method was invoked at " + LocalDateTime.now());
         ApiResponseDto apiResponseDto = apiService.get("https://rickandmortyapi.com/api/character",
                 ApiResponseDto.class);
         saveDtosToDb(apiResponseDto);
@@ -58,6 +53,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     private void saveDtosToDb(ApiResponseDto responseDto) {
+        /*
         Map<Long, ApiCharacterDto> externalDtos = Arrays.stream(responseDto.getResults())
                 .collect(Collectors.toMap(ApiCharacterDto::getId, Function.identity()));
 
@@ -72,9 +68,10 @@ public class CharacterServiceImpl implements CharacterService {
         Set<Long> existingIds = existingCharactersWithIds.keySet();
 
         externalIds.removeAll(existingIds);
+        */
 
-        List<Character> charactersToSave = externalIds.stream()
-                .map(i -> mapper.toModel(externalDtos.get(i)))
+        List<Character> charactersToSave = Arrays.stream(responseDto.getResults())
+                .map(mapper::toModel)
                 .collect(Collectors.toList());
 
         characterRepository.saveAll(charactersToSave);

@@ -4,7 +4,7 @@ import java.util.List;
 import mate.academy.rickandmorty.dto.CharacterResponseDto;
 
 public interface CharacterService {
-    void syncExternalCharacter();
+    void loadCharactersFromExternalApi();
 
     CharacterResponseDto getRandomCharacter();
 
