@@ -1,10 +1,11 @@
 package mate.academy.rickandmorty;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.service.CharactersClient;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -15,8 +16,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @PostConstruct
-    public void setCharactersToDatabase() {
-        client.loadCharactersFromExternalApi();
+    @Bean
+    public CommandLineRunner commandLineRunner() {
+        return args -> client.loadCharactersFromExternalApi();
     }
 }
