@@ -9,15 +9,18 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
-import mate.academy.rickandmorty.service.CharactersClient;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private final CharactersClient client;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
+
+    @Override
+    public void save(Character character) {
+        characterMapper.toDto(characterRepository.save(character));
+    }
 
     @Override
     public CharacterDto getRandomCharacter() {
@@ -30,14 +33,8 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public List<CharacterDto> findCharactersByName(String name) {
         List<Character> charactersByName = characterRepository.findCharactersByNameContains(name);
-        return charactersByName.stream().map(characterMapper::toDto).toList();
-    }
-
-    @Override
-    public void setAllCharactersFromExternalDataBaseToInternalDataBase() {
-        client.getAllCharactersFromExternalDataBase()
-        .stream().map(characterMapper::toInternalDto)
-                .map(characterMapper::toModel)
-                .forEach(characterRepository::save);
+        return charactersByName.stream()
+                .map(characterMapper::toDto)
+                .toList();
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 import mate.academy.rickandmorty.dto.external.ExternalCharacterDtoResult;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Component;
 public class CharactersClient {
     private static String EXTERNAL_DATABASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
+    private final CharacterService characterService;
+    private final CharacterMapper characterMapper;
 
-    public List<ExternalCharacterDtoResult> getAllCharactersFromExternalDataBase() {
+    public void loadCharactersFromExternalApi() {
         List<ExternalCharacterDtoResult> characters = new ArrayList<>();
         while (EXTERNAL_DATABASE_URL != null) {
             HttpClient client = HttpClient.newHttpClient();
@@ -39,6 +42,9 @@ public class CharactersClient {
                         + "from external database");
             }
         }
-        return characters;
+        characters.stream()
+                .map(characterMapper::toInternalDto)
+                .map(characterMapper::toModel)
+                .forEach(characterService::save);
     }
 }
