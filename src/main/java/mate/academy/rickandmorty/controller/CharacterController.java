@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/movie-characters")
+@RequestMapping("/characters")
 public class CharacterController {
     private final CharacterService characterService;
 
@@ -20,7 +20,7 @@ public class CharacterController {
         return characterService.getRandomCharacter();
     }
 
-    @GetMapping("/by-name")
+    @GetMapping
     public List<CharacterResponseDto> findAllByName(@RequestParam("name") String namePart) {
         return characterService.findAllByNameContains(namePart);
     }

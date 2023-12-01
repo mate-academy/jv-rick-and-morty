@@ -1,6 +1,5 @@
 package mate.academy.rickandmorty.service;
 
-import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper mapper;
 
-    @PostConstruct
     @Override
     public void loadCharactersFromExternalApi() {
         log.info("syncExternalCharacter method was invoked at " + LocalDateTime.now());
@@ -53,27 +51,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     private void saveDtosToDb(ApiResponseDto responseDto) {
-        /*
-        Map<Long, ApiCharacterDto> externalDtos = Arrays.stream(responseDto.getResults())
-                .collect(Collectors.toMap(ApiCharacterDto::getId, Function.identity()));
-
-        Set<Long> externalIds = externalDtos.keySet();
-
-        List<Character> existingCharacters = characterRepository
-                .findAllByExternalIdIn(externalIds);
-
-        Map<Long, Character> existingCharactersWithIds = existingCharacters.stream()
-                .collect(Collectors.toMap(Character::getExternalId, Function.identity()));
-
-        Set<Long> existingIds = existingCharactersWithIds.keySet();
-
-        externalIds.removeAll(existingIds);
-        */
-
         List<Character> charactersToSave = Arrays.stream(responseDto.getResults())
                 .map(mapper::toModel)
                 .collect(Collectors.toList());
-
         characterRepository.saveAll(charactersToSave);
     }
 }
