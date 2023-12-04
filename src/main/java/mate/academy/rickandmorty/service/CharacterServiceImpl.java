@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterDataDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CustomCharacter;
@@ -36,5 +37,13 @@ public class CharacterServiceImpl implements CharacterService {
                 .sorted(Comparator.reverseOrder())
                 .findFirst()
                 .get();
+    }
+
+    @Override
+    public void saveAll(List<CharacterDataDto> data) {
+        repository.saveAll(
+                data.stream()
+                .map(mapper::toModel)
+                .toList());
     }
 }
