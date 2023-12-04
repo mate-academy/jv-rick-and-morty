@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class CharacterClient {
-    private static String URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
     private final CharacterService characterService;
+    private String url = "https://rickandmortyapi.com/api/character";
     private Long countOfPages;
 
     public void loadCharactersData() {
@@ -28,7 +28,7 @@ public class CharacterClient {
         HttpRequest request;
         
         for (int i = 1; i <= countOfPages; i++) {
-            request = HttpRequest.newBuilder().GET().uri(URI.create(URL)).build();
+            request = HttpRequest.newBuilder().GET().uri(URI.create(url)).build();
             HttpResponse<String> response;
             try {
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -36,18 +36,18 @@ public class CharacterClient {
                         CharacterResponseDto.class);
                 
                 characters.addAll(responseDto.results());
-                URL = responseDto.info().next();
+                url = responseDto.info().next();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        characterService.saveAll(characters);
+        characterService.saveAllWithBounds(characters);
     }
     
     private Long getCountOfPages(HttpClient client) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .build();
         HttpResponse<String> response;
         try {

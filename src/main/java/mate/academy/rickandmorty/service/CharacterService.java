@@ -9,5 +9,5 @@ public interface CharacterService {
     
     List<CharacterDto> getByName(String name);
     
-    void saveAll(List<CharacterDataDto> data);
+    void saveAllWithBounds(List<CharacterDataDto> data);
 }
