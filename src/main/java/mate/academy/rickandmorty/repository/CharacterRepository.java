@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<CustomCharacter, Long> {
-    List<CustomCharacter> findByNameIgnoreCase(String name);
+    List<CustomCharacter> findByNameContainsIgnoreCase(String name);
 }

@@ -1,13 +1,11 @@
 package mate.academy.rickandmorty.service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDataDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.model.CustomCharacter;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,27 +14,20 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository repository;
     private final CharacterMapper mapper;
-    private final Random randomLong;
+    private final Long maxId = 257L;
 
     @Override
     public CharacterDto getRandomCharacter() {
-        long generatedRandomId = randomLong.nextLong(1, getMaxId() + 1);        
-        return mapper.toDto(repository.getReferenceById(generatedRandomId));
+        long generatedRandomId = new Random().nextLong(1, maxId);
+        return mapper.toDto(repository.findById(generatedRandomId).orElseThrow(
+                () -> new RuntimeException("Can't find character with id: " + generatedRandomId)));
     }
 
     @Override
     public List<CharacterDto> getByName(String name) {
-        return repository.findByNameIgnoreCase(name).stream()
+        return repository.findByNameContainsIgnoreCase(name).stream()
                 .map(mapper::toDto)
                 .toList();
-    }
-    
-    private Long getMaxId() {
-        return repository.findAll().stream()
-                .map(CustomCharacter::getId)
-                .sorted(Comparator.reverseOrder())
-                .findFirst()
-                .get();
     }
 
     @Override
