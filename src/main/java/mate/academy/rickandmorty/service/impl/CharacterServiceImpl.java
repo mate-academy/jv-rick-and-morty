@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.SeriesCharacterResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import mate.academy.rickandmorty.service.CharacterClient;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
-    private final CharacterClientImpl client;
+    private final CharacterClient client;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
