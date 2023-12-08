@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/rickandmorty")
-public class RickAndMortyController {
+@RequestMapping("/character")
+public class CharacterController {
     private final CharacterService characterService;
 
-    @GetMapping("/randomwiki")
-    @Operation(summary = "Get one random wiki",
+    @GetMapping("/random")
+    @Operation(summary = "Get one random character",
             description = "Get one random wiki about characters")
-    public SeriesCharacterResponseDto getRandomWiki() {
-        return characterService.getRandomWiki();
+    public SeriesCharacterResponseDto getRandomCharacter() {
+        return characterService.getRandomCharacter();
     }
 
-    @GetMapping("/findbyname")
+    @GetMapping("/search")
     @Operation(summary = "find information about character by name",
             description = "return character array where character name contains param name"
                     + "support pagination")
@@ -36,7 +36,8 @@ public class RickAndMortyController {
             required = true, example = "10")
     public List<SeriesCharacterResponseDto> findCharactersByName(
             Pageable pageable,
-            @RequestParam String name) {
+            @RequestParam String name
+    ) {
         return characterService.findCharactersByName(name, pageable);
     }
 }

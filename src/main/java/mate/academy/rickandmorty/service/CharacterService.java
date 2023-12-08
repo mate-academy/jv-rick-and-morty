@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 public interface CharacterService {
     void saveAll();
 
-    SeriesCharacterResponseDto getRandomWiki();
+    SeriesCharacterResponseDto getRandomCharacter();
 
     List<SeriesCharacterResponseDto> findCharactersByName(String name, Pageable pageable);
 }

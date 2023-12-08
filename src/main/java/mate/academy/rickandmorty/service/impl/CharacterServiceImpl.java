@@ -27,7 +27,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public SeriesCharacterResponseDto getRandomWiki() {
+    public SeriesCharacterResponseDto getRandomCharacter() {
         long count = characterRepository.count();
         long randomId = ThreadLocalRandom.current().nextLong(1, count + 1);
         return characterMapper.toDto(characterRepository.findById(randomId).get());
