@@ -9,6 +9,4 @@ import org.mapstruct.Mapper;
 public interface CharacterMapper {
     CharacterResponseDto toDto(Character character);
 
-    Character toModel(CharacterResponseDto characterResponseDto);
-
 }
