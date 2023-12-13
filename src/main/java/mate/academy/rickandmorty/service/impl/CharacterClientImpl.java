@@ -20,35 +20,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CharacterClientImpl implements CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private static final int DEFAULT_PAGE = 1;
     private static final String PAGE = "/?page=%s";
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
 
     public void getAllCharacters() {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(BASE_URL))
-                .build();
-        try {
-            HttpResponse<String> response = httpClient.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            int pages = objectMapper.readValue(response.body(), CharacterResponseDataDto.class)
-                    .getInfo().getPages();
-            CharacterResponseDataDto responseDto;
-            for (int i = 1; i <= pages; i++) {
-                request = HttpRequest.newBuilder()
-                        .GET()
-                        .uri(URI.create(BASE_URL + PAGE.formatted(i)))
-                        .build();
-                response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                responseDto = objectMapper.readValue(response.body(),
-                        CharacterResponseDataDto.class);
-                saveCharacters(responseDto);
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        int pages = getResponseDataDto(DEFAULT_PAGE).getInfo().getPages();
+        for (int i = DEFAULT_PAGE; i <= pages; i++) {
+            CharacterResponseDataDto responseDto = getResponseDataDto(i);
+            saveCharacters(responseDto);
         }
     }
 
@@ -57,5 +39,19 @@ public class CharacterClientImpl implements CharacterClient {
                 .map(characterMapper::toModel)
                 .collect(Collectors.toList());
         characterRepository.saveAll(characters);
+    }
+
+    private CharacterResponseDataDto getResponseDataDto(int page) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(BASE_URL + PAGE.formatted(page)))
+                .build();
+        try {
+            HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+            return objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
