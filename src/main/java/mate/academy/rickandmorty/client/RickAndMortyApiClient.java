@@ -31,7 +31,10 @@ public class RickAndMortyApiClient {
                     HttpResponse.BodyHandlers.ofString()
             );
 
-            return objectMapper.readValue(basicInfoResponse.body(), CharactersResponseDataDto.class);
+            return objectMapper.readValue(
+                    basicInfoResponse.body(),
+                    CharactersResponseDataDto.class
+            );
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Can't get basic info", e);
         }
