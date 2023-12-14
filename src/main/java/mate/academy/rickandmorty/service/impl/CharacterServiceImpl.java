@@ -9,6 +9,7 @@ import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -31,9 +32,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterDto findByName(String name) {
-        return characterMapper.toCharacterDto(
-                characterRepository.findByNameIsContaining(name)
-        );
+    public List<CharacterDto> getCharactersByName(String name) {
+        return characterRepository.findCharactersByNameIsContaining(name).stream()
+                .map(characterMapper::toCharacterDto)
+                .toList();
     }
 }
