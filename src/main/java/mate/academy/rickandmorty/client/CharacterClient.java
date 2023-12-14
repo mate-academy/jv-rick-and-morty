@@ -10,33 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
-import mate.academy.rickandmorty.dto.external.CharacterInfoDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseInfoDto;
-import mate.academy.rickandmorty.dto.external.CharacterResponseResultDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class CharacterClient {
-    private static final int START_PAGE = 1;
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
-    private static final String URL_WITH_PAGE = "https://rickandmortyapi.com/api/character/?page=%s";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
 
     public List<CharacterDto> getAllCharacters() {
-        int pages = getCharacterInfo().getPages();
-        int page = START_PAGE;
-        CharacterResponseResultDto resultDto = null;
-        List<CharacterDto> dtos = new ArrayList<>();
+        CharacterResponseInfoDto infoDto = getCharacterInfoFromBaseUrl();
+        List<CharacterDto> dtos = new ArrayList<>(infoDto.getResults());
         try {
-            while (page <= pages) {
-                HttpResponse<String> response = httpClient.send(httpRequestByPages(page),
+            while (infoDto.getInfo().getNext() != null) {
+                HttpResponse<String> response = httpClient
+                        .send(httpRequestByUrl(infoDto.getInfo().getNext()),
                         HttpResponse.BodyHandlers.ofString());
-                resultDto = objectMapper.readValue(response.body(),
-                        CharacterResponseResultDto.class);
-                dtos.addAll(resultDto.getResults());
-                page++;
+                infoDto = objectMapper.readValue(response.body(),
+                        CharacterResponseInfoDto.class);
+                dtos.addAll(infoDto.getResults());
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Characters not found.", e);
@@ -44,7 +38,7 @@ public class CharacterClient {
         return dtos;
     }
 
-    public CharacterInfoDto getCharacterInfo() {
+    private CharacterResponseInfoDto getCharacterInfoFromBaseUrl() {
         CharacterResponseInfoDto infoDto = null;
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -59,13 +53,13 @@ public class CharacterClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Character info not found.", e);
         }
-        return infoDto.getInfo();
+        return infoDto;
     }
 
-    private HttpRequest httpRequestByPages(int page) {
+    private HttpRequest httpRequestByUrl(String url) {
         return HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URL_WITH_PAGE.formatted(page)))
+                .uri(URI.create(url))
                 .build();
     }
 }
