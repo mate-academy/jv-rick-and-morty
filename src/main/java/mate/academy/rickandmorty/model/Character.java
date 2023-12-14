@@ -10,7 +10,7 @@ public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    public Long externalId;
+    private Long externalId;
     private String name;
     private String status;
     private String gender;
