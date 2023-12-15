@@ -9,6 +9,7 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterFromRickAndMorty;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getWikiAboutRandomCharacter() {
-        long numberOfCharacters = characterRepository.count();
+        long numberOfCharacters = getNumberOfCharacters();
         long randomCharacterId = random.nextLong(numberOfCharacters);
 
         CharacterFromRickAndMorty randomCharacterFromRickAndMorty = characterRepository.findById(
@@ -37,5 +38,10 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findCharactersByNameIsContaining(name).stream()
                 .map(characterMapper::toCharacterDto)
                 .toList();
+    }
+
+    @CachePut("numberOfCharactersCache")
+    public long getNumberOfCharacters() {
+        return characterRepository.count();
     }
 }

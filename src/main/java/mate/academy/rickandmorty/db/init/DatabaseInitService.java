@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class DatabaseContent {
+public class DatabaseInitService {
     private final RickAndMortyApiClient client;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;

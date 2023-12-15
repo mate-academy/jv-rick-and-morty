@@ -4,7 +4,7 @@
 
 - Task: Create API. It should contain two methods:
 
-1. The request randomly generates a wiki about one characterFromRickAndMorty in the universe the animated series Rick & Morty.
+1. The request randomly generates a wiki about one character in the universe the animated series Rick & Morty.
    Response example:
 
     ```json
