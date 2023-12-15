@@ -30,7 +30,7 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterDto getRandomCharacter() {
         long characterCount = characterRepository.count();
         if (characterCount == 0) {
-            throw new EntityNotFoundException("There are no characters in the database");
+            throw new EntityNotFoundException("There are no characters in the db");
         }
         long randomCharacterId = randomIndex.nextInt((int) characterCount);
         Optional<CharacterDto> characterDto = characterRepository.findById(randomCharacterId)
