@@ -28,10 +28,10 @@ public class ClientServiceImpl implements ClientService {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         List<CreateCharacterRequestDto> dtosList = new ArrayList<>();
-        for (int i = 0; true; i++) {
+        for (int page = 0; ; page++) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create(String.format(URL, i)))
+                    .uri(URI.create(String.format(URL, page)))
                     .build();
             try {
                 HttpResponse<String> response =
@@ -41,12 +41,10 @@ public class ClientServiceImpl implements ClientService {
                 CreateCharacterRequestDto[] createCharacterRequestDtos =
                         objectMapper.readValue(results, CreateCharacterRequestDto[].class);
                 dtosList.addAll(Arrays.asList(createCharacterRequestDtos));
-            } catch (NullPointerException e) {
-                break;
+                return dtosList;
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        return dtosList;
     }
 }

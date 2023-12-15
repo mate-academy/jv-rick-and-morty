@@ -2,8 +2,8 @@ package mate.academy.rickandmorty;
 
 import java.util.List;
 import mate.academy.rickandmorty.dto.CreateCharacterRequestDto;
+import mate.academy.rickandmorty.service.CharacterService;
 import mate.academy.rickandmorty.service.ClientService;
-import mate.academy.rickandmorty.service.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 public class ApiCaller implements ApplicationRunner {
     private ClientService clientService;
 
-    private DateService dateService;
+    private CharacterService characterService;
 
     @Autowired
-    public ApiCaller(ClientService clientService, DateService dateService) {
+    public ApiCaller(ClientService clientService, CharacterService characterService) {
         this.clientService = clientService;
-        this.dateService = dateService;
+        this.characterService = characterService;
     }
 
     @Override
@@ -27,6 +27,6 @@ public class ApiCaller implements ApplicationRunner {
         List<CreateCharacterRequestDto> listCreateCharacterRequestDto
                 = clientService.getAllCharacters();
 
-        dateService.saveCharacter(listCreateCharacterRequestDto);
+        characterService.saveCharacter(listCreateCharacterRequestDto);
     }
 }
