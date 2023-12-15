@@ -1,11 +1,6 @@
 package mate.academy.rickandmorty.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterResponseInfoDto;
-import mate.academy.rickandmorty.dto.external.CharactersResponseDataDto;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,6 +8,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterResponseInfoDto;
+import mate.academy.rickandmorty.dto.external.CharactersResponseDataDto;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
@@ -24,7 +23,9 @@ public class RickAndMortyApiClient {
     public List<CharacterResponseInfoDto> getAllCharacters() {
         int pageCounter = 1;
         CharactersResponseDataDto firstPageCharacterData = getCharactersDataByPage(pageCounter);
-        List<CharacterResponseInfoDto> characters = new ArrayList<>(firstPageCharacterData.getResults());
+        List<CharacterResponseInfoDto> characters = new ArrayList<>(
+                firstPageCharacterData.getResults()
+        );
 
         while (pageCounter < firstPageCharacterData.getInfo().getPages()) {
             pageCounter++;

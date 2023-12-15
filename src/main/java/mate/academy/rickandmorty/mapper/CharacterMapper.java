@@ -11,8 +11,6 @@ import org.mapstruct.Mapping;
 public interface CharacterMapper {
     CharacterDto toCharacterDto(CharacterFromRickAndMorty characterFromRickAndMorty);
 
-    CharacterFromRickAndMorty toCharacterModel(CharacterDto characterDto);
-
     @Mapping(source = "id", target = "externalId")
     CharacterFromRickAndMorty toCharacterModel(CharacterResponseInfoDto characterDto);
 }
