@@ -21,7 +21,7 @@ public class RickAndMortyController {
         return characterService.getWikiAboutRandomCharacter();
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public List<CharacterDto> getCharactersByName(@RequestParam String name) {
         return characterService.getCharactersByName(name);
     }

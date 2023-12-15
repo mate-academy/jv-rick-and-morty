@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Character {
+public class CharacterFromRickAndMorty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -26,7 +26,7 @@ public class RickAndMortyApiClient {
         CharactersResponseDataDto firstPageCharacterData = getCharactersDataByPage(pageCounter);
         List<CharacterResponseInfoDto> characters = new ArrayList<>(firstPageCharacterData.getResults());
 
-        while (pageCounter <= firstPageCharacterData.getInfo().getPages()) {
+        while (pageCounter < firstPageCharacterData.getInfo().getPages()) {
             pageCounter++;
 
             CharactersResponseDataDto charactersDataByPage = getCharactersDataByPage(pageCounter);
