@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RickAndMortyService {
+public class RickAndMortyClient {
     @Value("${rick_and_morty.url}")
     private String url;
     private final ObjectMapper objectMapper;
@@ -27,6 +27,18 @@ public class RickAndMortyService {
 
     @PostConstruct
     private void init() {
+        ExternalResponseDto externalResponse = getResponseDto();
+        mapAndSaveCharacters(externalResponse);
+    }
+
+    private void mapAndSaveCharacters(ExternalResponseDto externalResponse) {
+        List<Character> characters = externalResponse.results().stream()
+                .map(characterMapper::toModel)
+                .toList();
+        characterRepository.saveAll(characters);
+    }
+
+    private ExternalResponseDto getResponseDto() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -35,13 +47,7 @@ public class RickAndMortyService {
         try {
             HttpResponse<String> response = httpClient
                     .send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            ExternalResponseDto externalResponse = objectMapper.readValue(
-                    response.body(),
-                    ExternalResponseDto.class);
-            List<Character> characters = externalResponse.results().stream()
-                    .map(characterMapper::toModel)
-                    .toList();
-            characterRepository.saveAll(characters);
+            return objectMapper.readValue(response.body(), ExternalResponseDto.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
