@@ -9,6 +9,7 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterFromRickAndMorty;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,8 +31,13 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public CharacterDto getRandomCharacter() {
         CharacterFromRickAndMorty randomCharacter = characterRepository
-                .findById(random.nextLong(characterRepository.count()))
+                .findById(random.nextLong(getNumberOfCharactersInDb()))
                 .orElseThrow(() -> new EntityNotFoundException(RANDOM_ENTITY_NOT_FOUND_MSG));
         return characterMapper.toDto(randomCharacter);
+    }
+
+    @CachePut(cacheNames = "numberOfCharacters")
+    public long getNumberOfCharactersInDb() {
+        return characterRepository.count();
     }
 }
