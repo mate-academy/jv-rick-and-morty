@@ -1,5 +1,5 @@
 package mate.academy.rickandmorty.service;
 
 public interface RickAndMortyClientToDbService {
-    public void insertToDbFromApiRickAndMorty();
+    public void getAllCharacters();
 }

@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RickAndMortyClientToDbServiceImpl implements RickAndMortyClientToDbService {
+public class DbInitService implements RickAndMortyClientToDbService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final RickAndMortyClient rickAndMortyClient;
 
     @PostConstruct
-    public void insertToDbFromApiRickAndMorty() {
+    public void getAllCharacters() {
         int currentPage = 0;
         boolean isExit = true;
         while (isExit) {

@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    private static final String NOY_FOUND_RANDOM_ENTITY = "Couldn't get a random entity";
+    private static final String RANDOM_ENTITY_NOT_FOUND_MSG = "Couldn't get a random entity";
     private final CharacterRepository characterRepository;
-    private final Random random;
+    private final Random random = new Random();
     private final CharacterMapper characterMapper;
 
     @Override
@@ -31,7 +31,7 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterDto getRandomCharacter() {
         CharacterFromRickAndMorty randomCharacter = characterRepository
                 .findById(random.nextLong(characterRepository.count()))
-                .orElseThrow(() -> new EntityNotFoundException(NOY_FOUND_RANDOM_ENTITY));
+                .orElseThrow(() -> new EntityNotFoundException(RANDOM_ENTITY_NOT_FOUND_MSG));
         return characterMapper.toDto(randomCharacter);
     }
 }
