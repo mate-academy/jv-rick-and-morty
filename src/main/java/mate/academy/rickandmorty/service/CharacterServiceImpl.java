@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
@@ -25,7 +24,6 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterResponseDto getRandomCharacter() {
-
         List<Character> characters = characterRepository.findAll();
         long index = new Random().nextLong(0, characters.size());
         Character character = characterRepository.findByExternalId(index).orElseThrow(()

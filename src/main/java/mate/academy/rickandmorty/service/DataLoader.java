@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
+import mate.academy.rickandmorty.exception.HttpRequestException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DataLoader {
-
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private final String results = "results";
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
@@ -41,7 +42,7 @@ public class DataLoader {
                     HttpResponse.BodyHandlers.ofString());
 
             JsonNode jsonNode = objectMapper.readTree(response.body());
-            JsonNode resultJson = jsonNode.get("results");
+            JsonNode resultJson = jsonNode.get(results);
 
             List<CharacterDto> responseDataDtos = objectMapper.convertValue(resultJson,
                     new TypeReference<List<CharacterDto>>() {
@@ -49,7 +50,7 @@ public class DataLoader {
             );
             return responseDataDtos;
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new HttpRequestException("Failed to retrieve character data from remote server.");
         }
     }
 

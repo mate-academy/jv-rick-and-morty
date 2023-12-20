@@ -15,11 +15,9 @@ public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(nullable = false)
     private long externalId;
     private String name;
     private String status;
     private String gender;
-
 }
