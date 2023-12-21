@@ -3,6 +3,7 @@ package mate.academy.rickandmorty.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,35 +16,43 @@ import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.exception.HttpRequestException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class DataLoader {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final String results = "results";
+    private final String page = "?page=";
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
 
+    @PostConstruct
     public void loadData() {
-        List<CharacterDto> data = getExternalData();
-        saveData(data);
+        int pageNumber = 0;
+        while (true) {
+            List<CharacterDto> data = getExternalData(pageNumber);
+            if (data == null) {
+                break;
+            }
+            saveData(data);
+            pageNumber++;
+        }
     }
 
-    public List<CharacterDto> getExternalData() {
+    public List<CharacterDto> getExternalData(int pageNumber) {
+        String url = BASE_URL + page + pageNumber;
         HttpClient httpClient = HttpClient.newHttpClient();
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(new URI(BASE_URL))
+                    .uri(new URI(url))
                     .build();
             HttpResponse<String> response = httpClient.send(request,
                     HttpResponse.BodyHandlers.ofString());
-
             JsonNode jsonNode = objectMapper.readTree(response.body());
             JsonNode resultJson = jsonNode.get(results);
-
             List<CharacterDto> responseDataDtos = objectMapper.convertValue(resultJson,
                     new TypeReference<List<CharacterDto>>() {
                     }
