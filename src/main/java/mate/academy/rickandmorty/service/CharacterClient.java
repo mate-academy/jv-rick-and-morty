@@ -20,9 +20,8 @@ public class CharacterClient {
     private static final String URL_CHARACTERS = "https://rickandmortyapi.com/api/character";
 
     private final ObjectMapper objectMapper;
-    HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
     public List<CharacterResponseDto> getCharacters() {
-
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(URL_CHARACTERS))
@@ -62,5 +61,3 @@ public class CharacterClient {
         }
     }
 }
-
-
