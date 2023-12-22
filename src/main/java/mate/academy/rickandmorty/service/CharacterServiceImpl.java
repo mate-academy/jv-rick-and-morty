@@ -17,7 +17,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterClient characterClient;
     private final CharacterMapper characterMapper;
 
-    @PostConstruct
     public void loadDataFromExternalApi() {
         characterRepository.saveAll(characterClient
                 .getCharacters()

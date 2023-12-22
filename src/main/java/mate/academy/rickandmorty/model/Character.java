@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "external_id")
     private Long externalId;
@@ -29,12 +28,4 @@ public class Character {
     private String species;
     private String type;
     private String gender;
-
 }
-
-
-
-
-
-
-

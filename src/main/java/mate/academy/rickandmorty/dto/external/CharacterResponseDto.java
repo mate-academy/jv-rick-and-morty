@@ -12,10 +12,4 @@ public class CharacterResponseDto {
     private String species;
     private String type;
     private String gender;
-    //private OriginDto origin;
-    //private LocationResponseDto location;
-    //private String image;
-    //private List<EpisodeResponseDto> episode;
-    //private String url;
-    //private LocalDateTime created;
 }
