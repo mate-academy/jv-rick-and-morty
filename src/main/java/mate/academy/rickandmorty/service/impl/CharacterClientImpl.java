@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
@@ -19,22 +18,22 @@ import org.springframework.stereotype.Service;
 public class CharacterClientImpl implements CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
-    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public List<CharacterResponseDto> getAllCharacters() {
-        List<CharacterResponseDto> characters = new ArrayList<>();
-        String apiUrl = BASE_URL;
+        CharacterResponseDataDto characterResponseDataDto = getCharacters(BASE_URL);
+        List<CharacterResponseDto> characters = characterResponseDataDto.results();
+        String apiUrl = characterResponseDataDto.info().next();
 
-        do {
-            CharacterResponseDataDto characterResponseDataDto = getCharacters(apiUrl);
+        while (apiUrl != null) {
+            characterResponseDataDto = getCharacters(apiUrl);
             characters.addAll(characterResponseDataDto.results());
             apiUrl = characterResponseDataDto.info().next();
-        } while (apiUrl != null);
-
+        }
         return characters;
     }
 
     private CharacterResponseDataDto getCharacters(String url) {
+        HttpClient httpClient = HttpClient.newHttpClient();
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()

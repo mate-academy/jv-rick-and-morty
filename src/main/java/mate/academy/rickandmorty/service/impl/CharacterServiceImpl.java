@@ -1,6 +1,5 @@
 package mate.academy.rickandmorty.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
@@ -19,7 +18,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterClient characterClient;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
-    private final Random random = new Random();
 
     @Autowired
     public CharacterServiceImpl(CharacterClient characterClient,
@@ -30,8 +28,8 @@ public class CharacterServiceImpl implements CharacterService {
         this.characterMapper = characterMapper;
     }
 
-    @PostConstruct
-    private void getAllCharacter() {
+    @Override
+    public void downloadAllCharacter() {
         List<CharacterResponseDto> allCharacters = characterClient.getAllCharacters();
         characterRepository.saveAll(allCharacters.stream()
                 .map(characterMapper::toModel)
@@ -41,9 +39,10 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getRandomCharacter() {
+        Random random = new Random();
         long randomLong = random.nextLong(maxId + 1);
         Character character = characterRepository.findById(randomLong)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("Помилка отримання персонажа"));
         return characterMapper.toDto(character);
     }
 

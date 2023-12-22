@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/character")
+@RequestMapping(value = "/characters")
 @RequiredArgsConstructor
 public class CharacterController {
 
     private final CharacterService characterService;
+
+    @GetMapping("/download")
+    public void downloadAllCharacter() {
+        characterService.downloadAllCharacter();
+    }
 
     @GetMapping("/name")
     public List<CharacterDto> getCharacterByName(@RequestParam String name) {
