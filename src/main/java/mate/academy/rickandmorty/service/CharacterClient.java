@@ -40,7 +40,7 @@ public class CharacterClient {
             }
             return dtoList;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error when retrieving characters from external API: " + e);
         }
     }
 
@@ -57,7 +57,7 @@ public class CharacterClient {
                     objectMapper.readValue(response.body(), ApiResponseData.class);
             return responce;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error when retrieving characters from external API: " + e);
         }
     }
 }
