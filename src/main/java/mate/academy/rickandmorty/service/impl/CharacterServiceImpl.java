@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CharacterServiceImpl implements CharacterService {
     private static Long maxId;
+    private static boolean isDownload;
     private final CharacterClient characterClient;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -29,16 +30,11 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public void downloadAllCharacter() {
-        List<CharacterResponseDto> allCharacters = characterClient.getAllCharacters();
-        characterRepository.saveAll(allCharacters.stream()
-                .map(characterMapper::toModel)
-                .toList());
-        maxId = allCharacters.get(allCharacters.size() - 1).id();
-    }
-
-    @Override
     public CharacterDto getRandomCharacter() {
+        if (!isDownload) {
+            downloadAllCharacter();
+        }
+
         Random random = new Random();
         long randomLong = random.nextLong(maxId + 1);
         Character character = characterRepository.findById(randomLong)
@@ -48,8 +44,20 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterDto> getCharactersByName(String name) {
+        if (!isDownload) {
+            downloadAllCharacter();
+        }
         return characterRepository.findCharactersByNameContainsIgnoreCase(name).stream()
                 .map(characterMapper::toDto)
                 .toList();
+    }
+
+    private void downloadAllCharacter() {
+        List<CharacterResponseDto> allCharacters = characterClient.getAllCharacters();
+        characterRepository.saveAll(allCharacters.stream()
+                .map(characterMapper::toModel)
+                .toList());
+        maxId = allCharacters.get(allCharacters.size() - 1).id();
+        isDownload = true;
     }
 }

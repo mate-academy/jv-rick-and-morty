@@ -16,11 +16,6 @@ public class CharacterController {
 
     private final CharacterService characterService;
 
-    @GetMapping("/download")
-    public void downloadAllCharacter() {
-        characterService.downloadAllCharacter();
-    }
-
     @GetMapping("/name")
     public List<CharacterDto> getCharacterByName(@RequestParam String name) {
         return characterService.getCharactersByName(name);
