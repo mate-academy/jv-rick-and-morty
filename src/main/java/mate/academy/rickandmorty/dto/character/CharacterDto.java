@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.dto.character.dtos;
+package mate.academy.rickandmorty.dto.character;
 
 import lombok.Data;
 

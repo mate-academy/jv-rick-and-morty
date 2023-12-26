@@ -1,6 +1,6 @@
 package mate.academy.rickandmorty.service.rick.and.morty.client;
 
-import mate.academy.rickandmorty.dto.character.dtos.CharactersResponseDataDto;
+import mate.academy.rickandmorty.dto.character.CharactersResponseDataDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

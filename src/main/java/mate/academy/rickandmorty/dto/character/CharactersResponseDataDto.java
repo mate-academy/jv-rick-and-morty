@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.dto.character.dtos;
+package mate.academy.rickandmorty.dto.character;
 
 import java.util.List;
 import lombok.Data;
