@@ -1,8 +1,8 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.character.CharacterDto;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
