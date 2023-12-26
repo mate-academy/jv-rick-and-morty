@@ -2,14 +2,14 @@ package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
 import java.util.Random;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.character.dtos.CharacterDto;
+import mate.academy.rickandmorty.dto.character.CharacterDto;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterFromRickAndMorty;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,7 +36,7 @@ public class CharacterServiceImpl implements CharacterService {
         return characterMapper.toDto(randomCharacter);
     }
 
-    @CachePut(cacheNames = "numberOfCharacters")
+    @PostConstruct
     public long getNumberOfCharactersInDb() {
         return characterRepository.count();
     }

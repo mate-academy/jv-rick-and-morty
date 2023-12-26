@@ -39,4 +39,3 @@
   and `src/test/resources/application.properties` files. In other case you may face a problem with Application Context
   creation during the `mvn test` phase.
 - Requests must be documented using Swagger.
-- test
