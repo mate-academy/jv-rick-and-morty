@@ -1,6 +1,5 @@
 package mate.academy.rickandmorty.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
