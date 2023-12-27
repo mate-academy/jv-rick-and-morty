@@ -10,6 +10,7 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.CharacterFromRickAndMorty;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,7 +37,7 @@ public class CharacterServiceImpl implements CharacterService {
         return characterMapper.toDto(randomCharacter);
     }
 
-    @PostConstruct
+    @Cacheable(cacheNames = "numberOfCharacters")
     public long getNumberOfCharactersInDb() {
         return characterRepository.count();
     }
