@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.external.RickAndMortyApiResponseDto;
@@ -9,8 +10,6 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public List<CharacterDto> getPatternNameCharacters(String pattern) {
         return repository
-                .getAllByNameContaining(pattern)
+                .getAllByNameContainsIgnoreCase(pattern)
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
