@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
         description = "Endpoints for getting character info")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/character")
+@RequestMapping("/api/characters")
 public class CharacterController {
     private final CharacterService characterService;
 

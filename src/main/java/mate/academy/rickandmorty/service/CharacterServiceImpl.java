@@ -20,11 +20,11 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getCharacterById(Long id) {
-        Character character = repository
+        return repository
                 .findById(id)
+                .map(characterMapper::toDto)
                 .orElseThrow(() -> new
                         EntityNotFoundException("Can't find character with id " + id));
-        return characterMapper.toDto(character);
     }
 
     @Override
