@@ -22,6 +22,4 @@ public class RickAndMortyApiServiceImpl implements RickAndMortyApiService {
     public List<Character> findCharacterBySearchString(String searchString) {
         return characterRepository.findCharacterBySearchString(searchString);
     }
-
-
 }
