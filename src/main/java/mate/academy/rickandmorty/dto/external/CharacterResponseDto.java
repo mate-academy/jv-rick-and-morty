@@ -5,5 +5,4 @@ public record CharacterResponseDto(
         String name,
         String status,
         String gender) {
-
 }

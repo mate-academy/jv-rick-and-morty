@@ -45,7 +45,7 @@ public class CharacterClient {
         characterRepository.saveAll(charactersList);
     }
 
-    public List<CharacterResponseDto> getCharacters() {
+    private List<CharacterResponseDto> getCharacters() {
         List<CharacterResponseDto> charactersList = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest;
