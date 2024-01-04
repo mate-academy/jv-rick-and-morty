@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.external.RickAndMortyApiResponseDto;
@@ -17,6 +18,7 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository repository;
     private final RickAndMortyApiClient apiClient;
     private final CharacterMapper characterMapper;
+    private final Random random = new Random();
 
     @Override
     public CharacterDto getCharacterById(Long id) {
@@ -28,9 +30,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public List<CharacterDto> getPatternNameCharacters(String pattern) {
+    public List<CharacterDto> getCharactersByName(String namePattern) {
         return repository
-                .getAllByNameContainsIgnoreCase(pattern)
+                .getAllByNameContainsIgnoreCase(namePattern)
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
@@ -46,5 +48,15 @@ public class CharacterServiceImpl implements CharacterService {
                 repository.save(character);
             }
         }
+    }
+
+    @Override
+    public CharacterDto getRandomCharacter() {
+        Long randomId = random.nextLong(repository.count());
+        return repository
+                .findById(randomId)
+                .map(characterMapper::toDto)
+                .orElseThrow(() ->
+                        new RuntimeException("Can't find character with id " + randomId));
     }
 }

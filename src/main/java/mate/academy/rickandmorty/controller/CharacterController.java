@@ -26,10 +26,15 @@ public class CharacterController {
         return characterService.getCharacterById(id);
     }
 
+    @GetMapping("/random")
+    public CharacterDto getRandomCharacter() {
+        return characterService.getRandomCharacter();
+    }
+
     @Operation(summary = "Get characters by name pattern",
             description = "Get a list of characters with a name matching pattern")
     @GetMapping
-    public List<CharacterDto> getPatternNameCharacters(@RequestParam String pattern) {
-        return characterService.getPatternNameCharacters(pattern);
+    public List<CharacterDto> getCharactersByName(@RequestParam String namePattern) {
+        return characterService.getCharactersByName(namePattern);
     }
 }
