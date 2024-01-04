@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RickAndMortyApiClient {
     private static final String API_URL = "https://rickandmortyapi.com/api/character/?page=%s";
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
     public RickAndMortyApiResponseDto getCharacterInfo(Long page) {
