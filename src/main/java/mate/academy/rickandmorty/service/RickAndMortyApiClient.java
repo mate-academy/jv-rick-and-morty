@@ -27,7 +27,7 @@ public class RickAndMortyApiClient {
                     .send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return objectMapper.readValue(result.body(), RickAndMortyApiResponseDto.class);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't get characters info for page " + page, e);
         }
     }
 }
