@@ -1,8 +1,9 @@
 package mate.academy.rickandmorty.dto.external;
 
+import java.util.List;
+import java.util.Map;
+
 public record CharacterResponseDto(
-        Long id,
-        String name,
-        String status,
-        String gender
-) {}
+        Map<String, Object> info,
+        List<CharacterExternalDto> results) {
+}

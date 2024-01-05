@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import mate.academy.rickandmorty.service.CharacterClient;
 import mate.academy.rickandmorty.service.CharacterService;
-import mate.academy.rickandmorty.service.RickNMortyClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CharacterServiceImpl implements CharacterService {
     private static final Random RANDOM = new Random();
-    private final RickNMortyClient client;
+    private final CharacterClient client;
     private final CharacterMapper mapper;
     private final CharacterRepository repository;
 
     @PostConstruct
     public void init() {
-        repository.saveAll(client.getAllCharacters().stream()
-                .map(mapper::toCharacter)
-                .toList());
+        var characterList = client.getAllCharacters();
+        repository.saveAll(mapper.toCharacterList(characterList));
     }
 
     @Override

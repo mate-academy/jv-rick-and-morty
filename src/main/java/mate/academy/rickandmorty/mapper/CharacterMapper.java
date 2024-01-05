@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.mapper;
 
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
+import java.util.List;
+import mate.academy.rickandmorty.dto.external.CharacterExternalDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.model.Character;
 import org.mapstruct.InjectionStrategy;
@@ -14,7 +15,9 @@ import org.mapstruct.NullValueCheckStrategy;
         implementationPackage = "<PACKAGE_NAME>.impl")
 public interface CharacterMapper {
     @Mapping(target = "externalId", source = "responseDto.id")
-    Character toCharacter(CharacterResponseDto responseDto);
+    Character toCharacter(CharacterExternalDto responseDto);
 
     CharacterDto toDto(Character character);
+
+    List<Character> toCharacterList(List<CharacterExternalDto> list);
 }

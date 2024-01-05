@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/characters")
+@RequestMapping("/characters")
 @RequiredArgsConstructor
 @Tag(name = "Rick and Morty management",
-        description = "Endpoints for managing Rick and Morty character")
+        description = "Endpoints for managing Rick and Morty characters")
 public class CharacterController {
     private final CharacterService service;
 
@@ -29,10 +29,11 @@ public class CharacterController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Search Rick and Morty character",
+    @Operation(
+            summary = "Search Rick and Morty character",
             description = """
-                     Сase-insensitive search for Rick and Morty characters by name occurrence,
-                     default sort by id""")
+                    Сase-insensitive search for Rick and Morty characters by name occurrence,
+                    default sort by id""")
     public List<CharacterDto> searchByName(@RequestParam String name,
                                            @ParameterObject @PageableDefault Pageable pageable) {
         return service.findAllByName(name, pageable);
