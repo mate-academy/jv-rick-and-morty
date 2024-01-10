@@ -1,19 +1,19 @@
 package mate.academy.rickandmorty.service;
 
+import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.internal.CharacterRequestDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
-
 @Service
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
-    CharacterRepository characterRepository;
-    CharacterMapper mapper;
+    private final CharacterRepository characterRepository;
+    private final CharacterMapper mapper;
 
     @Override
     public CharacterRequestDto getRandomCharacter() {
@@ -27,5 +27,12 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findAllByNameContainsIgnoreCase(name).stream()
                 .map(mapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public void saveAll(List<CharacterResponseDto> characterResponseDtos) {
+        for (CharacterResponseDto character : characterResponseDtos) {
+            characterRepository.save(mapper.toModel(character));
+        }
     }
 }
