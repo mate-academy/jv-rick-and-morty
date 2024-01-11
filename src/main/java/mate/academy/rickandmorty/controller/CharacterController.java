@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "", description = "")
+@Tag(name = "Rick and Morty info bureau",
+        description = "Provides information about Rick and Morty universe")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/character")
