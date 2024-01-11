@@ -1,10 +1,8 @@
 package mate.academy.rickandmorty.initialization;
 
 import jakarta.annotation.PostConstruct;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import mate.academy.rickandmorty.service.RickAndMortyApiClient;
 import org.springframework.stereotype.Component;
