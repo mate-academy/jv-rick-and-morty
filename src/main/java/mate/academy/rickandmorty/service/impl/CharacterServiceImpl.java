@@ -30,9 +30,12 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public InternalCharacterDto getRandomCharacter() {
-        Long randomId = new Random().nextLong(characterRepository.findLastId() + 1);
+        long lastId = characterRepository.findLastId() + 1;
+        long randomId = new Random().nextLong(lastId);
         Optional<Character> character = characterRepository.findById(randomId);
+
         while (character.isEmpty()) {
+            randomId = new Random().nextLong(lastId);
             character = characterRepository.findById(randomId);
         }
         return characterMapper.toDto(character.get());
@@ -40,7 +43,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<InternalCharacterDto> getCharactersByName(String name) {
-        return characterRepository.getCharactersByNameLikeIgnoreCase("%" + name + "%")
+        return characterRepository.getCharactersByNameLikeIgnoreCase(name)
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
