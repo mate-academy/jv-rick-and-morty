@@ -1,0 +1,16 @@
+Table: characters
+Columns:
+  id:
+    type: bigint
+    AI: true
+    PK: true
+  gender:
+    type: varchar(255)
+  image:
+    type: varchar(255)
+  name:
+    type: varchar(255)
+  species:
+    type: varchar(255)
+  status:
+    type: varchar(255)
