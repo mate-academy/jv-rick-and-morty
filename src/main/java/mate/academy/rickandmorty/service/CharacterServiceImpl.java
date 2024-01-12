@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.internal.CharacterRequestDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper mapper;
+    private final Random random = new Random();
 
     @Override
     public CharacterRequestDto getRandomCharacter() {
-        Random random = new Random();
         int id = random.nextInt((int) characterRepository.count());
         return mapper.toDto(characterRepository.getReferenceById((long) id));
     }
@@ -31,8 +32,9 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public void saveAll(List<CharacterResponseDto> characterResponseDtos) {
-        for (CharacterResponseDto character : characterResponseDtos) {
-            characterRepository.save(mapper.toModel(character));
-        }
+        List<Character> characters = characterResponseDtos.stream()
+                .map(mapper::toModel)
+                .toList();
+        characterRepository.saveAll(characters);
     }
 }

@@ -13,11 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RickAndMortyApiClient {
-
     private final ObjectMapper objectMapper;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public CharacterResponseDataDto getCharactersInfo(String url) {
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(url))
@@ -25,11 +24,8 @@ public class RickAndMortyApiClient {
         try {
             HttpResponse<String> response =
                     httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
 
-            CharacterResponseDataDto characterResponseDataDto =
-                    objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
-            return characterResponseDataDto;
+            return objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
