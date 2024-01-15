@@ -21,4 +21,9 @@ public class CharacterController {
     public List<CharacterDto> getCharacters(@PathVariable String name) {
         return characterHandlerService.getCharactersFromDatabase(name);
     }
+
+    @GetMapping("/random")
+    public CharacterDto getRandomCharacter() {
+        return characterHandlerService.getRandomCharacter();
+    }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import mate.academy.rickandmorty.RickAndMortyClient;
 import mate.academy.rickandmorty.dto.external.CharacterInfoDto;
@@ -32,42 +33,44 @@ public class CharacterHandlerService {
 
     @PostConstruct
     public void fetchAndStoreDataOnStartup() {
-        List<CharacterInfoDto> allCharacters = new ArrayList<>();
-
-        int totalPages = getTotalPages();
-        for (int page = 1; page <= totalPages; page++) {
-            CharacterResponseDataDto response = client.getCharactersByPage(page);
-            List<CharacterInfoDto> charactersOnPage =
-                    response != null ? response.getResults() : Collections.emptyList();
-            allCharacters.addAll(charactersOnPage);
-        }
-
-        for (CharacterInfoDto characterInfoDto : allCharacters) {
-            Optional<CharacterEntity> existingCharacter = characterRepository
-                    .findByExternalId(characterInfoDto.externalId());
-
-            if (existingCharacter.isEmpty()) {
-                CharacterEntity characterEntity = new CharacterEntity();
-                characterEntity.setExternalId(characterInfoDto.externalId());
-                characterEntity.setName(characterInfoDto.name());
-                characterEntity.setStatus(characterInfoDto.status());
-                characterEntity.setGender(characterInfoDto.gender());
-
-                characterRepository.save(characterEntity);
+        InfoDto totalPagesInfo = getTotalPages();
+        int totalPages = totalPagesInfo != null ? totalPagesInfo.pages() : 0;
+        if (totalPages > 0) {
+            List<CharacterInfoDto> allCharacters = new ArrayList<>();
+            for (int page = 1; page <= totalPages; page++) {
+                CharacterResponseDataDto response = client.getCharactersByPage(page);
+                List<CharacterInfoDto> charactersOnPage =
+                        response != null ? response.getResults() : Collections.emptyList();
+                allCharacters.addAll(charactersOnPage);
+            }
+            List<Long> externalIds = allCharacters.stream()
+                    .map(CharacterInfoDto::externalId)
+                    .collect(Collectors.toList());
+            List<CharacterEntity> existingCharacters = characterRepository
+                    .findAllByExternalIdIn(externalIds);
+            for (CharacterInfoDto characterInfoDto : allCharacters) {
+                Optional<CharacterEntity> existingCharacter = existingCharacters.stream()
+                        .filter(c -> c.getExternalId().equals(characterInfoDto.externalId()))
+                        .findFirst();
+                if (existingCharacter.isEmpty()) {
+                    CharacterEntity characterEntity = new CharacterEntity();
+                    characterEntity.setExternalId(characterInfoDto.externalId());
+                    characterEntity.setName(characterInfoDto.name());
+                    characterEntity.setStatus(characterInfoDto.status());
+                    characterEntity.setGender(characterInfoDto.gender());
+                    characterRepository.save(characterEntity);
+                }
             }
         }
     }
 
-    private int getTotalPages() {
-        CharacterResponseDataDto characterResponseData = client.getCharactersByPage(1);
-        InfoDto infoDto = characterResponseData != null ? characterResponseData.getInfo() : null;
-
-        return infoDto != null ? infoDto.pages() : 0;
+    private InfoDto getTotalPages() {
+        CharacterResponseDataDto firstPageData = client.getCharactersByPage(1);
+        return firstPageData != null ? firstPageData.getInfo() : null;
     }
 
     public List<CharacterDto> getCharactersFromDatabase(String name) {
         List<CharacterEntity> characterEntities;
-
         if (name != null && !name.isEmpty()) {
             characterEntities = characterRepository.findByNameContainingIgnoreCase(name);
         } else {
@@ -84,38 +87,19 @@ public class CharacterHandlerService {
                 .collect(Collectors.toList());
     }
 
-    public List<CharacterDto> getCharacter(String name) {
-        List<CharacterInfoDto> characters = client.getCharacters(name);
-
-        return characters.stream().map(c -> {
-            Optional<CharacterEntity> existingCharacter = characterRepository
-                    .findByExternalId(c.externalId());
-
-            if (existingCharacter.isPresent()) {
-                return new CharacterDto(
-                        existingCharacter.get().getId(),
-                        existingCharacter.get().getExternalId(),
-                        existingCharacter.get().getName(),
-                        existingCharacter.get().getStatus(),
-                        existingCharacter.get().getGender()
-                );
-            }
-
-            CharacterEntity characterEntity = new CharacterEntity();
-            characterEntity.setExternalId(c.externalId());
-            characterEntity.setName(c.name());
-            characterEntity.setStatus(c.status());
-            characterEntity.setGender(c.gender());
-
-            characterEntity = characterRepository.save(characterEntity);
-
-            return new CharacterDto(
-                    characterEntity.getId(),
-                    characterEntity.getExternalId(),
-                    characterEntity.getName(),
-                    characterEntity.getStatus(),
-                    characterEntity.getGender()
-            );
-        }).toList();
+    public CharacterDto getRandomCharacter() {
+        List<CharacterEntity> allCharacters = characterRepository.findAll();
+        if (allCharacters.isEmpty()) {
+            return null;
+        }
+        int randomIndex = new Random().nextInt(allCharacters.size());
+        CharacterEntity randomCharacterEntity = allCharacters.get(randomIndex);
+        return new CharacterDto(
+                randomCharacterEntity.getId(),
+                randomCharacterEntity.getExternalId(),
+                randomCharacterEntity.getName(),
+                randomCharacterEntity.getStatus(),
+                randomCharacterEntity.getGender()
+        );
     }
 }
