@@ -19,6 +19,6 @@ public class CharacterController {
 
     @GetMapping("/{name}")
     public List<CharacterDto> getCharacters(@PathVariable String name) {
-        return characterHandlerService.getCharacter(name);
+        return characterHandlerService.getCharactersFromDatabase(name);
     }
 }

@@ -44,4 +44,27 @@ public class RickAndMortyClient {
             throw new RuntimeException(e);
         }
     }
+
+    public CharacterResponseDataDto getCharactersByPage(int page) {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        String url = String.format("https://rickandmortyapi.com/api/character/?page=%d", page);
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(
+                    httpRequest,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+            return objectMapper.readValue(
+                    response.body(),
+                    CharacterResponseDataDto.class
+            );
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
