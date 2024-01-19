@@ -26,9 +26,11 @@ public class CharacterServiceImpl implements CharacterService {
                 () -> new RuntimeException("Can't generate random character")));
     }
 
-    private int generateRandomId() {
-        int elementsAmount = characterRepository.findAll().size();
-        return new Random().nextInt(1, elementsAmount);
+    @Override
+    public List<CharacterWikiDto> searchAllCharactersByNameArgument(String nameArgument) {
+        return characterRepository.findAllByNameContaining(nameArgument).stream()
+                .map(characterMapper::toDto)
+                .toList();
     }
 
     @PostConstruct
@@ -38,5 +40,10 @@ public class CharacterServiceImpl implements CharacterService {
                 .toList();
 
         characterRepository.saveAll(characters);
+    }
+
+    private int generateRandomId() {
+        int elementsAmount = characterRepository.findAll().size();
+        return new Random().nextInt(1, elementsAmount);
     }
 }
