@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CharacterMapper {
+    //TODO: replace mappers to mapstruct
 
     public Character toModel(CharacterResultsDto resultsDto) {
         return Character.builder()
