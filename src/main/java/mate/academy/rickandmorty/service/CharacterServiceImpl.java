@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper characterMapper;
     private final CharacterRepository characterRepository;
-    private final RickAndMortyClient rickAndMortyClient;
+    private final Random random = new Random();
 
     @Override
     public void saveAll(List<CharacterResponseDto> responseDtoList) {
@@ -29,7 +29,6 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public CharacterDto getRandomCharacter() {
         long count = characterRepository.count();
-        Random random = new Random();
         Character randomCharacter = characterRepository.findById(random.nextLong(count))
                 .orElseThrow(() -> new RuntimeException("Can't find character"));
         return characterMapper.toDto(randomCharacter);
@@ -41,10 +40,5 @@ public class CharacterServiceImpl implements CharacterService {
         return characterList.stream()
                 .map(characterMapper::toDto)
                 .toList();
-    }
-
-    @PostConstruct
-    public void saveDataToDb() {
-        saveAll(rickAndMortyClient.getAllCharacters());
     }
 }
