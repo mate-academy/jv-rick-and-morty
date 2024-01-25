@@ -10,20 +10,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CharacterSaverToDataBase {
+public class CharacterServiceClass {
     private final CharactersApiClient charactersApiClient;
     private final CharacterMapper characterMapper;
     private final CharactersRepository charactersRepository;
+
+    public List<Character> saveCharacters(
+            List<CharacterFromExternalApiDto> characterFromExternalApiDtoList
+    ) {
+        List<Character> characterList =
+                convertListOfExternalDtoToModel(characterFromExternalApiDtoList);
+        charactersRepository.saveAll(characterList);
+        return characterList;
+    }
 
     public List<Character> convertListOfExternalDtoToModel(
             List<CharacterFromExternalApiDto> characterFromExternalApiDtoList) {
         return characterFromExternalApiDtoList.stream()
                 .map(characterMapper::toModel)
                 .toList();
-    }
-
-    public List<Character> saveCharacterModelListToDataBase(List<Character> characterList) {
-        charactersRepository.saveAll(characterList);
-        return characterList;
     }
 }

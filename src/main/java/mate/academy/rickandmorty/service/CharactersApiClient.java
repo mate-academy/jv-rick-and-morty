@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterFromExternalApiDto;
@@ -21,19 +22,34 @@ public class CharactersApiClient {
     public List<CharacterFromExternalApiDto> getAllCharactersFromApi() {
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(URL))
-                .build();
+        int perPage = 20;
+        int currentPage = 1;
+        List<CharacterFromExternalApiDto> allCharacters = new ArrayList<>();
 
-        try {
-            HttpResponse<String> response = httpClient.send(
-                    httpRequest, HttpResponse.BodyHandlers.ofString());
-            CharacterResponseDataDto dataDto = objectMapper.readValue(
-                    response.body(), CharacterResponseDataDto.class);
-            return dataDto.getResults();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        while (true) {
+            String urlWithPagination = URL + "?page=" + currentPage + "&per_page=" + perPage;
+
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(urlWithPagination))
+                    .build();
+
+            try {
+                HttpResponse<String> response = httpClient.send(
+                        httpRequest, HttpResponse.BodyHandlers.ofString());
+                CharacterResponseDataDto dataDto = objectMapper.readValue(
+                        response.body(), CharacterResponseDataDto.class);
+                allCharacters.addAll(dataDto.getResults());
+
+                if (dataDto.getResults().size() < perPage) {
+                    break;
+                }
+
+                currentPage++;
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return allCharacters;
     }
 }

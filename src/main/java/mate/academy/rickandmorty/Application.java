@@ -4,8 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterFromExternalApiDto;
-import mate.academy.rickandmorty.model.Character;
-import mate.academy.rickandmorty.service.CharacterSaverToDataBase;
+import mate.academy.rickandmorty.service.CharacterServiceClass;
 import mate.academy.rickandmorty.service.CharactersApiClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class Application {
     private final CharactersApiClient charactersApiClient;
-    private final CharacterSaverToDataBase characterSaverToDataBase;
+    private final CharacterServiceClass characterServiceClass;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -26,9 +25,6 @@ public class Application {
         List<CharacterFromExternalApiDto> allCharactersFromApi =
                 charactersApiClient.getAllCharactersFromApi();
 
-        List<Character> characters = characterSaverToDataBase
-                .convertListOfExternalDtoToModel(allCharactersFromApi);
-
-        characterSaverToDataBase.saveCharacterModelListToDataBase(characters);
+        characterServiceClass.saveCharacters(allCharactersFromApi);
     }
 }
