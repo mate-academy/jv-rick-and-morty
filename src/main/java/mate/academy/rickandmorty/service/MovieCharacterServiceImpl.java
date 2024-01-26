@@ -26,10 +26,9 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
 
     @Override
     public void saveAllMovieCharacters() {
-        ApiResponseDto responseDto;
         String currentUrl = STARTING_URL;
         while (currentUrl != null) {
-            responseDto = movieCharacterClient.getResponseDto(currentUrl);
+            ApiResponseDto responseDto = movieCharacterClient.getResponseDto(currentUrl);
             responseDto.getResults().stream()
                     .map(movieCharacterMapper::toModel)
                     .forEach(movieCharacterRepository::save);
