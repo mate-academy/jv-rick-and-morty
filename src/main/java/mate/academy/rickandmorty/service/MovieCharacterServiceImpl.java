@@ -41,7 +41,8 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
         Long randomId = new Random().nextLong(movieCharacterRepository.count() + 1);
         return movieCharacterRepository.findById(randomId)
                 .map(movieCharacterMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Something went wrong. Try again!")
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Something went wrong. Try again!")
         );
     }
 
