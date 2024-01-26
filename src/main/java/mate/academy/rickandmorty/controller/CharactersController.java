@@ -26,7 +26,7 @@ public class CharactersController {
 
     @Operation(summary = "Get characters by name",
             description = "Get a list of characters that have the specified row in their name ")
-    @GetMapping("by-name")
+    @GetMapping("/by-name")
     private List<CharacterDto> findByName(@RequestParam String name) {
         return characterService.findByName(name);
     }
