@@ -2,6 +2,7 @@ package mate.academy.rickandmorty.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterFromExternalApiDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.mappers.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -24,6 +25,23 @@ public class CharacterServiceImpl implements CharacterService {
         List<Character> matchedCharacterList = charactersRepository.findByName(name);
         return matchedCharacterList.stream()
                 .map(characterMapper::toDto)
+                .toList();
+    }
+
+    public List<Character> saveCharacters(
+            List<CharacterFromExternalApiDto> characterFromExternalApiDtoList
+    ) {
+        List<Character> characterList =
+                convertListOfExternalDtoToModel(characterFromExternalApiDtoList);
+        charactersRepository.saveAll(characterList);
+        return characterList;
+    }
+
+    public List<Character> convertListOfExternalDtoToModel(
+            List<CharacterFromExternalApiDto> characterFromExternalApiDtoList
+    ) {
+        return characterFromExternalApiDtoList.stream()
+                .map(characterMapper::toModel)
                 .toList();
     }
 }

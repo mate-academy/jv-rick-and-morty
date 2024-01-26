@@ -24,6 +24,7 @@ public class CharactersApiClient {
 
         int perPage = 20;
         int currentPage = 1;
+        int numberOfPages;
         List<CharacterFromExternalApiDto> allCharacters = new ArrayList<>();
 
         while (true) {
@@ -39,9 +40,11 @@ public class CharactersApiClient {
                         httpRequest, HttpResponse.BodyHandlers.ofString());
                 CharacterResponseDataDto dataDto = objectMapper.readValue(
                         response.body(), CharacterResponseDataDto.class);
-                allCharacters.addAll(dataDto.getResults());
 
-                if (dataDto.getResults().size() < perPage) {
+                allCharacters.addAll(dataDto.getResults());
+                numberOfPages = dataDto.getInfo().getNumberOfPages();
+
+                if (currentPage == numberOfPages) {
                     break;
                 }
 
