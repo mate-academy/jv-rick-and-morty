@@ -18,6 +18,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
     private final MovieCharacterClient movieCharacterClient;
     private final MovieCharacterRepository movieCharacterRepository;
     private final MovieCharacterMapper movieCharacterMapper;
+    private Long randomId;
 
     @PostConstruct
     public void init() {
@@ -38,7 +39,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
 
     @Override
     public MovieCharacterDto getRandomCharacter() {
-        Long randomId = new Random().nextLong(movieCharacterRepository.count() + 1);
+        randomId = new Random().nextLong(movieCharacterRepository.count() + 1);
         return movieCharacterRepository.findById(randomId)
                 .map(movieCharacterMapper::toDto)
                 .orElseThrow(
