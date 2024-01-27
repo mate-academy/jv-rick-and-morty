@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.controller;
+package mate.academy.rickandmorty.controller.external;
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/character")
-public class CharacterController {
+@RequestMapping("/external/character")
+public class ExternalCharacterController {
     private final CharacterClient characterClient;
 
     @GetMapping

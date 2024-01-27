@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.controller;
+package mate.academy.rickandmorty.controller.external;
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/location")
-public class LocationController {
+@RequestMapping("/external/location")
+public class ExternalLocationController {
     private final LocationClient locationClient;
 
     @GetMapping

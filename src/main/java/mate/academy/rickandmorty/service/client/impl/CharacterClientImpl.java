@@ -21,6 +21,14 @@ public class CharacterClientImpl implements CharacterClient {
     private final HttpResponseStringService httpResponseStringService;
 
     @Override
+    public CharactersDto getCharactersByPage(Integer page)
+            throws IOException, InterruptedException {
+        String url = BASE_URL + "/?page=" + page;
+        return objectMapper.readValue(httpResponseStringService.getHttpResponse(url).body(),
+                CharactersDto.class);
+    }
+
+    @Override
     public CharactersDto getCharacters() throws IOException, InterruptedException {
         return objectMapper.readValue(httpResponseStringService.getHttpResponse(BASE_URL).body(),
                 CharactersDto.class);
