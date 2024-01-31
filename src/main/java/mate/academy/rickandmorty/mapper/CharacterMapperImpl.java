@@ -2,7 +2,9 @@ package mate.academy.rickandmorty.mapper;
 
 import mate.academy.rickandmorty.dto.CharacterApiDto;
 import mate.academy.rickandmorty.model.Character;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CharacterMapperImpl implements CharacterMapper {
     @Override
     public CharacterApiDto toDto(Character character) {
