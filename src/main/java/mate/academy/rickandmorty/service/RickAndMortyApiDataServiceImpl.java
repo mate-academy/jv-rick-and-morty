@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterApiDto;
 import mate.academy.rickandmorty.dto.CharacterResultResponseDto;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
@@ -18,27 +19,39 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RickAndMortyApiDataServiceImpl implements RickAndMortyApiDataService {
     private static final String URL = "https://rickandmortyapi.com/api/character";
+    private static final int PAGE_AMOUNT = 42;
     private final CharacterRepository characterRepository;
+    private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
 
     @Override
     public void fetchDataAndSaveToDatabase() {
-        HttpClient httpClient = HttpClient.newHttpClient();
+        try {
+            for (int i = 1; i <= PAGE_AMOUNT; i++) {
+                characterRepository.save(characterMapper.toModel(getCharactersByPage(i)));
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Could not save data to the DB!", e);
+        }
+    }
 
+    private CharacterApiDto getCharactersByPage(Integer page)
+            throws IOException, InterruptedException {
+        String url = URL + "/?page=" + page;
+        return objectMapper.readValue(getResponse(url).body(),
+                CharacterApiDto.class);
+    }
+
+    private HttpResponse<String> getResponse(String url) {
+        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .build();
         try {
-            HttpResponse<String> response = httpClient.send(httpRequest,
-                    HttpResponse.BodyHandlers.ofString());
-
-            CharacterResultResponseDto responseDto = objectMapper.readValue(
-                    response.body(), CharacterResultResponseDto.class);
-            List<Character> characters = convertCharacterApiDtosToModelList(responseDto);
-            characterRepository.saveAll(characters);
+            return httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not send reply back!", e);
         }
     }
 

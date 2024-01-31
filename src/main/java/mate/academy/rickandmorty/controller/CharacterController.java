@@ -2,6 +2,7 @@ package mate.academy.rickandmorty.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterApiDto;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.RickAndMortyApiService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CharacterController {
 
     @GetMapping("/random")
     @ResponseStatus(HttpStatus.OK)
-    public Character getRandomCharacter() {
+    public CharacterApiDto getRandomCharacter() {
         return rickAndMortyApiService.getRandomCharacter();
     }
 
