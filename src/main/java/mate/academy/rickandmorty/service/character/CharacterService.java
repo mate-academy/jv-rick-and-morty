@@ -7,6 +7,4 @@ public interface CharacterService {
     CharacterDto getRandomCharacter();
 
     List<CharacterDto> findByName(String name);
-
-    void saveAllCharacters();
 }

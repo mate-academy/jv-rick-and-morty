@@ -16,24 +16,29 @@ public class CharacterClient {
     private static final String URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
 
-    public CharacterResponseDataDto getCharacters() {
-        HttpClient client = HttpClient.newHttpClient();
+    public CharacterResponseDataDto getAllCharacters() {
+        CharacterResponseDataDto allCharacters = new CharacterResponseDataDto();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(URL))
-                .build();
+        for (int currentPage = 1; currentPage <= 42; currentPage++) {
+            HttpClient client = HttpClient.newHttpClient();
 
-        try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(URL + "?page=" + currentPage))
+                    .build();
 
-            CharacterResponseDataDto characterResponseDataDto = objectMapper
-                    .readValue(response.body(), CharacterResponseDataDto.class);
+            try {
+                HttpResponse<String> response = client.send(request,
+                        HttpResponse.BodyHandlers.ofString());
+                CharacterResponseDataDto pageData = objectMapper
+                        .readValue(response.body(), CharacterResponseDataDto.class);
 
-            return characterResponseDataDto;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+                allCharacters.getResults().addAll(pageData.getResults());
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return allCharacters;
     }
 }
+

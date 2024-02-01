@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.character.CharacterDto;
 import mate.academy.rickandmorty.mapper.character.CharacterMapper;
-import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.character.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterClient;
 import org.springframework.stereotype.Component;
@@ -27,15 +26,5 @@ public class CharacterServiceImpl implements CharacterService {
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
-    }
-
-    @Override
-    public void saveAllCharacters() {
-        List<Character> characters = characterClient.getCharacters()
-                .getResults()
-                .stream()
-                .map(characterMapper::toModel)
-                .toList();
-        characterRepository.saveAll(characters);
     }
 }
