@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CharacterMapperImpl implements CharacterMapper {
-
     @Override
     public CharacterDto toDto(Character character) {
         if (character == null) {
@@ -31,13 +30,13 @@ public class CharacterMapperImpl implements CharacterMapper {
             return null;
         }
 
-        Character character1 = new Character();
+        Character newCharacter = new Character();
 
-        character1.setExternalId(character.getExternalId());
-        character1.setName(character.getName());
-        character1.setStatus(character.getStatus());
-        character1.setGender(character.getGender());
+        newCharacter.setExternalId(character.getExternalId());
+        newCharacter.setName(character.getName());
+        newCharacter.setStatus(character.getStatus());
+        newCharacter.setGender(character.getGender());
 
-        return character1;
+        return newCharacter;
     }
 }

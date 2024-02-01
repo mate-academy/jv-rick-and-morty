@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service.character;
 
 import java.util.List;
-import java.util.Random;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.character.CharacterDto;
 import mate.academy.rickandmorty.mapper.character.CharacterMapper;
@@ -18,9 +17,8 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterClient characterClient;
 
     @Override
-    public CharacterDto randomCharacter() {
-        Long id = new Random().nextLong(20) + 1;
-        return characterMapper.toDto(characterRepository.findById(id).get());
+    public CharacterDto getRandomCharacter() {
+        return characterMapper.toDto(characterRepository.getRandomCharacter());
     }
 
     @Override

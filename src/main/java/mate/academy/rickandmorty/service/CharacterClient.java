@@ -31,7 +31,6 @@ public class CharacterClient {
             CharacterResponseDataDto characterResponseDataDto = objectMapper
                     .readValue(response.body(), CharacterResponseDataDto.class);
 
-            System.out.println(characterResponseDataDto);
             return characterResponseDataDto;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

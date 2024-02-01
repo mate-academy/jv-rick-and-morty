@@ -26,7 +26,7 @@ public class CharacterController {
 
     @GetMapping("/random")
     public CharacterDto getRandom() {
-        return characterService.randomCharacter();
+        return characterService.getRandomCharacter();
     }
 
     @GetMapping("/filter")

@@ -4,7 +4,7 @@ import java.util.List;
 import mate.academy.rickandmorty.dto.character.CharacterDto;
 
 public interface CharacterService {
-    CharacterDto randomCharacter();
+    CharacterDto getRandomCharacter();
 
     List<CharacterDto> findByName(String name);
 

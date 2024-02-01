@@ -10,4 +10,7 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     @Query("SELECT c FROM Character c WHERE LOWER(c.name)"
             + " LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<Character> findByNameContainingIgnoreCase(@Param("searchTerm") String searchTerm);
+
+    @Query("FROM Character ORDER BY RAND() LIMIT 1")
+    Character getRandomCharacter();
 }
