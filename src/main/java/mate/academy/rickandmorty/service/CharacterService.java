@@ -1,10 +1,10 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.model.Character;
+import mate.academy.rickandmorty.dto.CharacterResponseDto;
 
 public interface CharacterService {
-    Character getRandomCharacter();
+    CharacterResponseDto getRandomCharacter();
 
-    List<Character> getCharactersByNamePart(String namePart);
+    List<CharacterResponseDto> getCharactersByNamePart(String namePart);
 }
