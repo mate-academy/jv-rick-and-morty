@@ -2,7 +2,6 @@ package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
 import java.util.Random;
-
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
@@ -15,6 +14,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     private final CharacterRepository characterRepository;
     private final Random random;
+
     @Override
     public Character getRandomCharacter() {
         long characterNumber = characterRepository.count();
