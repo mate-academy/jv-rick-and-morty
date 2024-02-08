@@ -23,7 +23,7 @@ public class CharacterController {
     @Operation(summary = "Get random character", description = "Randomly generates a wiki about "
             + "one character in the universe the animated series Rick & Morty.")
     @GetMapping("/randon")
-    public Character test() {
+    public Character getRandomCharacter() {
         apiDataServiceImpl.getDataFromApi();
         return characterService.getRandomCharacter();
     }
