@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.dto;
+package mate.academy.rickandmorty.dto.internal;
 
 import java.util.List;
 

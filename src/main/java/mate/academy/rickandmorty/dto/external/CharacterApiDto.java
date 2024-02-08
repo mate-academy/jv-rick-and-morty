@@ -1,10 +1,10 @@
-package mate.academy.rickandmorty.dto;
+package mate.academy.rickandmorty.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class RequestApiDto {
+public class CharacterApiDto {
     @JsonProperty("id")
     private Long externalId;
     private String name;
