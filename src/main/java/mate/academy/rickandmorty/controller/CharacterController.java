@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/characters")
 @RestController
-public class Controller {
+public class CharacterController {
     private final ApiDataServiceImpl apiDataServiceImpl;
     private final CharacterService characterService;
 
