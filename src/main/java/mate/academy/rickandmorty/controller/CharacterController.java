@@ -31,7 +31,7 @@ public class CharacterController {
     @Operation(summary = "Search string", description = "The request takes a string as an argument,"
             + " and returns a list of all characters whose name contains the search string")
     @GetMapping("/search/{searchString}")
-    public List<Character> testSearch(@PathVariable String searchString) {
+    public List<Character> getAllCharactersBySearchString(@PathVariable String searchString) {
         apiDataServiceImpl.getDataFromApi();
         return characterService.getCharactersBySearchString(searchString);
     }
