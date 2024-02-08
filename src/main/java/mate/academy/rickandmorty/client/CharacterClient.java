@@ -1,15 +1,9 @@
 package mate.academy.rickandmorty.client;
 
 import static java.net.http.HttpClient.newHttpClient;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterApiDto;
-import mate.academy.rickandmorty.dto.CharacterListApiDto;
-import mate.academy.rickandmorty.exception.ThirdPartyApiException;
-import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.repository.CharacterRepository;
-import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -17,6 +11,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterApiDto;
+import mate.academy.rickandmorty.dto.CharacterListApiDto;
+import mate.academy.rickandmorty.exception.ThirdPartyApiException;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

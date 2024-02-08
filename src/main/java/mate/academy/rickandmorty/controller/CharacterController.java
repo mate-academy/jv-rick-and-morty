@@ -2,6 +2,7 @@ package mate.academy.rickandmorty.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Tag(name = "Character management", description = "Endpoints for managing characters")
 @RequiredArgsConstructor
@@ -25,10 +24,11 @@ public class CharacterController {
         return characterService.getRandomCharacter();
     }
 
-    @Operation(summary = "Get Characters By name", description = "Get list of characters by they name")
+    @Operation(summary = "Get Characters By name",
+            description = "Get list of characters by they name")
     @GetMapping("/{name}")
     public List<CharacterDto> getByName(@PathVariable String name) {
-        return  characterService.getByName(name);
+        return characterService.getByName(name);
     }
 
 }
