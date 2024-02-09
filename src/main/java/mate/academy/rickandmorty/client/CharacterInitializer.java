@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.client;
 
-import java.util.List;
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterFromApiDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;

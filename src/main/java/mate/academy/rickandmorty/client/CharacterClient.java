@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,8 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterFromApiDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
-import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +21,6 @@ public class CharacterClient {
     private static final int AVAILABLE_PAGES_COUNT = 42;
 
     private final ObjectMapper objectMapper;
-
 
     public List<CharacterFromApiDto> getAllCharacters() {
         List<CharacterFromApiDto> allCharacters = new ArrayList<>();
