@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterInternalDto;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.model.RickAndMortyChars;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Service;
@@ -24,18 +24,18 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterInternalDto getRandomCharacter() {
         long numberOfAvailableCharacters = characterRepository.count();
         long randomCharactersId = random.nextLong(numberOfAvailableCharacters);
-        RickAndMortyChars rickAndMortyChars = characterRepository
+        Character character = characterRepository
                 .findById(randomCharactersId)
                 .orElseThrow(
                         () -> new EntityNotFoundException(CANT_FIND_CHARACTER_BY_ID
                                 + randomCharactersId)
                 );
-        return characterMapper.toCharacterDto(rickAndMortyChars);
+        return characterMapper.toCharacterDto(character);
     }
 
     @Override
     public List<CharacterInternalDto> findCharacterByName(String name) {
-        return characterRepository.findRickAndMortyCharsByNameIsContaining(name).stream()
+        return characterRepository.findRickAndMortyCharsByNameIsContainingIgnoreCase(name).stream()
                 .map(characterMapper::toCharacterDto)
                 .toList();
     }

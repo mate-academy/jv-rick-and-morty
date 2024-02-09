@@ -19,11 +19,12 @@ import org.springframework.stereotype.Component;
 public class RickAndMortyApiClient {
     private static final String PAGEABLE_URL = "https://rickandmortyapi.com/api/character/?page=%s";
     private static final String CHARACTER_NOT_FOUND_MSG = "Character not found.";
+    private static final int FIRST_PAGE = 1;
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public List<CharacterResponseDto> getAllCharacters() {
-        int totalPages = getCharactersFromPage(1).getInfo().getPages();
+        int totalPages = getCharactersFromPage(FIRST_PAGE).getInfo().getPages();
         return getAllPages(totalPages)
                 .stream()
                 .flatMap(page -> page.getResults().stream())
@@ -31,7 +32,7 @@ public class RickAndMortyApiClient {
     }
 
     private List<CharacterResponseInfoDto> getAllPages(int totalPages) {
-        return IntStream.rangeClosed(1, totalPages)
+        return IntStream.rangeClosed(FIRST_PAGE, totalPages)
                 .mapToObj(this::getCharactersFromPage)
                 .collect(Collectors.toList());
     }

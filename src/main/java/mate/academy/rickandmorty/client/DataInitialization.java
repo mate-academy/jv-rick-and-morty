@@ -4,7 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
-import mate.academy.rickandmorty.model.RickAndMortyChars;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class DataInitialization {
 
     @PostConstruct
     private void init() {
-        List<RickAndMortyChars> characterFromRickAndMorty =
+        List<Character> characterFromRickAndMorty =
                 rickAndMortyApiClient.getAllCharacters().stream()
                         .map(characterMapper::toCharacterModel)
                         .toList();
