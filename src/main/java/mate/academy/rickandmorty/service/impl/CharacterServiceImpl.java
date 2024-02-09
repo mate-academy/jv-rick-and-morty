@@ -31,7 +31,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterResponseDto> getCharactersByNamePart(String namePart) {
-        return characterRepository.findAllByNameLikeIgnoreCase(namePart)
+        return characterRepository.findAllByNameContainingIgnoreCase(namePart)
                 .stream().map(characterMapper::toInternalResponseDto)
                 .toList();
     }

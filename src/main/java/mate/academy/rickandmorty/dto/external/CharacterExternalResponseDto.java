@@ -11,7 +11,7 @@ public class CharacterExternalResponseDto {
     private String species;
     private String type;
     private String gender;
-    private OriginDto origin;
+    private LocationDto origin;
     private LocationDto location;
     private String image;
     private List<String> episode;
