@@ -24,18 +24,7 @@ public class CharacterClient {
     private static final int AVAILABLE_PAGES_COUNT = 42;
 
     private final ObjectMapper objectMapper;
-    private final CharacterRepository characterRepository;
-    private final CharacterMapper characterMapper;
 
-    @PostConstruct
-    public void init() {
-        List<CharacterFromApiDto> allCharacters = getAllCharacters();
-        characterRepository.saveAll(
-                allCharacters.stream()
-                        .map(characterMapper::toModel)
-                        .toList()
-        );
-    }
 
     public List<CharacterFromApiDto> getAllCharacters() {
         List<CharacterFromApiDto> allCharacters = new ArrayList<>();
