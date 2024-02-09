@@ -11,5 +11,5 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     @Query("FROM Character ORDER BY RAND() LIMIT 1")
     Character getRandomCharacter();
 
-    List<Character> findAllByName(String name);
+    List<Character> findAllByNameContainingIgnoreCase(String name);
 }

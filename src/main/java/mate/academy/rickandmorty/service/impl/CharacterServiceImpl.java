@@ -21,7 +21,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterDto> getCharacterListByName(String name) {
-        return characterRepository.findAllByName(name).stream()
+        return characterRepository.findAllByNameContainingIgnoreCase(name).stream()
                 .map(characterMapper::toDto)
                 .toList();
     }
