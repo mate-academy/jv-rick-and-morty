@@ -34,7 +34,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public List<CharacterDto> getByName(String name) {
         return characterMapper.toDtos(
-                characterRepository.findAllByNameContains(name)
+                characterRepository.findAllByNameContainsIgnoreCase(name)
         );
     }
 }

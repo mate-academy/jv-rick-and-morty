@@ -25,7 +25,7 @@ public class CharacterController {
     }
 
     @Operation(summary = "Get Characters By name",
-            description = "Get list of characters by they name")
+            description = "Get list of characters, that contains name ignoring the case")
     @GetMapping("/{name}")
     public List<CharacterDto> getByName(@PathVariable String name) {
         return characterService.getByName(name);
