@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     private static final Random random = new Random();
+    private static Long size_of_character;
 
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
+    @PostConstruct
+    public void init() {
+        size_of_character = characterRepository.countAll();
+    }
+
     @Override
     public CharacterDto getRandomCharacter() {
-        long size = characterRepository.countAll();
-        long randomNum = random.nextLong(size + 1);
+        long randomNum = random.nextLong(size_of_character + 1);
         return characterMapper.toDto(
                 characterRepository.findById(
                         randomNum
