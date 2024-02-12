@@ -32,7 +32,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterInternalResponseDto> getCharactersByName(String name) {
-        return characterRepository.getCharactersByName(name).stream()
+        return characterRepository.findAllByNameContainingIgnoreCase(name).stream()
                 .map(characterMapper::toDto)
                 .toList();
     }

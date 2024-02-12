@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,10 +16,8 @@ import org.springframework.stereotype.Component;
 public class RickAndMortyClient {
     public static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
-    private final CharacterService characterService;
 
-    @PostConstruct
-    public void initializeCharacters() {
+    public CharacterResponseDataDto getCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -28,14 +26,11 @@ public class RickAndMortyClient {
                 .build();
 
         try {
-            HttpResponse<String> response
-                    = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(
+                    request, HttpResponse.BodyHandlers.ofString());
 
-            CharacterResponseDataDto dtos = objectMapper.readValue(
-                    response.body(), CharacterResponseDataDto.class
-            );
-
-            characterService.saveAll(dtos.results());
+            return objectMapper.readValue(
+                    response.body(), CharacterResponseDataDto.class);
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

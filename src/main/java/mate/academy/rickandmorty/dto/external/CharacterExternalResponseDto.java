@@ -13,7 +13,7 @@ public class CharacterExternalResponseDto {
     private String type;
     private String gender;
     private OriginResponseDto origin;
-    private LocationResponseDto location;
+    private OriginResponseDto location;
     private String image;
     private ArrayList<String> episode;
     private String url;
