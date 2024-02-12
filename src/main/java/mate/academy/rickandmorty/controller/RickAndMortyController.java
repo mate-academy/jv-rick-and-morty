@@ -24,7 +24,7 @@ public class RickAndMortyController {
         return characterService.getRandomCharacter();
     }
 
-    @Operation(summary = "Search a character")
+    @Operation(summary = "Search a character by name ignoring case")
     @GetMapping("/by-name")
     public List<CharacterInternalDto> getCharactersByName(@RequestParam String name) {
         return characterService.findCharacterByName(name);

@@ -1,7 +1,8 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterInternalDto;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
@@ -18,12 +19,16 @@ public class CharacterServiceImpl implements CharacterService {
 
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
-    private final Random random = new Random();
+    private long numberOfAvailableCharacters;
+
+    @PostConstruct
+    private void init() {
+        this.numberOfAvailableCharacters = characterRepository.count();
+    }
 
     @Override
     public CharacterInternalDto getRandomCharacter() {
-        long numberOfAvailableCharacters = characterRepository.count();
-        long randomCharactersId = random.nextLong(numberOfAvailableCharacters);
+        long randomCharactersId = ThreadLocalRandom.current().nextLong(numberOfAvailableCharacters);
         Character character = characterRepository
                 .findById(randomCharactersId)
                 .orElseThrow(
