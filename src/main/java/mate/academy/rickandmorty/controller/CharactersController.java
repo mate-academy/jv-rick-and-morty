@@ -25,7 +25,7 @@ public class CharactersController {
         return characterService.getRandom();
     }
 
-    @GetMapping("/by_name")
+    @GetMapping
     @Operation(summary = "Get Character by name",
             description = "Get Character by name like")
     public List<CharacterDto> getByName(@RequestParam String name) {

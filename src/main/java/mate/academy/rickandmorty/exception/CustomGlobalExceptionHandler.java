@@ -19,6 +19,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleCustomException(EntityNotFoundException ex,
+                                                        WebRequest request) {
+        return getObjectResponseEntity(ex.getMessage(), HttpStatus.NO_CONTENT);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -43,12 +49,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             return field + " " + message;
         }
         return e.getDefaultMessage();
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> handleCustomException(EntityNotFoundException ex,
-                                                        WebRequest request) {
-        return getObjectResponseEntity(ex.getMessage(), HttpStatus.NO_CONTENT);
     }
 
     private ResponseEntity<Object> getObjectResponseEntity(String message,
