@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: rename-externalId-column
+      author: Vitalii
+      changes:
+        - renameColumn:
+            tableName: characters
+            oldColumnName: externalId
+            newColumnName: external_id
+            columnDataType: bigint
