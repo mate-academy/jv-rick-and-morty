@@ -30,4 +30,13 @@ public class CharacterServiceImpl implements CharacterService {
                         .orElseThrow(() -> new RuntimeException(EXC_MSG_CANT_FIND + randomId));
         return mapper.toDto(character);
     }
+
+    @Override
+    public List<CharacterInternalDto> getAllByNamePart(String namePart) {
+        return characterRepository
+                .findAllByNameContainingIgnoreCase(namePart)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
 }

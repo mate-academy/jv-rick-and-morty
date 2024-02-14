@@ -8,4 +8,6 @@ public interface CharacterService {
     void saveAll(List<Character> characters);
 
     CharacterInternalDto getRandomCharacter();
+
+    List<CharacterInternalDto> getAllByNamePart(String namePart);
 }
