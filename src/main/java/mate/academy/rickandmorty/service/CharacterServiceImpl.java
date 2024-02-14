@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     private static final String EXC_MSG_CANT_FIND = "Can't find character with id ";
-    private final Random random = new Random();
+    private final Random random;
     private final CharacterRepository characterRepository;
     private final CharacterMapper mapper;
 
