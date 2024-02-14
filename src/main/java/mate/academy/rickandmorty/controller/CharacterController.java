@@ -20,13 +20,19 @@ public class CharacterController {
     private final CharacterService characterService;
 
     @GetMapping("/random")
-    @Operation(summary = "Get a random character", description = "Get a random character")
+    @Operation(
+            summary = "Get a random character",
+            description = "Get a random character"
+    )
     public CharacterDto getRandomCharacter() {
         return characterService.findRandomCharacter();
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Search characters by name", description = "Search characters by name")
+    @Operation(
+            summary = "Search characters by name",
+            description = "Search characters by name containing ignore case"
+    )
     public List<CharacterDto> getCharactersByName(
             @RequestParam String name,
             Pageable pageable

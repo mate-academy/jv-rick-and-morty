@@ -18,10 +18,15 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
     private final Random random;
+    private Long characterCount;
 
     @Override
     public CharacterDto findRandomCharacter() {
-        Long randomId = random.nextLong(characterRepository.count()) + 1;
+        if (characterCount == null) {
+            characterCount = characterRepository.count();
+        }
+
+        Long randomId = random.nextLong(characterCount) + 1;
 
         Character character = characterRepository.findById(randomId).orElseThrow(
                 () -> new EntityNotFoundException("Can't find character")
