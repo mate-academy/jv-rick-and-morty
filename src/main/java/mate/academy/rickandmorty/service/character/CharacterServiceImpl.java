@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
-import mate.academy.rickandmorty.dto.CharacterSearchParams;
-import mate.academy.rickandmorty.dto.CreateCharacterRequestDto;
+import mate.academy.rickandmorty.dto.CharacterSearchParameters;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.character.CharacterRepository;
@@ -18,27 +17,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     public static final int ORIGIN = 1;
+    private final static Random random = new Random();
     private final CharacterRepository characterRepository;
     private final CharacterSpecificationBuilder specificationBuilder;
     private final CharacterMapper characterMapper;
-    private final Random random;
     private final CharacterClient characterClient;
 
     @Override
-    public List<CharacterDto> saveAll() {
-        List<CreateCharacterRequestDto> requestDtos = characterClient.getRequestDtos();
-        return characterRepository.saveAll(requestDtos
-                .stream()
-                .map(characterMapper::toModel)
-                .toList())
-                .stream()
-                .map(characterMapper::toDto)
-                .toList();
-    }
-
-    @Override
-    public List<CharacterDto> search(CharacterSearchParams searchParams) {
-        characterRepository.count();
+    public List<CharacterDto> search(CharacterSearchParameters searchParams) {
+        fillDataBase();
         Specification<Character> characterSpecification = specificationBuilder.build(searchParams);
         return characterRepository.findAll(characterSpecification)
                 .stream()
@@ -48,9 +35,18 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getRandomCharacter() {
-        characterRepository.count();
+        fillDataBase();
         return characterMapper.toDto(characterRepository
-                .findById(random.nextLong(ORIGIN, 500))
+                .findById(random.nextLong(ORIGIN, characterRepository.count()))
                 .orElseThrow());
+    }
+
+    private void fillDataBase() {
+        if (characterRepository.count() == 0) {
+            characterRepository.saveAll(characterClient.getRequestDtos()
+                    .stream()
+                    .map(characterMapper::toModel)
+                    .toList());
+        }
     }
 }

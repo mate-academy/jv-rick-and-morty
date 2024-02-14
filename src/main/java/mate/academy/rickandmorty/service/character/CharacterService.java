@@ -2,12 +2,10 @@ package mate.academy.rickandmorty.service.character;
 
 import java.util.List;
 import mate.academy.rickandmorty.dto.CharacterDto;
-import mate.academy.rickandmorty.dto.CharacterSearchParams;
+import mate.academy.rickandmorty.dto.CharacterSearchParameters;
 
 public interface CharacterService {
-    List<CharacterDto> saveAll();
-
-    List<CharacterDto> search(CharacterSearchParams searchParams);
+    List<CharacterDto> search(CharacterSearchParameters searchParams);
 
     CharacterDto getRandomCharacter();
 }

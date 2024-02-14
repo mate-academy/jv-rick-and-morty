@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.repository.character.spec;
 
 import java.util.Arrays;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class NameSpecificationProvider implements SpecificationProvider<Characte
 
     @Override
     public Specification<Character> getSpecification(String[] params) {
-        return ((root, query, criteriaBuilder) ->
-                root.get(KEY).in(Arrays.stream(params).toArray()));
+        return ((root, query, criteriaBuilder) -> root
+                .get(KEY).in(Arrays.stream(params).toArray()));
     }
 }

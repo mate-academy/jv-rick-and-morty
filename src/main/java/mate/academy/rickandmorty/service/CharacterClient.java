@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CharacterClient {
-    public static final String BASE_URL = "https://rickandmortyapi.com/api/characters?page=%d";
+    public static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=%d";
     private static final int ORIGIN_PAGE = 1;
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
