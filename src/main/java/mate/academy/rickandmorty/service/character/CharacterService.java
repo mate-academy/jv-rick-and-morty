@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.service;
+package mate.academy.rickandmorty.service.character;
 
 import java.util.List;
 import mate.academy.rickandmorty.dto.internal.CharacterInternalDto;

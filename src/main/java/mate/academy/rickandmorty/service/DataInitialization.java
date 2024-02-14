@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
+import mate.academy.rickandmorty.service.character.CharacterService;
 import org.springframework.stereotype.Component;
 
 @Component

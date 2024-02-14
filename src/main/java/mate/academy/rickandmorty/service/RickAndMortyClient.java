@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterExternalDto;
@@ -15,25 +16,31 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RickAndMortyClient {
-    private static final String url = "https://rickandmortyapi.com/api/character";
+    private static final String basicUrl = "https://rickandmortyapi.com/api/character?page=%d";
     private final ObjectMapper objectMapper;
 
     public List<CharacterExternalDto> getCharacters() {
+        List<CharacterExternalDto> charactersFromApi = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url))
-                .build();
+        for (int i = 1; i <= 42; i++) {
+            String url = String.format(basicUrl, i);
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(url))
+                    .build();
 
-        try {
-            HttpResponse<String> response =
-                    httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            CharacterResponseDataDto dataDto =
-                    objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
-            return dataDto.getResults();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            try {
+                HttpResponse<String> response =
+                        httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                CharacterResponseDataDto dataDto =
+                        objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
+                System.out.println(dataDto.getResults());
+                charactersFromApi.addAll(dataDto.getResults());
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return charactersFromApi;
     }
 }
