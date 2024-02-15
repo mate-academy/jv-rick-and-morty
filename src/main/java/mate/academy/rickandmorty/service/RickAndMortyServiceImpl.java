@@ -1,13 +1,12 @@
 package mate.academy.rickandmorty.service;
 
+import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.RickAndMortyCharacterDto;
+import mate.academy.rickandmorty.dto.internal.RickAndMortyCharacterDto;
 import mate.academy.rickandmorty.mapper.RickAndMortyMapper;
 import mate.academy.rickandmorty.repository.RickAndMortyRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class RickAndMortyServiceImpl implements RickAndMortyService {
 
     @Override
     public List<RickAndMortyCharacterDto> findCharactersByNameContaining(String nameSegment) {
-        return  rickAndMortyRepository.findAllByNameContainsIgnoreCase(nameSegment).stream()
+        return rickAndMortyRepository.findAllByNameContainsIgnoreCase(nameSegment).stream()
                 .map(rickAndMortyMapper::toDto).toList();
     }
 }

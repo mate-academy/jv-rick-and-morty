@@ -21,7 +21,7 @@ public class RickAndMortyCharacter {
     @Column(name = "id")
     private Long id;
     @Column(name = "external_id")
-    private Long externalId;
+    private String externalId;
     @Column(name = "name")
     private String name;
     @Column(name = "status")

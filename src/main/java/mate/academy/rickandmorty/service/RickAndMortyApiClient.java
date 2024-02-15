@@ -9,8 +9,8 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.CharacterResponseDataDto;
-import mate.academy.rickandmorty.dto.RickAndMortyCharacterDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
+import mate.academy.rickandmorty.dto.external.CharacterResultDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +22,8 @@ public class RickAndMortyApiClient {
     @Value("${rick.and.morty.characters.last.page}")
     private int lastPage;
 
-    public List<RickAndMortyCharacterDto> fetchAllData() {
-        List<RickAndMortyCharacterDto> allCharacter = new ArrayList<>();
+    public List<CharacterResultDto> fetchAllData() {
+        List<CharacterResultDto> allCharacter = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
         int currentPage = 1;
         while (currentPage <= lastPage) {

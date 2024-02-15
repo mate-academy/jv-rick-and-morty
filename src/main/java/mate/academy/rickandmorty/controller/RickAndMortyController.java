@@ -1,14 +1,13 @@
 package mate.academy.rickandmorty.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.RickAndMortyCharacterDto;
+import mate.academy.rickandmorty.dto.internal.RickAndMortyCharacterDto;
 import mate.academy.rickandmorty.service.RickAndMortyServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/characters")

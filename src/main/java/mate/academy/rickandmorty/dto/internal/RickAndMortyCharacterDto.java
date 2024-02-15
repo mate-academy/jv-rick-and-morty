@@ -1,14 +1,10 @@
-package mate.academy.rickandmorty.dto;
+package mate.academy.rickandmorty.dto.internal;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class RickAndMortyCharacterDto {
-    @JsonIgnore
     private Long id;
-    @JsonProperty("id")
     private String externalId;
     private String name;
     private String status;
