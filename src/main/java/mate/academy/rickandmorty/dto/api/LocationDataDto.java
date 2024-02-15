@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class LocationDataDto {
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("url")
     private String url;
 }

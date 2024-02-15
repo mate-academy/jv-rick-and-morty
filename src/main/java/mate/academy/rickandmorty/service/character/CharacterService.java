@@ -8,4 +8,6 @@ public interface CharacterService {
     List<CharacterDto> search(CharacterSearchParameters searchParams);
 
     CharacterDto getRandomCharacter();
+
+    void fillDataBase();
 }

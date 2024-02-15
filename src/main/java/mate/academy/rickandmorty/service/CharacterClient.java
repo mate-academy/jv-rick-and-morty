@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import mate.academy.rickandmorty.dto.CreateCharacterRequestDto;
 import mate.academy.rickandmorty.dto.api.CharactersResponseDataDto;
 import mate.academy.rickandmorty.dto.api.SingleCharacterDataDto;
@@ -24,6 +24,7 @@ public class CharacterClient {
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
 
+    @SneakyThrows
     public List<CreateCharacterRequestDto> getRequestDtos() {
         int page = ORIGIN_PAGE;
         List<SingleCharacterDataDto> singleCharacterDataDtos
@@ -31,7 +32,6 @@ public class CharacterClient {
         String url;
         HttpClient httpClient = HttpClient.newHttpClient();
         CharactersResponseDataDto dataDto;
-        try {
             do {
                 url = BASE_URL.formatted(page);
                 HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -52,8 +52,5 @@ public class CharacterClient {
             return singleCharacterDataDtos.stream()
                     .map(characterMapper::toRequestDto)
                     .toList();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

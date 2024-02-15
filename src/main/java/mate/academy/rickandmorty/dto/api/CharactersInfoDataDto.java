@@ -5,12 +5,8 @@ import lombok.Data;
 
 @Data
 public class CharactersInfoDataDto {
-    @JsonProperty("count")
     private int count;
-    @JsonProperty("pages")
     private int pages;
-    @JsonProperty("next")
     private String next;
-    @JsonProperty("prev")
     private String prev;
 }

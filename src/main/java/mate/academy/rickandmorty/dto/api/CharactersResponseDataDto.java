@@ -6,8 +6,6 @@ import lombok.Data;
 
 @Data
 public class CharactersResponseDataDto {
-    @JsonProperty("info")
     private CharactersInfoDataDto info;
-    @JsonProperty("results")
     private SingleCharacterDataDto[] results;
 }

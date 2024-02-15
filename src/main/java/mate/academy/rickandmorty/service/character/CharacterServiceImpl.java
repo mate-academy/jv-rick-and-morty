@@ -25,7 +25,6 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterDto> search(CharacterSearchParameters searchParams) {
-        fillDataBase();
         Specification<Character> characterSpecification = specificationBuilder.build(searchParams);
         return characterRepository.findAll(characterSpecification)
                 .stream()
@@ -35,13 +34,13 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getRandomCharacter() {
-        fillDataBase();
         return characterMapper.toDto(characterRepository
                 .findById(random.nextLong(ORIGIN, characterRepository.count()))
                 .orElseThrow());
     }
 
-    private void fillDataBase() {
+    @Override
+    public void fillDataBase() {
         if (characterRepository.count() == 0) {
             characterRepository.saveAll(characterClient.getRequestDtos()
                     .stream()
