@@ -9,7 +9,7 @@ public class RickAndMortyCharacterDto {
     @JsonIgnore
     private Long id;
     @JsonProperty("id")
-    private Long externalId;
+    private String externalId;
     private String name;
     private String status;
     private String type;

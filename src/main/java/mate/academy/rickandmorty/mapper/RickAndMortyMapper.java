@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapperConfig.class)
 public interface RickAndMortyMapper {
     RickAndMortyCharacter toModel(RickAndMortyCharacterDto characterDto);
+
+    RickAndMortyCharacterDto toDto(RickAndMortyCharacter characterFromDb);
 }
