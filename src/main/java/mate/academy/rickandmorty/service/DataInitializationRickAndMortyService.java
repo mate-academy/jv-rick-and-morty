@@ -16,7 +16,7 @@ public class DataInitializationRickAndMortyService {
     @PostConstruct
     public void initializeDbData() {
         apiRepository.saveAll(
-                apiClient.fetchAllData().stream()
+                apiClient.getAllCharacters().stream()
                 .map(rickAndMortyMapper::toModel)
                 .toList());
     }

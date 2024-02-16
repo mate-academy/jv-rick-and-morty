@@ -1,10 +1,7 @@
 package mate.academy.rickandmorty.dto.external;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public record CharacterResultDto(
-        @JsonProperty("id")
-        String externalId,
+        String id,
         String name,
         String status,
         String type,

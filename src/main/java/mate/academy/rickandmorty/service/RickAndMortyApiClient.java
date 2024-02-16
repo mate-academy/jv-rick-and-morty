@@ -16,35 +16,30 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RickAndMortyApiClient {
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?page=";
+    private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
 
-    public List<CharacterResultDto> fetchAllData() {
-        List<CharacterResultDto> allCharacter = new ArrayList<>();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        int currentPage = 1;
-        int lastPage = 1;
-        for (int i = currentPage; i <= lastPage; i++) {
-            String url = BASE_URL + i;
+    public List<CharacterResultDto> getAllCharacters() {
+        List<CharacterResultDto> allCharacters = new ArrayList<>();
+        String requestUrl = BASE_URL;
+        while (requestUrl != null) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create(url))
+                    .uri(URI.create(requestUrl))
                     .build();
             try {
                 HttpResponse<String> response =
-                        httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                        HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                 CharacterResponseDataDto characterResponseDataDto =
                         objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
-                allCharacter.addAll(characterResponseDataDto.results());
-
-                if (lastPage == 1) {
-                    lastPage = characterResponseDataDto.info().pages();
-                }
+                allCharacters.addAll(characterResponseDataDto.results());
+                requestUrl = characterResponseDataDto.info().next();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Failed to fetch data from external API"
                         + " or parse response.", e);
             }
         }
-        return allCharacter;
+        return allCharacters;
     }
 }
