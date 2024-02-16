@@ -2,5 +2,5 @@ package mate.academy.rickandmorty.dto.external;
 
 import java.util.List;
 
-public record CharacterResponseDataDto(List<CharacterResultDto> results) {
+public record CharacterResponseDataDto(CharacterInfoDto info, List<CharacterResultDto> results) {
 }

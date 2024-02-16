@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
 import mate.academy.rickandmorty.dto.external.CharacterResultDto;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,15 +18,14 @@ import org.springframework.stereotype.Component;
 public class RickAndMortyApiClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?page=";
     private final ObjectMapper objectMapper;
-    @Value("${rick.and.morty.characters.last.page}")
-    private int lastPage;
 
     public List<CharacterResultDto> fetchAllData() {
         List<CharacterResultDto> allCharacter = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
         int currentPage = 1;
-        while (currentPage <= lastPage) {
-            String url = BASE_URL + currentPage;
+        int lastPage = 1;
+        for (int i = currentPage; i <= lastPage; i++) {
+            String url = BASE_URL + i;
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(url))
@@ -38,7 +36,10 @@ public class RickAndMortyApiClient {
                 CharacterResponseDataDto characterResponseDataDto =
                         objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
                 allCharacter.addAll(characterResponseDataDto.results());
-                currentPage++;
+
+                if (lastPage == 1) {
+                    lastPage = characterResponseDataDto.info().pages();
+                }
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Failed to fetch data from external API"
                         + " or parse response.", e);

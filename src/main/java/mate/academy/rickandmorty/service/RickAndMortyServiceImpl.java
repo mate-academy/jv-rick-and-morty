@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 public class RickAndMortyServiceImpl implements RickAndMortyService {
     private final RickAndMortyRepository rickAndMortyRepository;
     private final RickAndMortyMapper rickAndMortyMapper;
+    private final Random random = new Random();
 
     @Override
     public RickAndMortyCharacterDto getRandomCharacter() {
-        Long randomId = new Random().nextLong(rickAndMortyRepository.count()) + 1;
+        Long randomId = random.nextLong(rickAndMortyRepository.count()) + 1;
         return rickAndMortyMapper.toDto(
                 rickAndMortyRepository.findById(randomId)
                         .orElseThrow(() -> new RuntimeException(
