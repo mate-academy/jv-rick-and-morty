@@ -13,14 +13,19 @@ import org.springframework.stereotype.Service;
 public class RickAndMortyServiceImpl implements RickAndMortyService {
     private final RickAndMortyRepository rickAndMortyRepository;
     private final RickAndMortyMapper rickAndMortyMapper;
+    private Long totalAmountOfCharacters;
 
     @Override
     public RickAndMortyCharacterDto getRandomCharacter() {
-        long allCharactersInDb = rickAndMortyRepository.count();
-        Long randomId = new Random().nextLong(allCharactersInDb) + 1;
+        if (totalAmountOfCharacters == null) {
+            totalAmountOfCharacters = rickAndMortyRepository.count();
+        }
+        Long randomId = new Random().nextLong(totalAmountOfCharacters) + 1;
         return rickAndMortyMapper.toDto(
                 rickAndMortyRepository.findById(randomId)
-                        .orElseThrow(RuntimeException::new));
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Can't get a random character from db")));
     }
 
     @Override

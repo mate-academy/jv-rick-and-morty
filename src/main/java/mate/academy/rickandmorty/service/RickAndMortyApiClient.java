@@ -40,7 +40,8 @@ public class RickAndMortyApiClient {
                 allCharacter.addAll(characterResponseDataDto.getResults());
                 currentPage++;
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to fetch data from external API"
+                        + " or parse response.", e);
             }
         }
         return allCharacter;
