@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/characters")
 @RequiredArgsConstructor
 @Tag(name = "Characters management",
-        description = "Endpoints for managing characters from the Rick and Morty cartoon")
+        description = "Endpoints for retrieving characters from the Rick and Morty cartoon")
 public class CharactersController {
     private final CharacterService characterService;
 
@@ -26,7 +26,7 @@ public class CharactersController {
     }
 
     @GetMapping("/by-name")
-    @Operation(summary = "Get all characters by name part")
+    @Operation(summary = "Get all characters by name part ignore case")
     public List<CharacterInternalDto> getAllByNamePart(@RequestParam String namePart) {
         return characterService.getAllByNamePart(namePart);
     }

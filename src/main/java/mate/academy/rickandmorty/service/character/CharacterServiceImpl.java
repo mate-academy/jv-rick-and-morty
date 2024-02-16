@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.service.character;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterInternalDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
     private static final String EXC_MSG_CANT_FIND = "Can't find character with id ";
-    private final Random random;
     private final CharacterRepository characterRepository;
     private final CharacterMapper mapper;
+    private final ThreadLocalRandom random = ThreadLocalRandom.current();
+    private long numberOfCharacters;
 
     @Override
     public void saveAll(List<Character> characters) {
@@ -24,7 +25,11 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterInternalDto getRandomCharacter() {
-        long randomId = random.nextLong(characterRepository.count());
+        if (numberOfCharacters == 0) {
+            numberOfCharacters = characterRepository.count();
+        }
+
+        long randomId = random.nextLong(numberOfCharacters);
         Character character =
                 characterRepository.findById(randomId)
                         .orElseThrow(() -> new RuntimeException(EXC_MSG_CANT_FIND + randomId));

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RickAndMortyClient {
+    private static final int NUMBER_OF_PAGES = 42;
     private static final String basicUrl = "https://rickandmortyapi.com/api/character?page=%d";
     private final ObjectMapper objectMapper;
 
@@ -23,7 +24,7 @@ public class RickAndMortyClient {
         List<CharacterExternalDto> charactersFromApi = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        for (int i = 1; i <= 42; i++) {
+        for (int i = 1; i <= NUMBER_OF_PAGES; i++) {
             String url = String.format(basicUrl, i);
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
