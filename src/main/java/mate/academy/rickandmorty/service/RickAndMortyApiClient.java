@@ -37,7 +37,7 @@ public class RickAndMortyApiClient {
                         httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                 CharacterResponseDataDto characterResponseDataDto =
                         objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
-                allCharacter.addAll(characterResponseDataDto.getResults());
+                allCharacter.addAll(characterResponseDataDto.results());
                 currentPage++;
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Failed to fetch data from external API"
