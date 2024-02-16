@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/character")
+@RequestMapping("/api/characters")
 @Tag(name = "Character API", description = "API endpoints for managing characters.")
 public class CharacterController {
     private final CharacterService characterService;
@@ -25,7 +25,7 @@ public class CharacterController {
         return characterService.getRandomCharacter();
     }
 
-    @GetMapping("/search")
+    @GetMapping
     @Operation(summary = "Search Characters", description = "Search for characters by name.")
     public List<CharacterEntity> searchCharacter(CharacterSearchParam name) {
         return characterService.search(name);
