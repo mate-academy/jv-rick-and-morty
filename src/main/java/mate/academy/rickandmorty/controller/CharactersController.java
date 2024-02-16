@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/characters")
 @RequiredArgsConstructor
-@Tag(name = "Characters management",
+@Tag(name = "Characters retrieving",
         description = "Endpoints for retrieving characters from the Rick and Morty cartoon")
 public class CharactersController {
     private final CharacterService characterService;
