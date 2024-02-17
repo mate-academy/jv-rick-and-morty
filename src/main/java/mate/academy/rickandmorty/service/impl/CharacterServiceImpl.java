@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterExternalResponseDto;
 import mate.academy.rickandmorty.dto.internal.CharacterInternalResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Service;
