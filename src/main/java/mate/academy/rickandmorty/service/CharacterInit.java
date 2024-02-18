@@ -1,8 +1,9 @@
 package mate.academy.rickandmorty.service;
 
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
+import mate.academy.rickandmorty.dto.external.CharacterExternalResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +14,7 @@ public class CharacterInit {
 
     @PostConstruct
     public void initCharacters() {
-        CharacterResponseDataDto characters = client.getCharacters();
-        characterService.saveAll(characters.results());
+        List<CharacterExternalResponseDto> characters = client.getCharacters();
+        characterService.saveAll(characters);
     }
 }
