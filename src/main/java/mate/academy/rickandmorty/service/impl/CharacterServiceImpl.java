@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class CharacterServiceImpl implements CharacterService {
         long randomId = random.nextLong(characterRepository.count());
         Character character = characterRepository.findById(randomId)
                 .orElseThrow(() ->
-                        new RuntimeException("Cannot find a character by id: " + randomId));
+                        new EntityNotFoundException("Cannot find a random character by id: "
+                                + randomId));
         return characterMapper.toDto(character);
     }
 
