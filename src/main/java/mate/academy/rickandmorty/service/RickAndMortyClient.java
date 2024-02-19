@@ -20,18 +20,14 @@ public class RickAndMortyClient {
     private final ObjectMapper objectMapper;
 
     public List<CharacterExternalResponseDto> getCharacters() {
-        int perPage = 20;
-        int currentPage = 1;
-        int numberOfPages;
         List<CharacterExternalResponseDto> allCharacters = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
-        while (true) {
-            String urlWithPagination = BASE_URL + "?page=" + currentPage + "&per_page=" + perPage;
+        String url = BASE_URL;
+        while (url != null) {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create(urlWithPagination))
+                    .uri(URI.create(url))
                     .build();
-
             try {
                 HttpResponse<String> response = httpClient.send(
                         request, HttpResponse.BodyHandlers.ofString());
@@ -40,14 +36,9 @@ public class RickAndMortyClient {
                         response.body(), CharacterResponseDataDto.class);
 
                 allCharacters.addAll(characterResponseDataDto.getResults());
-                numberOfPages = characterResponseDataDto.getInfo().getNumberOfPages();
-
-                if (currentPage == numberOfPages) {
-                    break;
-                }
-                currentPage++;
+                url = characterResponseDataDto.getInfo().next();
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Can't load characters from given URL");
             }
         }
         return allCharacters;
