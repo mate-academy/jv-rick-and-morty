@@ -17,10 +17,7 @@ public class Character {
     private Long id;
     @Column(name = "external_id", nullable = false, unique = true)
     private Long externalId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "status")
     private String status;
-    @Column(name = "gender")
     private String gender;
 }

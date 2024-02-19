@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/characters")
 public class CharacterController {
-    @Autowired
     private final CharacterService characterService;
 
     @GetMapping("/random")
