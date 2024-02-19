@@ -40,7 +40,7 @@ public class RickAndMortyClient {
                         response.body(), CharacterResponseDataDto.class);
 
                 allCharacters.addAll(characterResponseDataDto.getResults());
-                numberOfPages = characterResponseDataDto.getNumberOfPages();
+                numberOfPages = characterResponseDataDto.getInfo().getNumberOfPages();
 
                 if (currentPage == numberOfPages) {
                     break;
