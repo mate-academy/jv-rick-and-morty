@@ -35,8 +35,8 @@ public class RickAndMortyClient {
                 CharacterResponseDataDto characterResponseDataDto = objectMapper.readValue(
                         response.body(), CharacterResponseDataDto.class);
 
-                allCharacters.addAll(characterResponseDataDto.getResults());
-                url = characterResponseDataDto.getInfo().next();
+                allCharacters.addAll(characterResponseDataDto.results());
+                url = characterResponseDataDto.info().next();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Can't load characters from given URL");
             }
