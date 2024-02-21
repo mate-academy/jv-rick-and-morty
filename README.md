@@ -4,7 +4,7 @@
 
 - Task: Create API. It should contain two methods:
 
-1. The request randomly generates a wiki about one characterEntity in the universe the animated series Rick & Morty.
+1. The request randomly generates a wiki about one character in the universe the animated series Rick & Morty.
    Response example:
 
     ```json
@@ -17,10 +17,10 @@
     }
     ```
     
-    NOTE: `externalId` field should save the original characterEntity ID received from the external API. `id` field should
+    NOTE: `externalId` field should save the original character ID received from the external API. `id` field should
     represent the identifier of entire `Character` entity, that is associated with internal DB.
 
-2. The request takes a string as an argument, and returns a list of all characterEntities whose name contains the search
+2. The request takes a string as an argument, and returns a list of all characters whose name contains the search
    string.
    During the application start, the web application downloads data from a third-party service to the internal database.
    Implemented API requests must work with a local database (i.e. fetch data from a database).
