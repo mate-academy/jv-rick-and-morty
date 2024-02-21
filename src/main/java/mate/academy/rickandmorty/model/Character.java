@@ -14,15 +14,15 @@ import lombok.Data;
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(nullable = false)
-    String externalId;
+    private String externalId;
     @Column(nullable = false)
-    String name;
+    private String name;
     @Column(nullable = false)
-    String status;
+    private String status;
     @Column(nullable = false)
-    Gender gender;
+    private Gender gender;
 
     public enum Gender {
         Female, Male, Genderless, unknown;
