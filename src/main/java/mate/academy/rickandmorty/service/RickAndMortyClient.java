@@ -20,23 +20,27 @@ public class RickAndMortyClient {
     private final ObjectMapper objectMapper;
 
     public List<CharacterExternalResponseDto> getCharacters() {
+        ArrayList<CharacterExternalResponseDto> characters = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(BASE_URL))
-                .build();
-        try {
-            HttpResponse<String> response = httpClient
-                    .send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        String page = BASE_URL;
+        while (page != null) {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(page))
+                    .build();
+            try {
+                HttpResponse<String> response = httpClient
+                        .send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            ResultsResponseDto resultsResponseDto =
-                    objectMapper.readValue(response.body(), ResultsResponseDto.class);
+                ResultsResponseDto resultsResponseDto =
+                        objectMapper.readValue(response.body(), ResultsResponseDto.class);
 
-            ArrayList<CharacterExternalResponseDto> characters = new ArrayList<>();
-            characters.addAll(resultsResponseDto.results());
-            return characters;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Can't send Http request", e);
+                characters.addAll(resultsResponseDto.results());
+                page = resultsResponseDto.info().next();
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException("Can't send Http request", e);
+            }
         }
+        return characters;
     }
 }
