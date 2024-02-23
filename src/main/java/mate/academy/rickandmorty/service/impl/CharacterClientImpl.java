@@ -21,7 +21,6 @@ public class CharacterClientImpl implements CharacterClient {
     private static final String URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
 
-
     public List<CharacterInfo> getCharacters() {
         List<CharacterInfo> resultList = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();

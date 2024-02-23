@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -15,12 +16,14 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
+    private final Random random = new Random();
+
     @Override
-    public CharacterDto getRandomCharacter() {
+    public final CharacterDto getRandomCharacter() {
         long count = characterRepository.count();
-        int randomIndex = new Random().nextInt((int) count);
+        int randomIndex = random.nextInt((int) count);
         return characterMapper.toDto(characterRepository.findById((long) randomIndex)
-                .orElseThrow(() -> new RuntimeException("Can't find random character")));
+                .orElseThrow(() -> new EntityNotFoundException("Random character not found")));
     }
 
 
