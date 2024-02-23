@@ -35,8 +35,8 @@ public class CharacterClientImpl implements CharacterClient {
                         httpRequest, HttpResponse.BodyHandlers.ofString());
                 CharacterResponseDataDto characterResponseDataDto =
                         objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
-                resultList.addAll(characterResponseDataDto.getResults());
-                nextUrl = characterResponseDataDto.getInfo().getNext();
+                resultList.addAll(characterResponseDataDto.results());
+                nextUrl = characterResponseDataDto.info().next();
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Can't get characters from API.");
