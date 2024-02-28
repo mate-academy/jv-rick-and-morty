@@ -24,31 +24,45 @@ public class CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?name=%s";
     private final ObjectMapper objectMapper;
     private final CharacterRepository characterRepository;
+    private final Random random = new Random();
 
     @PostConstruct
     public void fetchAndSaveCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
         String url = BASE_URL.formatted("");
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url))
-                .build();
-        try {
-            HttpResponse<String> response = httpClient
-                    .send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            CharacterResponseDataDto dataDto =
-                    objectMapper.readValue(
-                            response.body(),
-                            CharacterResponseDataDto.class
-                    );
-            List<CharacterDataDto> charactersFromApi = dataDto.getResults();
-            List<Character> charactersToSave = charactersFromApi.stream()
-                    .map(this::toEntity)
-                    .collect(Collectors.toList());
-            characterRepository.saveAll(charactersToSave);
-            System.out.println(dataDto.getResults());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        int page = 1;
+        int charactersPerPage = 20;
+
+        boolean isNextPage = true;
+
+        while (isNextPage) {
+            String urlWithPage = url + "&page=" + page;
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(urlWithPage))
+                    .build();
+
+            try {
+                HttpResponse<String> response = httpClient
+                        .send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                CharacterResponseDataDto dataDto =
+                        objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
+
+                List<CharacterDataDto> charactersFromApi = dataDto.getResults();
+                List<Character> charactersToSave = charactersFromApi.stream()
+                        .map(this::toEntity)
+                        .collect(Collectors.toList());
+
+                characterRepository.saveAll(charactersToSave);
+
+                if (charactersFromApi.size() < charactersPerPage) {
+                    isNextPage = false;
+                }
+
+                page++;
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -61,7 +75,6 @@ public class CharacterClient {
 
     public CharacterDto getRandomCharacter() {
         List<Character> allCharacters = characterRepository.findAll();
-        Random random = new Random();
         Character character = allCharacters.get(random.nextInt(allCharacters.size()));
         return toDto(character);
     }
