@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?name=%s";
+    private static final int Characters_Per_Page = 20;
     private final ObjectMapper objectMapper;
     private final CharacterRepository characterRepository;
     private final Random random = new Random();
@@ -31,11 +32,8 @@ public class CharacterClient {
         HttpClient httpClient = HttpClient.newHttpClient();
         String url = BASE_URL.formatted("");
         int page = 1;
-        int charactersPerPage = 20;
 
-        boolean isNextPage = true;
-
-        while (isNextPage) {
+        while (true) {
             String urlWithPage = url + "&page=" + page;
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
@@ -55,8 +53,8 @@ public class CharacterClient {
 
                 characterRepository.saveAll(charactersToSave);
 
-                if (charactersFromApi.size() < charactersPerPage) {
-                    isNextPage = false;
+                if (charactersFromApi.size() < Characters_Per_Page) {
+                    break;
                 }
 
                 page++;
