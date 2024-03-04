@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class ApiServiceImpl implements ApiService {
+    private static final String API_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
     private final CharacterService characterService;
 
@@ -25,7 +26,7 @@ public class ApiServiceImpl implements ApiService {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("https://rickandmortyapi.com/api/character"))
+                .uri(URI.create(API_URL))
                 .build();
         try {
             HttpResponse<String> response = client.send(request,
@@ -36,7 +37,7 @@ public class ApiServiceImpl implements ApiService {
 
             return infoResponseDataDto.getResults();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Occurred api issue.", e);
         }
     }
 
