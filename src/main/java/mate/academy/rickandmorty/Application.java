@@ -19,7 +19,7 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
-            apiService.fetchDataToBd();
+            apiService.saveDataToBd();
         };
     }
 }

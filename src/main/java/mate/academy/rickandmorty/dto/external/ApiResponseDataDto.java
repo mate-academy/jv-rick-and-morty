@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InfoResponseDataDto {
+public class ApiResponseDataDto {
+    private InfoResponseDto info;
     private List<CharacterResponseDto> results;
 }

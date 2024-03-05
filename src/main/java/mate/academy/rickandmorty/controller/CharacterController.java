@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Character controller", description = "Endpoints for managing characters")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/characters")
+@RequestMapping("/api/characters")
 public class CharacterController {
     private final CharacterService characterService;
 
@@ -25,5 +25,11 @@ public class CharacterController {
     @GetMapping("/find")
     public List<Character> findByName(@RequestParam String name) {
         return characterService.findAllByName(name);
+    }
+
+    @GetMapping("/find-random")
+    public Character findRandom() {
+
+        return null;
     }
 }

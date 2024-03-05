@@ -5,7 +5,7 @@ import mate.academy.rickandmorty.model.Character;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CharacterMapperToEntity implements MapperToEntity<CharacterResponseDto, Character> {
+public class CharacterMapperToEntity implements DtoToEntityMapper<CharacterResponseDto, Character> {
     @Override
     public Character toEntity(CharacterResponseDto dto) {
         Character character = new Character();
