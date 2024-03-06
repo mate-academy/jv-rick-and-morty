@@ -8,4 +8,8 @@ public interface CharacterService {
     List<Character> saveAll(List<CharacterResponseDto> dtoList);
 
     List<Character> findAllByName(String name);
+
+    Character findById(Long id);
+
+    Character findRandom();
 }

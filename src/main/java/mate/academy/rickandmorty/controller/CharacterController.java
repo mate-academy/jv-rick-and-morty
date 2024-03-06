@@ -29,7 +29,6 @@ public class CharacterController {
 
     @GetMapping("/find-random")
     public Character findRandom() {
-
-        return null;
+        return characterService.findRandom();
     }
 }
