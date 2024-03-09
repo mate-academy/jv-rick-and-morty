@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity(name = "characters")
 @Data
-public class RickAndMortyModel {
+public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

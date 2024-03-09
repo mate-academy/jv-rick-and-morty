@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class CharacterResulInfoResponse {
+public class ExternalCharacterResulInfoResponse {
     @JsonProperty("next")
     private String nextUrl;
 }

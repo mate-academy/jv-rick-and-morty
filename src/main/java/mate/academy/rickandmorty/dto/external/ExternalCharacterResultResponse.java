@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CharacterResultResponse {
+public class ExternalCharacterResultResponse {
     @JsonProperty("results")
-    private List<CharacterRickAndMortyDataResponseDto> rickAndMortyDataResponseDtoList;
+    private List<ExternalCharacterDto> rickAndMortyDataResponseDtoList;
     @JsonProperty("info")
-    private CharacterResulInfoResponse info;
+    private ExternalCharacterResulInfoResponse info;
 }

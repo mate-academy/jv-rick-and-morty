@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class CharacterRickAndMortyDataResponseDto {
+public class ExternalCharacterDto {
     @JsonProperty("id")
     private Integer externalId;
     private String name;

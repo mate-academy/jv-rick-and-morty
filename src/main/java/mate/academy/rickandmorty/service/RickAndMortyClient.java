@@ -9,19 +9,19 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterResultResponse;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterResultResponse;
 import mate.academy.rickandmorty.exception.RequestProcessingException;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class RickAndMortyClient {
-
     private final ObjectMapper objectMapper;
-    private final List<CharacterResultResponse> characterResultResponseList = new ArrayList<>();
+    private final List<ExternalCharacterResultResponse> externalCharacterResultResponseList
+            = new ArrayList<>();
 
-    public List<CharacterResultResponse> getCharacters(String url) {
-        CharacterResultResponse characterResultResponse;
+    public List<ExternalCharacterResultResponse> getCharacters(String url) {
+        ExternalCharacterResultResponse externalCharacterResultResponse;
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -30,11 +30,12 @@ public class RickAndMortyClient {
         try {
             HttpResponse<String> response = httpClient.send(httpRequest,
                     HttpResponse.BodyHandlers.ofString());
-            characterResultResponse
-                    = objectMapper.readValue(response.body(), CharacterResultResponse.class);
-            characterResultResponseList.add(characterResultResponse);
-            if (characterResultResponse.getInfo().getNextUrl() != null) {
-                getCharacters(characterResultResponse.getInfo().getNextUrl());
+            externalCharacterResultResponse
+                    = objectMapper.readValue(response.body(),
+                    ExternalCharacterResultResponse.class);
+            externalCharacterResultResponseList.add(externalCharacterResultResponse);
+            if (externalCharacterResultResponse.getInfo().getNextUrl() != null) {
+                getCharacters(externalCharacterResultResponse.getInfo().getNextUrl());
             }
         } catch (IOException | InterruptedException e) {
             throw new RequestProcessingException("Something went wrong, you cannot send "
@@ -42,6 +43,6 @@ public class RickAndMortyClient {
                     + " response from the Rick and Morty API, please "
                     + "fix the problem and try again", e);
         }
-        return characterResultResponseList;
+        return externalCharacterResultResponseList;
     }
 }

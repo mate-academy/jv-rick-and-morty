@@ -1,12 +1,12 @@
 package mate.academy.rickandmorty.mapper;
 
-import mate.academy.rickandmorty.dto.external.CharacterRickAndMortyDataResponseDto;
-import mate.academy.rickandmorty.dto.internal.CharacterRickAndMortyDto;
-import mate.academy.rickandmorty.model.RickAndMortyModel;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
+import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.model.Character;
 
 public interface RickAndMortyMapper {
 
-    RickAndMortyModel toModel(CharacterRickAndMortyDataResponseDto responseDto);
+    Character toModel(ExternalCharacterDto responseDto);
 
-    CharacterRickAndMortyDto toDto(RickAndMortyModel rickAndMortyModel);
+    CharacterDto toDto(Character character);
 }

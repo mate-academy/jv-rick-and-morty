@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.exception;
 
-public class DataProcessingException extends RuntimeException {
-    public DataProcessingException(String message) {
+public class EntityNotFoundException extends RuntimeException {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 }
