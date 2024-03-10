@@ -41,4 +41,9 @@ public class RickAndMortyServiceImpl implements RickAndMortyService {
                 .map(rickAndMortyMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public long getNumberAllCharacters() {
+        return rickAndMortyRepository.findAll().size();
+    }
 }

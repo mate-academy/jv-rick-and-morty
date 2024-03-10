@@ -25,7 +25,9 @@ public class RickAndMortyController {
                     + "826 characters in total, so you can try to find your favorite one =)")
     @GetMapping("/get_random_character")
     public CharacterDto getById() {
-        return rickAndMortyService.getById(new Random().nextLong(826));
+        return rickAndMortyService.getById(new Random()
+                .nextLong(rickAndMortyService
+                        .getNumberAllCharacters()));
     }
 
     @Operation(summary = "Get characters by name", description = "You can enter a name or part "

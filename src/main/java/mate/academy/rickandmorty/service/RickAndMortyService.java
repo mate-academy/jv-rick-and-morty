@@ -11,4 +11,6 @@ public interface RickAndMortyService {
 
     List<CharacterDto> getByName(String name);
 
+    public long getNumberAllCharacters();
+
 }
