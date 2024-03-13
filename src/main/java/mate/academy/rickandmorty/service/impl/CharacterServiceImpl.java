@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper characterMapper;
     private final CharacterDao characterDao;
+    private final Random random;
 
     @Override
     public CharacterDto getRandomCharacter() {
-        Random random = new Random();
         Long randomId = random.nextLong(characterDao.count()) + 1;
         Character character = characterDao.findById(randomId).orElseThrow(
                 () -> new NoSuchElementException("Can't find character by id " + randomId)

@@ -20,7 +20,7 @@ public class CharacterController {
         return characterService.getRandomCharacter();
     }
 
-    @GetMapping("by-name")
+    @GetMapping()
     public List<CharacterDto> getByName(@RequestParam String name) {
         return characterService.findByName(name);
     }
