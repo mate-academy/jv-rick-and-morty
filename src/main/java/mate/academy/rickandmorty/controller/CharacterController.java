@@ -1,12 +1,9 @@
 package mate.academy.rickandmorty.controller;
 
-import java.util.Arrays;
 import java.util.List;
-
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.model.Character;
-import mate.academy.rickandmorty.service.CharacterLoader;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
