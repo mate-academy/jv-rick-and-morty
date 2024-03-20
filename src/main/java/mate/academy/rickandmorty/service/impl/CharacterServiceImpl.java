@@ -1,10 +1,10 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import jakarta.annotation.PostConstruct;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterLoader;
@@ -26,8 +26,8 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @PostConstruct
-    public void loadDataFromExternalAPI() {
-        characterLoader.loadDataFromExternalAPI();
+    public void loadDataFromExternalApi() {
+        characterLoader.loadDataFromExternalApi();
     }
 
     @Override
@@ -35,7 +35,8 @@ public class CharacterServiceImpl implements CharacterService {
         String[] characterNames = characters.split(",");
         List<Character> result = new ArrayList<>();
         for (String name : characterNames) {
-            List<Character> charactersWithName = characterRepository.findByNameContaining(name.trim());
+            List<Character> charactersWithName = characterRepository
+                    .findByNameContaining(name.trim());
             result.addAll(charactersWithName);
         }
         return result;
