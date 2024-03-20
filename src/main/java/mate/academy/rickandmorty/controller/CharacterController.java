@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -14,6 +15,7 @@ public class CharacterController {
     private CharacterService characterService;
 
     @GetMapping("/random")
+    @Operation(summary = "Get a random character", description = "Get a random character from Rick and Morty")
     public CharacterDto getRandomCharacter() {
         return characterService.getRandomCharacterDto();
     }
