@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -34,13 +33,5 @@ public class CharacterServiceImpl implements CharacterService {
                 .stream()
                 .map(characterMapper::toDto)
                 .toList();
-    }
-
-    @Override
-    public void saveAll(List<CharacterResponseDataDto> responseDataDto) {
-        List<Character> characters = responseDataDto.stream()
-                .map(characterMapper::toModel)
-                .toList();
-        characterRepository.saveAll(characters);
     }
 }

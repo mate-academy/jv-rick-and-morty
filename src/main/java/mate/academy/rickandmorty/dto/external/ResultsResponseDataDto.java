@@ -1,9 +1,9 @@
 package mate.academy.rickandmorty.dto.external;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public record ResultsResponseDataDto(
-        ArrayList<CharacterResponseDataDto> results,
+        List<CharacterResponseDataDto> results,
         InfoResponseDto infoResponseDto
 ) {
 }

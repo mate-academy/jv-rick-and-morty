@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.dto.external;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 public record CharacterResponseDataDto(
         int id,
@@ -13,7 +13,7 @@ public record CharacterResponseDataDto(
         OriginResponseDto origin,
         OriginResponseDto location,
         String image,
-        ArrayList<String> episode,
+        List<String> episode,
         String url,
         LocalDateTime created
 ) {

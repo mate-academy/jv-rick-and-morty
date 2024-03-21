@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Character management", description = "Endpoints for managing characters")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/character")
+@RequestMapping("/characters")
 public class RickAndMortyController {
     private final CharacterService characterService;
 
@@ -24,7 +24,7 @@ public class RickAndMortyController {
         return characterService.getRandomCharacter();
     }
 
-    @GetMapping("/by-name")
+    @GetMapping
     @Operation(summary = "Get characters by name",
             description = "Returns a list of all characters with the given name")
     public List<CharacterDto> getCharactersByName(@RequestParam String name) {
