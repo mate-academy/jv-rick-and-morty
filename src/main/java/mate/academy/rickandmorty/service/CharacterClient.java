@@ -1,63 +1,50 @@
 package mate.academy.rickandmorty.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Random;
-import mate.academy.rickandmorty.dto.CharacterResponseDto;
+import java.util.ArrayList;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.InfoResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CharacterClient {
     private static final String URL_BASE = "https://rickandmortyapi.com/api/character/";
-    private final ObjectMapper mapper;
-    private final Random random;
+    private final ObjectMapper objectMapper;
 
-    public CharacterClient(ObjectMapper mapper) {
-        this.mapper = mapper;
-        this.random = new Random();
+    public CharacterClient(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
-    public CharacterResponseDto getRandomCharacterResponseDto() {
+    public ExternalCharacterResponseDto getAllCharacters() {
         HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(URL_BASE))
-                .build();
+        HttpResponse<String> response;
+        String nextUrl = URL_BASE;
+        ExternalCharacterResponseDto responseDto = new ExternalCharacterResponseDto(
+                new InfoResponseDto(), new ArrayList<>());
+        ExternalCharacterResponseDto currentResponseDto;
 
         try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            JsonNode node = mapper.readTree(response.body());
-            long numberOfCharacters = node.path("info").path("count").asLong();
-            Long randomId = random.nextLong(numberOfCharacters) + 1;
+            while (nextUrl != null) {
+                HttpRequest request = HttpRequest.newBuilder()
+                        .GET()
+                        .uri(URI.create(nextUrl))
+                        .build();
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                currentResponseDto = objectMapper.readValue(response.body(),
+                        ExternalCharacterResponseDto.class);
+                responseDto.getResults().addAll(currentResponseDto.getResults());
+                responseDto.setInfo(currentResponseDto.getInfo());
+                nextUrl = currentResponseDto.getInfo().getNext();
+            }
 
-            return getCharacterResponseDtoById(randomId);
+            return responseDto;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to send a request " + request, e);
-        }
-    }
-
-    public CharacterResponseDto getCharacterResponseDtoById(Long id) {
-        String url = URL_BASE + id;
-        HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url))
-                .build();
-
-        try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            return mapper.readValue(response.body(), CharacterResponseDto.class);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to send a request " + request, e);
+            throw new RuntimeException("Failed to get characters from an API", e);
         }
     }
 }
