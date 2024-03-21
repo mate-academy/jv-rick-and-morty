@@ -13,16 +13,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class CharacterServiceImpl implements CharacterService {
-    private CharacterClient characterClient;
     private CharacterMapper mapper;
     private CharacterRepository characterRepository;
 
     @Override
     public CharacterDto getRandomCharacterDto() {
-        if (characterRepository.count() == 0) {
-            saveAll(characterClient.getAllCharacters().getResults());
-        }
-
         long size = characterRepository.count();
         Random random = new Random();
 
