@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.mapper;
 
 import mate.academy.rickandmorty.dto.external.ApiCharacterDto;
-import mate.academy.rickandmorty.dto.external.CharacterDtoFromApi;
 import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.model.Gender;
@@ -27,14 +26,5 @@ public class CharacterMapper {
         character.setGender(Gender.valueOf(dtoForDb.getGender().toUpperCase()));
         character.setStatus(Status.valueOf(dtoForDb.getStatus().toUpperCase()));
         return character;
-    }
-
-    public CharacterDtoFromApi toCharacterDtoForDb(ApiCharacterDto apiCharacterDto) {
-        CharacterDtoFromApi forDb = new CharacterDtoFromApi();
-        forDb.setExternalId(apiCharacterDto.getId());
-        forDb.setName(apiCharacterDto.getName());
-        forDb.setGender(Gender.valueOf(apiCharacterDto.getGender().toUpperCase()));
-        forDb.setStatus(Status.valueOf(apiCharacterDto.getStatus().toUpperCase()));
-        return forDb;
     }
 }

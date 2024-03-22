@@ -58,7 +58,6 @@ public class CharacterServiceImpl implements CharacterService {
                         .toList();
         characterRepository.saveAll(characterList);
         String next = apiResponseDto.getApiInfoDto().getNext();
-
         while (next != null) {
             ApiResponseDto apiResponseDtoNext = client.getAllCharacterFromApi(next);
             List<Character> characterListNext =

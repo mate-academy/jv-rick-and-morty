@@ -30,7 +30,7 @@ public class CharacterController {
     @GetMapping("/by-name")
     @Operation(summary = "Find characters by name",
             description = "You can find characters by name")
-    public List<CharacterResponseDto> findAllByName(@RequestParam("name") String name) {
+    public List<CharacterResponseDto> findAllByName(@RequestParam String name) {
         return characterService.findAllByName(name);
     }
 
