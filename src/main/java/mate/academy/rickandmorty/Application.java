@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Application {
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character/";
     @Autowired
     private CharacterService characterService;
 
@@ -20,6 +19,6 @@ public class Application {
 
     @Bean
     public CommandLineRunner commandLineRunner() {
-        return args -> characterService.saveCharactersToDb(BASE_URL);
+        return args -> characterService.saveCharactersToDb();
     }
 }

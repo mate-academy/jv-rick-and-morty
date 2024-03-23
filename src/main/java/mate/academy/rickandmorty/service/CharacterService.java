@@ -14,5 +14,5 @@ public interface CharacterService {
 
     List<CharacterResponseDto> findAllByName(String name);
 
-    void saveCharactersToDb(String url);
+    void saveCharactersToDb();
 }

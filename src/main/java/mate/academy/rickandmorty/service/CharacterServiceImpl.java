@@ -1,9 +1,7 @@
 package mate.academy.rickandmorty.service;
 
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.ApiResponseDto;
 import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -50,22 +48,11 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public void saveCharactersToDb(String url) {
-        ApiResponseDto apiResponseDto = client.getAllCharacterFromApi(url);
-        List<Character> characterList =
-                Arrays.stream(apiResponseDto.getResults())
-                        .map(characterMapper::toModel)
-                        .toList();
-        characterRepository.saveAll(characterList);
-        String next = apiResponseDto.getApiInfoDto().getNext();
-        while (next != null) {
-            ApiResponseDto apiResponseDtoNext = client.getAllCharacterFromApi(next);
-            List<Character> characterListNext =
-                    Arrays.stream(apiResponseDtoNext.getResults())
-                            .map(characterMapper::toModel)
-                            .toList();
-            characterRepository.saveAll(characterListNext);
-            next = apiResponseDtoNext.getApiInfoDto().getNext();
-        }
+    public void saveCharactersToDb() {
+        List<Character> characters = client.getAllCharacterFromApi()
+                .stream()
+                .map(characterMapper::toModel)
+                .toList();
+        characterRepository.saveAll(characters);
     }
 }
