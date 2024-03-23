@@ -16,9 +16,9 @@
       "gender": "Male"
     }
     ```
-    
-    NOTE: `externalId` field should save the original character ID received from the external API. `id` field should
-    represent the identifier of entire `Character` entity, that is associated with internal DB.
+
+   NOTE: `externalId` field should save the original character ID received from the external API. `id` field should
+   represent the identifier of entire `Character` entity, that is associated with internal DB.
 
 2. The request takes a string as an argument, and returns a list of all characters whose name contains the search
    string.
