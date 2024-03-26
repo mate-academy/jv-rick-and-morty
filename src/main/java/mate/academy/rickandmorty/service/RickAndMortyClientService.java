@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RickAndMortyClientService {
-    private static String URL = "https://rickandmortyapi.com/api/character";
+    private static final String URL = "https://rickandmortyapi.com/api/character";
     private static final String RESULT_LIST = "results";
     private static final String INFO = "info";
     private static final String NEXT_PAGE = "next";
@@ -31,12 +31,11 @@ public class RickAndMortyClientService {
     public List<CharacterRequestDto> getCharacters() {
         List<CharacterRequestDto> characterRequestDtos = new ArrayList<>();
         try {
-            String initResponse;
             JsonNode jsonNode;
             JsonNode results;
             String url = URL;
             do {
-                initResponse = fetchAllCharacters(url);
+                String initResponse = fetchAllCharacters(url);
                 jsonNode = objectMapper.readTree(initResponse);
                 results = jsonNode.get(RESULT_LIST);
                 List<CharacterRequestDto> result = objectMapper.readValue(
@@ -44,6 +43,7 @@ public class RickAndMortyClientService {
                         new TypeReference<>() {});
                 characterRequestDtos.addAll(result);
                 url = getNextPage(jsonNode).asText();
+
             } while (hasNextPage(jsonNode));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
