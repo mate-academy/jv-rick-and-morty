@@ -24,7 +24,7 @@ public class RickAndMortyInternalServiceImpl implements RickAndMortyInternalServ
     public List<CharacterDto> getAllCharactersNameLike(String name) {
         name = "%" + name + "%";
         List<CharacterPerson> characters = characterRepository.findByNameLikeIgnoreCase(name);
-        return characters.stream().map(characterMapper::toDto).toList();
+        return characterMapper.toListDtos(characters);
     }
 
     public CharacterDto getRandomCharacter() {
@@ -36,8 +36,8 @@ public class RickAndMortyInternalServiceImpl implements RickAndMortyInternalServ
 
     @PostConstruct
     public void saveCharacters() {
-        List<CharacterPerson> result = rickAndMortyClientServiceImpl.getCharacters().stream().map(
-                characterMapper::toModel).toList();
+        List<CharacterPerson> result = characterMapper.toListModels(
+                rickAndMortyClientServiceImpl.getCharacters());
         UPPER_CHARACTERS_BOUND = result.size() + 1;
         characterRepository.saveAll(result);
     }
