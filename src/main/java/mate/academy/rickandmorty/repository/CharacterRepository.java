@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CharacterRepository extends CrudRepository<CharacterPerson, Long> {
-
     List<CharacterPerson> findByNameLikeIgnoreCase(String name);
 }
