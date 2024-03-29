@@ -27,21 +27,21 @@ public class ApiClient {
     private final CharacterRepository characterRepository;
 
     @PostConstruct
-    public void getAllCharactersToDb() {
+    public void getAllCharacters() {
         int currentPage = 1;
         int totalPages;
 
         do {
             String nextPageUrl = BASE_URL + "/character?page=" + currentPage;
             CharacterResponseDataDto dataDto = fetchDataFromUrl(nextPageUrl);
-            saveEachCharacterToDb(dataDto.getResults());
+            saveAll(dataDto.results());
 
-            totalPages = dataDto.getInfo().getPages();
+            totalPages = dataDto.info().pages();
             currentPage++;
         } while (currentPage <= totalPages);
     }
 
-    private void saveEachCharacterToDb(List<CharacterDto> results) {
+    private void saveAll(List<CharacterDto> results) {
 
         List<Character> list = results.stream()
                 .map(characterMapper::toModel)

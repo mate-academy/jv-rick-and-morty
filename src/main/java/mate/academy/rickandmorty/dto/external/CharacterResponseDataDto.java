@@ -1,11 +1,8 @@
 package mate.academy.rickandmorty.dto.external;
 
 import java.util.List;
-import lombok.Data;
 
-@Data
-public class CharacterResponseDataDto {
-
-    private CharacterMetadataDto info;
-    private List<CharacterDto> results;
-}
+public record CharacterResponseDataDto(
+        CharacterMetadataDto info,
+        List<CharacterDto> results
+) {}
