@@ -29,18 +29,16 @@ public class RickAndMortyApi {
 
     @PostConstruct
     public void getAllCharacters() {
-        String urlToNextPage = BASE_URL + "/character";
+        String requestUrl = BASE_URL + "/character";
 
-        do {
-            GetCharactersResponseDto dataDto = fetchCharacters(urlToNextPage);
+        while (requestUrl != null) {
+            GetCharactersResponseDto dataDto = fetchCharacters(requestUrl);
             saveAll(dataDto.results());
-
-            urlToNextPage = dataDto.info().next();
-        } while (urlToNextPage != null);
+            requestUrl = dataDto.info().next();
+        }
     }
 
     private void saveAll(List<CharacterDto> results) {
-
         List<Character> list = results.stream()
                 .map(characterMapper::toModel)
                 .toList();
@@ -48,16 +46,18 @@ public class RickAndMortyApi {
         characterRepository.saveAll(list);
     }
 
-    private GetCharactersResponseDto fetchCharacters(String urlToNextPage) {
+    private GetCharactersResponseDto fetchCharacters(String requestUrl) {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(urlToNextPage))
+                .uri(URI.create(requestUrl))
                 .build();
 
         try {
-            HttpResponse<String> response =
+            HttpResponse<String> charactersResponse =
                     HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            return objectMapper.readValue(response.body(), GetCharactersResponseDto.class);
+
+            return objectMapper.readValue(
+                    charactersResponse.body(), GetCharactersResponseDto.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
