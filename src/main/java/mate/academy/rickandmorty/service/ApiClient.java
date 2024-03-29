@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ApiClient {
 
-    private static final String BASE_URL = "https://rickandmortyapi.com/api";
+    private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+    private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=";
 
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
@@ -32,8 +33,7 @@ public class ApiClient {
         int totalPages;
 
         do {
-            String nextPageUrl = BASE_URL + "/character?page=" + currentPage;
-            CharacterResponseDataDto dataDto = fetchDataFromUrl(nextPageUrl);
+            CharacterResponseDataDto dataDto = fetchCharacters(currentPage);
             saveAll(dataDto.results());
 
             totalPages = dataDto.info().pages();
@@ -50,16 +50,15 @@ public class ApiClient {
         characterRepository.saveAll(list);
     }
 
-    private CharacterResponseDataDto fetchDataFromUrl(String nextPageUrl) {
-        HttpClient httpClient = HttpClient.newHttpClient();
+    private CharacterResponseDataDto fetchCharacters(int page) {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(nextPageUrl))
+                .uri(URI.create(BASE_URL + page))
                 .build();
 
         try {
             HttpResponse<String> response =
-                    httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
