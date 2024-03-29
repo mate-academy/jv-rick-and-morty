@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
+import mate.academy.rickandmorty.dto.external.GetCharactersResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ApiClient {
+public class RickAndMortyApi {
 
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=";
+    private static final String BASE_URL = "https://rickandmortyapi.com/api";
 
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
@@ -29,16 +29,14 @@ public class ApiClient {
 
     @PostConstruct
     public void getAllCharacters() {
-        int currentPage = 1;
-        int totalPages;
+        String urlToNextPage = BASE_URL + "/character";
 
         do {
-            CharacterResponseDataDto dataDto = fetchCharacters(currentPage);
+            GetCharactersResponseDto dataDto = fetchCharacters(urlToNextPage);
             saveAll(dataDto.results());
 
-            totalPages = dataDto.info().pages();
-            currentPage++;
-        } while (currentPage <= totalPages);
+            urlToNextPage = dataDto.info().next();
+        } while (urlToNextPage != null);
     }
 
     private void saveAll(List<CharacterDto> results) {
@@ -50,16 +48,16 @@ public class ApiClient {
         characterRepository.saveAll(list);
     }
 
-    private CharacterResponseDataDto fetchCharacters(int page) {
+    private GetCharactersResponseDto fetchCharacters(String urlToNextPage) {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(BASE_URL + page))
+                .uri(URI.create(urlToNextPage))
                 .build();
 
         try {
             HttpResponse<String> response =
                     HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            return objectMapper.readValue(response.body(), CharacterResponseDataDto.class);
+            return objectMapper.readValue(response.body(), GetCharactersResponseDto.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
