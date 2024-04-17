@@ -4,7 +4,7 @@ import java.util.List;
 import mate.academy.rickandmorty.dto.internal.InternalCharacterDto;
 
 public interface CharacterService {
-    InternalCharacterDto getRandomlyCharacter();
+    InternalCharacterDto getRandomCharacter();
 
-    List<InternalCharacterDto> getCharacterByName(String name);
+    List<InternalCharacterDto> getCharactersByName(String name);
 }

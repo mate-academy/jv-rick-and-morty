@@ -1,13 +1,9 @@
 package mate.academy.rickandmorty.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@Getter
-@ToString
+@Data
 public class ExternalCharacterDto {
     @JsonProperty("id")
     private Long externalId;

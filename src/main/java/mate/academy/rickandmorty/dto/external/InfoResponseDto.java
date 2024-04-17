@@ -1,13 +1,8 @@
 package mate.academy.rickandmorty.dto.external;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@Getter
-@ToString
+@Data
 public class InfoResponseDto {
-    private String nextUrl;
-
+    private String next;
 }

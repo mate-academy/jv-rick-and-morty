@@ -26,7 +26,7 @@ public class CharacterClientImpl implements CharacterClient {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void getAndSaveCharacters() {
+    public void fetchAndSaveCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
         String url = API_URL;
         List<ExternalCharacterDto> externalCharacterDtoList = new ArrayList<>();
@@ -40,11 +40,11 @@ public class CharacterClientImpl implements CharacterClient {
             try {
                 HttpResponse<String> response = httpClient.send(httpRequest,
                         HttpResponse.BodyHandlers.ofString());
-                CharacterResponseDto dataDto = objectMapper
+                CharacterResponseDto characterDto = objectMapper
                         .readValue(response.body(), CharacterResponseDto.class);
 
-                url = dataDto.getInfo().getNextUrl();
-                externalCharacterDtoList.addAll(dataDto.getResult().stream().toList());
+                url = characterDto.getInfo().getNext();
+                externalCharacterDtoList.addAll(characterDto.getResult().stream().toList());
 
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
