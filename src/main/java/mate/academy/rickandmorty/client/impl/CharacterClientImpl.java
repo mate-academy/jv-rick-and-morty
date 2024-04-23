@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.client.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,6 +26,7 @@ public class CharacterClientImpl implements CharacterClient {
     private final CharacterMapper characterMapper;
     private final ObjectMapper objectMapper;
 
+    @PostConstruct
     @Override
     public void fetchAndSaveCharacters() {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -51,9 +53,7 @@ public class CharacterClientImpl implements CharacterClient {
             }
         } while (url != null);
 
-        Iterable<Character> characters = externalCharacterDtoList.stream()
-                .map(characterMapper::toModel)
-                .toList();
+        List<Character> characters = characterMapper.toDtoCharacterList(externalCharacterDtoList);
 
         characterRepository.saveAll(characters);
     }

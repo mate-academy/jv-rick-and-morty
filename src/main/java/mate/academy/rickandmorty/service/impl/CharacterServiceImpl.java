@@ -2,7 +2,6 @@ package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.InternalCharacterDto;
 import mate.academy.rickandmorty.exception.CharacterNotFoundException;
@@ -31,9 +30,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<InternalCharacterDto> getCharactersByName(String partialName) {
-        return characterRepository.findAllByNameContaining(partialName)
-                .stream()
-                .map(characterMapper::toDto)
-                .collect(Collectors.toList());
+        return characterMapper.toDtoInternalCharacterList(
+                characterRepository.findAllByNameContainingIgnoreCase(partialName));
+
     }
 }
