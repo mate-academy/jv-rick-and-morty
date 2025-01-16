@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1_create-rick-and-morty-table
+      author: savchenko
+      changes:
+        - createTable:
+            tableName: characters
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: external_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uq_characters_external_id
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gender
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
