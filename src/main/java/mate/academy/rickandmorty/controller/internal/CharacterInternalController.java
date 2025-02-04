@@ -1,0 +1,40 @@
+package mate.academy.rickandmorty.controller.internal;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.service.internal.CharacterService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+@Tag(name = "Character management", description = "Endpoints for managing characters")
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/characters")
+public class CharacterInternalController {
+    private final CharacterService characterService;
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Get random character",
+            description = "Randomly generates a wiki about one character"
+                    + " in the universe the animated series Rick & Morty")
+    @GetMapping("/random")
+    public CharacterDto getRandomCharacter() {
+        return characterService.getRandomCharacter();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Search characters by name",
+            description = "Search a list of all characters "
+                    + "whose name contains the search string")
+    @GetMapping("/search")
+    public List<CharacterDto> searchCharacters(@RequestParam String name) {
+        return characterService.searchCharactersByName(name);
+    }
+}
