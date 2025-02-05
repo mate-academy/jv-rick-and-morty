@@ -4,7 +4,7 @@
 
 - Task: Create API. It should contain two methods:
 
-1. The request randomly generates a wiki about one character in the universe the animated series Rick & Morty.
+1. The request randomly generates a wiki about one personage in the universe the animated series Rick & Morty.
    Response example:
 
     ```json
@@ -17,7 +17,7 @@
     }
     ```
     
-    NOTE: `externalId` field should save the original character ID received from the external API. `id` field should
+    NOTE: `externalId` field should save the original personage ID received from the external API. `id` field should
     represent the identifier of entire `Character` entity, that is associated with internal DB.
 
 2. The request takes a string as an argument, and returns a list of all characters whose name contains the search
