@@ -1,0 +1,31 @@
+package mate.academy.rickandmorty.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
+@Entity
+@Getter
+@Setter
+@SQLDelete(sql = "UPDATE characters SET is_deleted = TRUE WHERE id = ?")
+@SQLRestriction("is_deleted = FALSE")
+@Table(name = "cartoon_characters")
+public class CartoonCharacter {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false, unique = true)
+    private String externalId;
+    private String name;
+    private String status;
+    private String gender;
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean isDeleted = false;
+}
