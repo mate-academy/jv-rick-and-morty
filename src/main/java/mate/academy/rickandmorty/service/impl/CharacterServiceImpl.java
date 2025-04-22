@@ -1,0 +1,62 @@
+package mate.academy.rickandmorty.service.impl;
+
+import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Random;
+import mate.academy.rickandmorty.dto.CharacterDto;
+import mate.academy.rickandmorty.dto.CharacterResponseDataDto;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
+import mate.academy.rickandmorty.model.Character;
+import mate.academy.rickandmorty.repository.CharacterRepository;
+import mate.academy.rickandmorty.service.CharacterClient;
+import mate.academy.rickandmorty.service.CharacterService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CharacterServiceImpl implements CharacterService {
+    private static final long TOTAL_CHARS = 826;
+
+    private final CharacterClient client;
+
+    private final CharacterMapper mapper;
+
+    private final CharacterRepository repository;
+
+    private final Random random = new Random();
+
+    public CharacterServiceImpl(
+            CharacterClient client,
+            CharacterMapper mapper,
+            CharacterRepository repository) {
+        this.client = client;
+        this.mapper = mapper;
+        this.repository = repository;
+    }
+
+    @Override
+    public CharacterDto getRandomChar() {
+        Long id = random.nextLong(TOTAL_CHARS) + 1;
+        Character byId = repository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Character not found by id: " + id)
+                );
+        return mapper.toDto(byId);
+    }
+
+    @Override
+    public Page<CharacterDto> findCharByName(String name, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCase(name, pageable).map(mapper::toDto);
+    }
+
+    @Override
+    public void initializeDatabase() {
+        client.initializeDatabase().stream()
+                .map(CharacterResponseDataDto::results)
+                .flatMap(List::stream)
+                .map(mapper::toModel)
+                .forEach(repository::save);
+    }
+}
