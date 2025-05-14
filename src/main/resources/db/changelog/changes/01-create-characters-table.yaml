@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01
+      author: volodymyr
+      changes:
+        - createTable:
+            tableName: characters
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: external_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: gender
+                  type: VARCHAR(255)
