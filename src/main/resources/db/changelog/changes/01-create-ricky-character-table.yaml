@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-ricky_character-table
+      author: Mykola
+      changes:
+        - createTable:
+            tableName: ricky_character
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: external_id
+                  type: bigint
+                  constraints:
+                    primaryKey: false
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gender
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
