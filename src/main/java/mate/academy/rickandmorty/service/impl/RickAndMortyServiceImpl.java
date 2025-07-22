@@ -3,6 +3,7 @@ package mate.academy.rickandmorty.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.dto.CharacterSearchParametersDto;
@@ -11,6 +12,8 @@ import mate.academy.rickandmorty.model.RickAndMorty;
 import mate.academy.rickandmorty.repository.character.RickAndMortyRepository;
 import mate.academy.rickandmorty.repository.character.RickAndMortySpecificationBuilder;
 import mate.academy.rickandmorty.service.RickAndMortyService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +41,13 @@ public class RickAndMortyServiceImpl implements RickAndMortyService {
     }
 
     private RickAndMorty findRandomCharacter() {
-        if (repository.count() == 0) {
+        long totalCount = repository.count();
+        if (totalCount == 0) {
             throw new EntityNotFoundException("Can't find any character from"
                     + " DB because DB is empty");
         }
-        Long index = random.nextLong(repository.count());
-        return repository.findById(index)
-                .orElseGet(this::findRandomCharacter);
+        int randomise = ThreadLocalRandom.current().nextInt((int) totalCount);
+        Page<RickAndMorty> character = repository.findAll(PageRequest.of(randomise, 1));
+        return character.getContent().get(0);
     }
 }

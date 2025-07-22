@@ -21,6 +21,6 @@ public class RickAndMortySpecificationProviderManager
                 .filter(person -> person.getKey().equals(key))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Can't find specification provider for kay " + key));
+                        "Can't find specification provider for key " + key));
     }
 }
