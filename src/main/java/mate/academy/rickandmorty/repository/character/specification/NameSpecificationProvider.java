@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NameSpecificationProvider implements SpecificationProvider<RickAndMorty> {
     @Override
-    public String getKay() {
+    public String getKey() {
         return "name";
     }
 

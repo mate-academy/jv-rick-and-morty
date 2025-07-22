@@ -18,7 +18,7 @@ public class RickAndMortySpecificationProviderManager
     @Override
     public SpecificationProvider<RickAndMorty> getSpecificationProvider(String key) {
         return specificationProviders.stream()
-                .filter(person -> person.getKay().equals(key))
+                .filter(person -> person.getKey().equals(key))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find specification provider for kay " + key));

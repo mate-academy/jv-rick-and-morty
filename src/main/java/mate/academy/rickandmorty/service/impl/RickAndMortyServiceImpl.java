@@ -38,10 +38,11 @@ public class RickAndMortyServiceImpl implements RickAndMortyService {
     }
 
     private RickAndMorty findRandomCharacter() {
-        Long index = random.nextLong(repository.count());
-        if (index == 0) {
-            throw new EntityNotFoundException("Can't find any character from DB");
+        if (repository.count() == 0) {
+            throw new EntityNotFoundException("Can't find any character from"
+                    + " DB because DB is empty");
         }
+        Long index = random.nextLong(repository.count());
         return repository.findById(index)
                 .orElseGet(this::findRandomCharacter);
     }
