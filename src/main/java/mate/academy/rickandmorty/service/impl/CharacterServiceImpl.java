@@ -3,9 +3,10 @@ package mate.academy.rickandmorty.service.impl;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
-import lombok.AllArgsConstructor; // ИСПРАВЛЕНИЕ: Используем AllArgsConstructor
+import lombok.AllArgsConstructor;
 import mate.academy.rickandmorty.client.RickAndMortyClient;
 import mate.academy.rickandmorty.dto.CharacterDto;
+import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.RickAndMortyCharacter;
 import mate.academy.rickandmorty.repository.CharacterRepository;
@@ -32,15 +33,12 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterDto getRandomCharacter() {
-        long count = characterRepository.count();
-        if (count == 0) {
-            throw new RuntimeException("No characters found in database");
-        }
+    public CharacterDto getRandomCharacter() throws EntityNotFoundException {
+        RickAndMortyCharacter rickAndMortyCharacter = characterRepository.findRandomCharacter();
 
-        long randomIndex = random.nextLong(count);
-        List<RickAndMortyCharacter> allCharacters = characterRepository.findAll();
-        RickAndMortyCharacter rickAndMortyCharacter = allCharacters.get((int) randomIndex);
+        if (rickAndMortyCharacter == null) {
+            throw new EntityNotFoundException("No characters found in database");
+        }
 
         return characterMapper.toDto(rickAndMortyCharacter);
     }

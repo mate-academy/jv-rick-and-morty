@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 public class RickAndMortyClient {
     public static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
+    private final HttpClient httpClient;
 
     public List<CharacterDto> getCharacters() {
         List<CharacterDto> allCharacters = new ArrayList<>();
-        HttpClient httpClient = HttpClient.newHttpClient();
         String url = BASE_URL;
         try {
             while (url != null) {
@@ -29,6 +29,12 @@ public class RickAndMortyClient {
                         .uri(URI.create(url)).build();
                 HttpResponse<String> response = httpClient.send(httpRequest,
                         HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                    throw new RuntimeException("Failed to fetch data from API. URL: "
+                            + url + ", Status: " + response.statusCode()
+                            + ", Body: " + response.body());
+                }
+
                 CharacterDataDto characterResponse = objectMapper
                         .readValue(response.body(), CharacterDataDto.class);
                 allCharacters.addAll(characterResponse.getResults());
@@ -36,8 +42,13 @@ public class RickAndMortyClient {
             }
             return allCharacters;
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Couldn't get characters from API", e);
+        } catch (InterruptedException e) {
+            // ИСПРАВЛЕНИЕ: Восстанавливаем статус прерывания потока,
+            // как того требуют лучшие практики Java.
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("API request was interrupted", e);
         }
     }
 }
