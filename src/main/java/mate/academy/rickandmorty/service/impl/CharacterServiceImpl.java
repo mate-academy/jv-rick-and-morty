@@ -13,7 +13,7 @@ import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor // ИСПРАВЛЕНИЕ: Заменяем @RequiredArgsConstructor на @AllArgsConstructor
+@AllArgsConstructor
 public class CharacterServiceImpl implements CharacterService {
 
     private final RickAndMortyClient characterClient;
@@ -23,8 +23,6 @@ public class CharacterServiceImpl implements CharacterService {
 
     @PostConstruct
     public void saveAllCharacters() {
-        // Очищаем таблицу перед загрузкой, чтобы избежать дубликатов при каждом перезапуске
-        // (из-за spring.jpa.hibernate.ddl-auto=create-drop)
         characterRepository.deleteAll();
 
         List<CharacterDto> characterDtos = characterClient.getCharacters();
@@ -35,18 +33,12 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto getRandomCharacter() {
-        // ИСПРАВЛЕНИЕ ОПТИМИЗАЦИИ: Получаем только количество, чтобы избежать загрузки всей БД
         long count = characterRepository.count();
         if (count == 0) {
             throw new RuntimeException("No characters found in database");
         }
 
-        // Генерируем случайный индекс от 0 до count-1.
         long randomIndex = random.nextLong(count);
-
-        // Поскольку метод findById(id) самый эффективный, попробуем найти по ID,
-        // но ID могут быть с пропусками, поэтому используем findAll().get()
-        // как временное решение, пока не будет реализован поиск по случайному ID без findAll().
         List<RickAndMortyCharacter> allCharacters = characterRepository.findAll();
         RickAndMortyCharacter rickAndMortyCharacter = allCharacters.get((int) randomIndex);
 
