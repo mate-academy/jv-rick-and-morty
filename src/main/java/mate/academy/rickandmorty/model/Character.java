@@ -10,7 +10,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Data;
 
@@ -48,7 +48,7 @@ public class Character {
     )
     private List<Episode> episodes;
     private String url;
-    private LocalDateTime created;
+    private OffsetDateTime created;
 
 
 }

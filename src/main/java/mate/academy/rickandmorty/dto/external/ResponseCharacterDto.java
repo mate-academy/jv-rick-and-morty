@@ -1,6 +1,6 @@
 package mate.academy.rickandmorty.dto.external;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Data;
 
@@ -18,6 +18,6 @@ public class ResponseCharacterDto {
     private String image;
     private List<String> episode;
     private String url;
-    private LocalDateTime created;
+    private OffsetDateTime created;
 
 }

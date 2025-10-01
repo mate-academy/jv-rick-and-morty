@@ -3,6 +3,7 @@ package mate.academy.rickandmorty.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
@@ -30,7 +31,8 @@ public class CharacterController {
             }
     )
     public CharacterDto getRandom() {
-        return characterService.getRandomCharacter();
+        return characterService.getRandomCharacter().orElseThrow(() ->
+                new EntityNotFoundException("Character not found cause database is empty"));
     }
 
     @GetMapping()

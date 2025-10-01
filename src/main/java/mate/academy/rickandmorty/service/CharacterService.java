@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.ResponseDataDto;
@@ -21,9 +22,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterService {
 
-    private static final String DEFAULT_API = "https://rickandmortyapi.com/api/";
-    private static final String CHARACTER = "character";
-    private static int countOfCharacters = 0;
+    private static final String API = "https://rickandmortyapi.com/api/character";
+
     private final ObjectMapper objectMapper;
     private final CharacterMapper characterMapper;
     private final CharacterRepository characterRepository;
@@ -33,7 +33,7 @@ public class CharacterService {
             return;
         }
         HttpClient httpClient = HttpClient.newHttpClient();
-        String url = DEFAULT_API + CHARACTER;
+        String url = API;
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -59,9 +59,8 @@ public class CharacterService {
                         .toList());
             }
             characterRepository.saveAll(characterList);
-            countOfCharacters = responseDataDto.info().count();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Fetching data failed", e);
         }
         System.out.println("Loading finished successfully");
     }
@@ -72,12 +71,14 @@ public class CharacterService {
                 .toList();
     }
 
-    public CharacterDto getRandomCharacter() {
+    public Optional<CharacterDto> getRandomCharacter() {
         List<Long> allIds = characterRepository.findAllIds();
-        int random = new Random().nextInt(0, allIds.size());
+        if (allIds.isEmpty()) {
+            return Optional.empty();
+        }
+        int random = new Random().nextInt(allIds.size());
         return characterRepository.findById(allIds.get(random))
-                .map(characterMapper::toDto)
-                .orElse(null);
+                .map(characterMapper::toDto);
     }
 
 }
