@@ -1,11 +1,10 @@
 package mate.academy.rickandmorty;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -17,8 +16,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void onApplicationReady() {
+    @PostConstruct
+    public void init() {
         characterService.loadAllCharacters();
     }
 }

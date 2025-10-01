@@ -29,6 +29,9 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     public void loadAllCharacters() {
+        if (characterRepository.count() > 0) {
+            return;
+        }
         HttpClient httpClient = HttpClient.newHttpClient();
         String url = DEFAULT_API + CHARACTER;
 
