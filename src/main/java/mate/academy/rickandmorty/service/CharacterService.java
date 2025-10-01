@@ -69,9 +69,10 @@ public class CharacterService {
                 .toList();
     }
 
-    public CharacterDto getRandom() {
-        int random = new Random().nextInt(0, countOfCharacters);
-        return characterRepository.findById((long) random)
+    public CharacterDto getRandomCharacter() {
+        List<Long> allIds = characterRepository.findAllIds();
+        int random = new Random().nextInt(0, allIds.size());
+        return characterRepository.findById(allIds.get(random))
                 .map(characterMapper::toDto)
                 .orElse(null);
     }

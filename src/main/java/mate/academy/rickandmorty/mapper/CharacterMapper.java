@@ -12,9 +12,9 @@ public interface CharacterMapper {
 
     @Mapping(source = "image", target = "imageUrl")
     @Mapping(source = "episode", target = "episodes")
+    @Mapping(source = "id", target = "externalId")
     Character toModel(ResponseCharacterDto characterDto);
 
-    @Mapping(source = "id", target = "externalId")
     CharacterDto toDto(Character character);
 
 }
