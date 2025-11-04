@@ -9,8 +9,8 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterApiRequestDto;
 import mate.academy.rickandmorty.dto.CharacterDataDto;
-import mate.academy.rickandmorty.dto.CharacterDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -19,8 +19,8 @@ public class RickAndMortyClient {
     public static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
 
-    public List<CharacterDto> getCharacters() {
-        List<CharacterDto> allCharacters = new ArrayList<>();
+    public List<CharacterApiRequestDto> getCharacters() {
+        List<CharacterApiRequestDto> allCharacters = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
         String url = BASE_URL;
         try {

@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.CharacterApiRequestDto;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.RickAndMortyCharacter;
@@ -23,8 +24,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @PostConstruct
     public void saveAllCharacters() {
-        List<CharacterDto> characterDtos = characterClient.getCharacters();
-        List<RickAndMortyCharacter> rickAndMortyCharacters = characterDtos.stream()
+        List<CharacterApiRequestDto> apiCharacters = characterClient.getCharacters();
+        List<RickAndMortyCharacter> rickAndMortyCharacters = apiCharacters.stream()
                 .map(characterMapper::toModel).toList();
         characterRepository.saveAll(rickAndMortyCharacters);
     }

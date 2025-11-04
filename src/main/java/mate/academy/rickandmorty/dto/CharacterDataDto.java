@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class CharacterDataDto {
-    private List<CharacterDto> results;
+    private List<CharacterApiRequestDto> results;
     private CharacterInfoDto info;
 }
