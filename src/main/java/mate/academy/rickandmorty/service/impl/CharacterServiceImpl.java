@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.service.impl;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterDto getRandomCharacter() {
         List<RickAndMortyCharacter> rickAndMortyCharacters = characterRepository.findAll();
         if (rickAndMortyCharacters.isEmpty()) {
-            throw new RuntimeException("No characters found in database");
+            throw new EntityNotFoundException("No characters found in database");
         }
         int index = random.nextInt(rickAndMortyCharacters.size());
         RickAndMortyCharacter rickAndMortyCharacter = rickAndMortyCharacters.get(index);

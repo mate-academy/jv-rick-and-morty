@@ -7,7 +7,6 @@ import lombok.Data;
 public class CharacterApiRequestDto {
     @JsonProperty("id")
     private String externalId;
-
     private String name;
     private String status;
     private String gender;

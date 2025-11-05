@@ -24,7 +24,7 @@ public class CharacterController {
     }
 
     @Operation(summary = "Find character by name")
-    @GetMapping()
+    @GetMapping
     public List<CharacterDto> findCharacterByName(@RequestParam String name) {
         return characterService.findCharactersByName(name);
     }
