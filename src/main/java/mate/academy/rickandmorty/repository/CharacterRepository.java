@@ -1,0 +1,9 @@
+package mate.academy.rickandmorty.repository;
+
+import java.util.List;
+import mate.academy.rickandmorty.model.CharacterRM;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CharacterRepository extends JpaRepository<CharacterRM, Long> {
+    List<CharacterRM> findByNameContainingIgnoreCase(String name);
+}
