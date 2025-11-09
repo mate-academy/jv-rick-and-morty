@@ -38,6 +38,6 @@ public class SeriesCharacterController {
     public List<SeriesCharacterWikiDto> getCharactersNameContains(
             @RequestParam("name") String name
     ) {
-        return characterService.findNameContains("rick");
+        return characterService.findNameContains(name);
     }
 }

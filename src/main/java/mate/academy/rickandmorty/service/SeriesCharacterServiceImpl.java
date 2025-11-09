@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SeriesCharacterServiceImpl implements SeriesCharacterService {
+    private static final Long INDEX_CORRECTION = 1L;
     private final SeriesCharacterRepository characterRepository;
     private final SeriesCharacterMapper characterMapper;
     private final SeriesCharacterWikiMapper characterWikiMapper;
@@ -22,7 +23,7 @@ public class SeriesCharacterServiceImpl implements SeriesCharacterService {
     @Override
     public SeriesCharacterWikiDto getRandomSeriesCharacter() {
         Random random = new Random();
-        long randomIndex = random.nextInt((int) characterRepository.count());
+        long randomIndex = random.nextInt((int) characterRepository.count()) + INDEX_CORRECTION;
         SeriesCharacter seriesCharacter = characterRepository.findById(randomIndex)
                 .orElseThrow(() -> new RuntimeException("Series character not found"));
         return characterWikiMapper.toCharacterWikiDto(seriesCharacter);
