@@ -1,12 +1,30 @@
 package mate.academy.rickandmorty;
 
+import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.client.Client;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    private final Client client;
+
+    public static void main(String[] args) {SpringApplication.run(Application.class, args);}
+
+        @Bean
+        public CommandLineRunner commandLineRunner() {
+            return new CommandLineRunner() {
+                @Override
+                public void run(String... args) throws Exception {
+                   client.getRickyAndMortyAllCharacters();
+
+                }
+            };
+
     }
+
 }
