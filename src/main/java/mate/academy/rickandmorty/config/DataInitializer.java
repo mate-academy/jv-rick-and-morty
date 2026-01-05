@@ -17,6 +17,6 @@ public class DataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        appService.downloadAllCharactersFromApi();
+        appService.fetchDataFromApi();
     }
 }

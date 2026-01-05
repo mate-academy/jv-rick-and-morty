@@ -1,18 +1,14 @@
 package mate.academy.rickandmorty.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import mate.academy.rickandmorty.model.CharacterEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class CharacterRepositoryTest {
@@ -21,7 +17,7 @@ public class CharacterRepositoryTest {
     private CharacterRepository characterRepository;
 
     @Test
-    void shouldReturnCharacter_whenExternalIdExist(){
+    void shouldReturnCharacter_whenExternalIdExist() {
         CharacterEntity characterEntity = new CharacterEntity();
         characterEntity.setExternalId(1L);
         CharacterEntity saved = characterRepository.save(characterEntity);
@@ -53,10 +49,8 @@ public class CharacterRepositoryTest {
                 .map(CharacterEntity::getName)
                 .toList();
 
-
         assertEquals(expectedListSize, actual.size());
-        assertEquals(expectedNames, actualNames);
-
+        assertEquals(new HashSet<>(expectedNames), new HashSet<>(actualNames));
     }
 
     private void loadTenTestCharacters() {

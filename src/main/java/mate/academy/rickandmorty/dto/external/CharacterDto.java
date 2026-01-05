@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiCharacterDto {
+public class CharacterDto {
     private Long id;
     private String name;
     private String status;

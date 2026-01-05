@@ -47,4 +47,5 @@ public class AppController {
             @RequestParam String name) {
         return appService.searchCharactersByNameContaining(name);
     }
+
 }
