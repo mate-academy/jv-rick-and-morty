@@ -16,6 +16,7 @@ import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,11 +27,15 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
 
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @PostConstruct
     @Override
     public void loadDataFromApi() {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        ObjectMapper objectMapper = new ObjectMapper();
+        if (characterRepository.count() > 0) {
+            return;
+        }
         String url = API_URL;
 
         while (url != null) {
@@ -57,8 +62,10 @@ public class CharacterServiceImpl implements CharacterService {
                 characterRepository.saveAll(characters);
 
                 url = apiResponse.getInfo().getNext();
+
+                Thread.sleep(200);
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to load characters from API", e);
             }
         }
     }
@@ -66,8 +73,17 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public CharacterDto getRandomCharacter() {
         long count = characterRepository.count();
+        if (count == 0) {
+            throw new IllegalStateException("No characters found");
+        }
+
         int random = new Random().nextInt((int) count);
-        Character character = characterRepository.findAll().get(random);
+
+        Character character = characterRepository
+                .findAll(PageRequest.of(random, 1))
+                .getContent()
+                .get(0);
+
         return characterMapper.toDto(character);
     }
 
