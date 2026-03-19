@@ -18,6 +18,9 @@ public class CommandRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (characterService.count() > 0) {
+            return;
+        }
         List<Character> characters = characterClient.getAllCharacters().stream()
                 .map(characterApiMapper::toEntity)
                 .toList();

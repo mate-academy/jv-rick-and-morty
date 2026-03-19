@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class CharacterClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=%s";
     private static final int DEFAULT_PAGE = 1;
+    private static final int SLEEP_TIME = 500;
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -36,7 +37,7 @@ public class CharacterClient {
             characters.addAll(responseDto.getResults());
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new CharacterFetchingException(e);

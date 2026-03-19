@@ -37,4 +37,9 @@ public class CharacterServiceImpl implements CharacterService {
                 .toList();
     }
 
+    @Override
+    public long count() {
+        return characterRepository.count();
+    }
+
 }

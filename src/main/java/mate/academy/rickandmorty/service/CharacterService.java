@@ -11,4 +11,6 @@ public interface CharacterService {
     CharacterInternalDto getRandomCharacter();
 
     List<CharacterInternalDto> getCharactersContainsName(String name);
+
+    long count();
 }

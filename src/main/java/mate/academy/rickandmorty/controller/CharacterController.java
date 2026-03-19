@@ -8,6 +8,7 @@ import mate.academy.rickandmorty.dto.internal.CharacterInternalDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Character", description = "Endpoints for managing characters")
@@ -31,7 +32,7 @@ public class CharacterController {
             description = "Returns a list of characters that contain the given name"
     )
     @GetMapping("/find")
-    public List<CharacterInternalDto> findByContainsName(String name) {
+    public List<CharacterInternalDto> findByContainsName(@RequestParam String name) {
         return characterService.getCharactersContainsName(name);
     }
 }
