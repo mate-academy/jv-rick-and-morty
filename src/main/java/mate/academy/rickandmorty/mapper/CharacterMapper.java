@@ -1,7 +1,7 @@
 package mate.academy.rickandmorty.mapper;
 
 import mate.academy.rickandmorty.config.MapStructConfig;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
+import mate.academy.rickandmorty.dto.external.CharacterResponseResultsDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.model.Character;
 import org.mapstruct.Mapper;
@@ -13,5 +13,5 @@ public interface CharacterMapper {
     CharacterDto toDto(Character character);
 
     @Mapping(source = "id", target = "externalId")
-    Character toModelFromApiResponse(CharacterResponseDto dto);
+    Character toModelFromApiResponse(CharacterResponseResultsDto dto);
 }

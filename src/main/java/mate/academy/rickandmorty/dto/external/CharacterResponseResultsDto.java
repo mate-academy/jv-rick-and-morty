@@ -1,6 +1,6 @@
 package mate.academy.rickandmorty.dto.external;
 
-public record CharacterResponseDto(
+public record CharacterResponseResultsDto(
         Long id,
         String name,
         String status,
