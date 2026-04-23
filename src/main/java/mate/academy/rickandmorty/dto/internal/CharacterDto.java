@@ -1,6 +1,6 @@
 package mate.academy.rickandmorty.dto.internal;
 
-public record CharacterWikiDto(
+public record CharacterDto(
         Long id,
         String externalId,
         String name,

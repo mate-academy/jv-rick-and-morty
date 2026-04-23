@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
-import mate.academy.rickandmorty.service.CharactersClient;
+import mate.academy.rickandmorty.service.impl.ApiCharactersClient;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class DataLoader implements ApplicationRunner {
 
     private final CharacterRepository characterRepository;
 
-    private final CharactersClient charactersClient;
+    private final ApiCharactersClient charactersClient;
 
     private final CharacterMapper characterMapper;
 
