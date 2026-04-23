@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.repository;
 
 import java.util.List;
+import java.util.Set;
 import mate.academy.rickandmorty.model.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,8 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     Character findRandom();
 
     List<Character> findAllByNameContaining(String name);
+
+    @Query("SELECT c.externalId FROM Character c")
+    Set<String> findAllExternalIds();
+
 }

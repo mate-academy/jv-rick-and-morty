@@ -27,17 +27,24 @@ public class ApiCharactersClient implements CharactersClient {
     public List<CharacterResponseResultsDto> fetchCharactersFromApi() {
         List<CharacterResponseResultsDto> result = new ArrayList<>();
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(BASE_URL))
-                .build();
-
         String url = BASE_URL;
 
         try {
             while (url != null) {
+                HttpRequest httpRequest = HttpRequest.newBuilder()
+                        .GET()
+                        .uri(URI.create(url))
+                        .build();
+
                 HttpResponse<String> response =
                         httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() != 200) {
+                    throw new DataProcessingException(
+                            "API error: " + response.statusCode() + " body: " + response.body()
+                    );
+                }
+
                 CharacterApiResponse apiResponse =
                         objectMapper.readValue(response.body(), CharacterApiResponse.class);
 
@@ -48,6 +55,9 @@ public class ApiCharactersClient implements CharactersClient {
                 result.addAll(apiResponse.results());
 
                 url = apiResponse.info().next();
+
+                // Needed for external api not shutting the connection
+                Thread.sleep(500);
             }
 
             return result;

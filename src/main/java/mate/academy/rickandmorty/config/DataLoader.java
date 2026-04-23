@@ -1,6 +1,8 @@
 package mate.academy.rickandmorty.config;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -20,10 +22,14 @@ public class DataLoader implements ApplicationRunner {
 
     private final CharacterMapper characterMapper;
 
+    @Transactional
     @Override
     public void run(ApplicationArguments args) {
+        Set<String> existingIds = characterRepository.findAllExternalIds();
+
         List<Character> characters = charactersClient.fetchCharactersFromApi().stream()
                 .map(characterMapper::toModelFromApiResponse)
+                .filter(character -> !existingIds.contains(character.getExternalId()))
                 .toList();
 
         characterRepository.saveAll(characters);
