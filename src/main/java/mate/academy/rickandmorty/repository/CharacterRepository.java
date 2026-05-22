@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface CharacterRepository extends JpaRepository<Character, Long> {
     List<Character> findAllByNameContainingIgnoreCase(String name);
 
-    @Query(value = "SELECT * FROM character ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM characters ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Character findRandom();
+
+    boolean existsByExternalId(Long externalId);
 }
