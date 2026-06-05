@@ -1,0 +1,34 @@
+package mate.academy.rickandmorty.client;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import mate.academy.rickandmorty.dto.external.ApiResponseDto;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CharacterClient {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    public ApiResponseDto fetchCharacters(String url) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(url))
+                    .build();
+            HttpResponse<String> response = httpClient
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            return objectMapper.readValue(
+                    response.body(),
+                    ApiResponseDto.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to fetch characters", e);
+        }
+    }
+}
