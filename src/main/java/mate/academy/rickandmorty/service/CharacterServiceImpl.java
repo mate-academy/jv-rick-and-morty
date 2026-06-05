@@ -17,10 +17,10 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterResponseDto getRandomCharacter() {
-        long count = characterRepository.count() + 1;
+        long count = characterRepository.count();
 
         Random random = new Random();
-        long randomId = random.nextLong(count);
+        long randomId = random.nextLong(count) + 1;
 
         Character character = characterRepository.findById(randomId)
                 .orElseThrow(() -> new RuntimeException("CharacterNotFound"));
