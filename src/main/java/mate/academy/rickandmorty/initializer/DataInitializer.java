@@ -28,6 +28,10 @@ public class DataInitializer implements CommandLineRunner {
         while (url != null) {
             ApiResponseDto apiResponseDto = characterClient.fetchCharacters(url);
 
+            if (apiResponseDto == null || apiResponseDto.getResults() == null) {
+                break;
+            }
+
             List<Character> characters = apiResponseDto.getResults()
                     .stream()
                     .map(mapper::toModel)
