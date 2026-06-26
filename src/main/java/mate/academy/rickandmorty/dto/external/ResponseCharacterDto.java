@@ -9,5 +9,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ResponseCharacterDto {
+    private Info info;
     private List<ExternalCharacterDto> results;
+
+    @Getter
+    @Setter
+    @ToString
+    public static class Info {
+        private String next;
+    }
 }

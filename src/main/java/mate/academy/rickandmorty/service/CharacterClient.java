@@ -23,24 +23,32 @@ public class CharacterClient {
     private final CharacterMapper characterMapper;
 
     @PostConstruct
-    public ResponseCharacterDto getCharacters() {
+    public void getCharacters() {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(CHARACTER_URL))
-                .build();
-        try {
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
-            ResponseCharacterDto responseCharacterDto =
-                    objectMapper.readValue(response.body(), ResponseCharacterDto.class);
-            responseCharacterDto.getResults().forEach(resultDTO -> {
-                CharacterModel model = characterMapper.toCharacterModel(resultDTO);
-                characterRepository.save(model);
-            });
-            return responseCharacterDto;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        String nextUrl = CHARACTER_URL;
+
+        while (nextUrl != null) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(nextUrl))
+                    .header("User-Agent", "Mozilla/5.0")
+                    .build();
+            try {
+                HttpResponse<String> response =
+                        client.send(request, HttpResponse.BodyHandlers.ofString());
+                ResponseCharacterDto responseCharacterDto =
+                        objectMapper.readValue(response.body(), ResponseCharacterDto.class);
+
+                responseCharacterDto.getResults().forEach(resultDto -> {
+                    CharacterModel model = characterMapper.toCharacterModel(resultDto);
+                    characterRepository.save(model);
+                });
+
+                nextUrl = responseCharacterDto.getInfo().getNext();
+                Thread.sleep(500);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
