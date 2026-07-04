@@ -22,6 +22,6 @@ public class CharacterModel {
     private String name;
     private String status;
     private String gender;
-    @Column(name = "external_id", unique = true)
+    @Column(unique = true)
     private Long externalId;
 }

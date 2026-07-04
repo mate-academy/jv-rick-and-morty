@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterDto {
-    private Long id;
-    @JsonProperty("external_id")
+    @JsonProperty("id")
     private Long externalId;
     private String name;
     private String status;
