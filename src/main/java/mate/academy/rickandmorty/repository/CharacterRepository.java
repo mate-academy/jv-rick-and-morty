@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.repository;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.model.CharacterModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

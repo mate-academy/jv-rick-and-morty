@@ -25,6 +25,7 @@ public class CharacterController {
     public CharacterDto postCharacter() {
         return characterService.postRandomCharacter();
     }
+
     @GetMapping("/search")
     @Operation(summary = "Get list of characters", description = "Get list of characters by name")
     public List<CharacterDto> searchCharacters(@RequestParam String name) {

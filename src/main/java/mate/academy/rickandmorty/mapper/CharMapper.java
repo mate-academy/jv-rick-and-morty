@@ -5,7 +5,8 @@ import mate.academy.rickandmorty.model.CharacterModel;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface CharacterMapper {
+public interface CharMapper {
     CharacterModel toModel(CharacterDto characterDto);
+
     CharacterDto toDto(CharacterModel characterModel);
 }
