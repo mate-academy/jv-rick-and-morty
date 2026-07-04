@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,4 +22,6 @@ public class CharacterModel {
     private String name;
     private String status;
     private String gender;
+    @Column(name = "external_id", unique = true)
+    private Long externalId;
 }

@@ -2,6 +2,7 @@ package mate.academy.rickandmorty.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharMapper;
@@ -15,14 +16,22 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterClient characterClient;
     private final CharMapper characterMapper;
     private final CharacterRepository repository;
+    private final Random random = new Random();
 
     @Override
     @Transactional
-    public CharacterDto postRandomCharacter() {
-        CharacterDto characterDto = characterClient.getJsonResponse();
-        CharacterModel characterModel = characterMapper.toModel(characterDto);
-        CharacterModel savedCharacter = repository.save(characterModel);
-        return characterMapper.toDto(savedCharacter);
+    public void syncExternalCharacters() {
+        List<CharacterDto> allCharacters = characterClient.getJsonResponse();
+        List<CharacterModel> models = allCharacters.stream()
+                .map(characterMapper::toModel)
+                .toList();
+        repository.saveAll(models);
+    }
+
+    @Override
+    public CharacterDto getRandomCharacter() {
+        return repository.findRandom().map(characterMapper::toDto).orElseThrow(
+                () -> new RuntimeException("Base is empty"));
     }
 
     @Override

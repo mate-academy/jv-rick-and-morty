@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-external-id-into-characters
+      author: patryk
+      changes:
+        - addColumn:
+            tableName: characters
+            columns:
+              - column:
+                  name: external_id
+                  type: bigint
+                  constraints:
+                    unique: true

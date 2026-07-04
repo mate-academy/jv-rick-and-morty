@@ -4,7 +4,9 @@ import java.util.List;
 import mate.academy.rickandmorty.dto.CharacterDto;
 
 public interface CharacterService {
-    CharacterDto postRandomCharacter();
+    CharacterDto getRandomCharacter();
 
     List<CharacterDto> searchByString(String string);
+
+    void syncExternalCharacters();
 }
