@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-character-table
+      author: patryk
+      changes:
+        - createTable:
+            tableName: characters
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: status
+                  type: varchar(255)
+              - column:
+                  name: gender
+                  type: varchar(255)
