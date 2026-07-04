@@ -27,7 +27,7 @@ public class CharacterClient {
             HttpResponse<String> httpResponse = httpClient.send(
                     httpRequest, HttpResponse.BodyHandlers.ofString());
             String json = httpResponse.body();
-            RickAndMortyResponseDto rickAndMortyResponseDto =  objectMapper.readValue(json,
+            RickAndMortyResponseDto rickAndMortyResponseDto = objectMapper.readValue(json,
                     RickAndMortyResponseDto.class);
             return rickAndMortyResponseDto.getListOfCharacters();
         } catch (IOException | InterruptedException e) {

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface CharacterRepository extends JpaRepository<CharacterModel, Long>,
         JpaSpecificationExecutor<CharacterModel> {
     List<CharacterModel> findCharacterModelByNameContainingIgnoreCase(String name);
+
     @Query(value = "SELECT * FROM characters ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<CharacterModel> findRandom();
 }

@@ -2,7 +2,6 @@ package mate.academy.rickandmorty.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterDto;
 import mate.academy.rickandmorty.mapper.CharMapper;
@@ -16,7 +15,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterClient characterClient;
     private final CharMapper characterMapper;
     private final CharacterRepository repository;
-    private final Random random = new Random();
 
     @Override
     @Transactional
