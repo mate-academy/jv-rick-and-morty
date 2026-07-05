@@ -13,8 +13,6 @@ public class CharacterDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("!!!Run");
-
         importCharacters();
     }
 
@@ -22,7 +20,6 @@ public class CharacterDataInitializer implements CommandLineRunner {
         CharacterResponseDataDto firstPage =
                 characterClient.getCharacters(1);
         int totalPages = firstPage.getInfo().getPages();
-        System.out.println("Total pages: " + totalPages);
 
         service.saveAll(firstPage);
 
@@ -34,7 +31,7 @@ public class CharacterDataInitializer implements CommandLineRunner {
             service.saveAll(response);
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
