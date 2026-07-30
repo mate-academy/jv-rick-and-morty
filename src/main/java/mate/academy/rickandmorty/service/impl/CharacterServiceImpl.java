@@ -23,6 +23,8 @@ public class CharacterServiceImpl implements CharacterService {
     
     @Override
     public List<CharacterDto> getCharactersByName(String name) {
-        return characterRepository.findByNameContaining(name);
+        return characterRepository.findByNameContaining(name).stream()
+                .map(characterMapper::toDto)
+                .toList();
     }
 }

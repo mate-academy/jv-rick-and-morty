@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface CharacterMapper {
-    @Mapping(target = "id", source = "externalId")
+    
     CharacterDto toDto(RickMortyCharacter character);
     
     @Mapping(target = "id", ignore = true)

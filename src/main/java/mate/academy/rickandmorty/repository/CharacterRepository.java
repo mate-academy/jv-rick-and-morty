@@ -11,5 +11,5 @@ public interface CharacterRepository extends JpaRepository<RickMortyCharacter, L
     @Query(value = "SELECT * FROM characters ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<RickMortyCharacter> findRandomCharacter();
     
-    List<CharacterDto> findByNameContaining(String name);
+    List<RickMortyCharacter> findByNameContaining(String name);
 }
