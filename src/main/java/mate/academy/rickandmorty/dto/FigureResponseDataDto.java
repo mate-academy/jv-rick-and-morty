@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class FigureResponseDataDto {
+    private InfoData info;
     private List<FigureResponseDto> results;
 }

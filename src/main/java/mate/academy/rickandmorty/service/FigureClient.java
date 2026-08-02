@@ -8,52 +8,68 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.FigureResponseDataDto;
-import mate.academy.rickandmorty.mapper.FigureMapper;
-import mate.academy.rickandmorty.repository.FigureRepository;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FigureClient implements ApplicationRunner {
+public class FigureClient {
 
-    private static final String BASE_URL = "https://rickandmortyapi.com/api/character/?page=%s";
+    private static final String BASE_URL =
+            "https://rickandmortyapi.com/api/character/?page=%s";
+
+    private static final int MAX_RETRY = 3;
+    private static final long RETRY_DELAY = 30000;
 
     private final ObjectMapper objectMapper;
-    private final FigureRepository figureRepository;
-    private final FigureMapper mapper;
 
-    public void getFiguresFromApi(Integer i) {
-        HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
-        String url = BASE_URL.formatted(i.toString());
+    public FigureResponseDataDto getFiguresFromApi(int page) {
+
+        String url = BASE_URL.formatted(page);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(url))
                 .build();
 
-        try {
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            FigureResponseDataDto figureResponseDataDto =
-                    objectMapper.readValue(response.body(), FigureResponseDataDto.class);
-            figureRepository.saveAll(figureResponseDataDto.getResults()
-                    .stream()
-                    .map(mapper::toModel)
-                    .toList());
+        for (int attempt = 1; attempt <= MAX_RETRY; attempt++) {
 
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            try {
+
+                HttpResponse<String> response =
+                        httpClient.send(
+                                request,
+                                HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+
+                    return objectMapper.readValue(
+                            response.body(),
+                            FigureResponseDataDto.class);
+                }
+
+                System.out.println(
+                        "API error: " + response.statusCode());
+
+            } catch (IOException | InterruptedException e) {
+
+                if (attempt == MAX_RETRY) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            try {
+                Thread.sleep(RETRY_DELAY);
+
+            } catch (InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
         }
-    }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        for (int i = 1; i < 42; i++) {
-            getFiguresFromApi(i);
-        }
-
+        throw new RuntimeException(
+                "Cannot download page " + page);
     }
 }
