@@ -28,7 +28,7 @@ public class FigureServiceImpl implements FigureService {
         Random random = new Random();
 
         return figureMapper.toDto(figureRepository.findById(
-                random.nextLong(figureRepository.count()))
+                        (long) random.nextInt(1, (int) figureRepository.count()))
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find random Character")));
     }

@@ -51,7 +51,7 @@ public class FigureClient implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 42; i++) {
             getFiguresFromApi(i);
         }
 

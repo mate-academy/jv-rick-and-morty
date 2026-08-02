@@ -12,10 +12,10 @@ public class NameSpecificationProvider implements SpecificationProvider<Figure> 
         return "name";
     }
 
-    public Specification<Figure> getSpecification(String[] params) {
+    public Specification<Figure> getSpecification(String params) {
         return (root, query, criteriaBuilder)
                 -> criteriaBuilder.like(
                 criteriaBuilder.lower(root.get("name")),
-                "%" + params[0].toLowerCase() + "%");
+                "%" + params.toLowerCase() + "%");
     }
 }

@@ -19,10 +19,10 @@ public class FigureSpecificationBuilder implements SpecificationBuilder<Figure> 
     public Specification<Figure> build(FigureSearchParametersDto searchParameters) {
         Specification<Figure> spec = (Root<Figure> root, CriteriaQuery<?> query,
                                     CriteriaBuilder cb) -> cb.conjunction();
-        if (searchParameters.names() != null && searchParameters.names().length > 0) {
+        if (searchParameters.name() != null && !searchParameters.name().isEmpty()) {
             spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("name")
-                    .getSpecification(searchParameters.names()));
+                    .getSpecification(searchParameters.name()));
         }
 
         return spec;
