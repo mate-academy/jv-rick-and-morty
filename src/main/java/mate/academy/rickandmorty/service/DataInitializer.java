@@ -1,17 +1,16 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("!test")
-public class DataInitializer {
+public class DataInitializer implements CommandLineRunner {
     private final RickAndMortyClient client;
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -24,18 +23,16 @@ public class DataInitializer {
         this.characterMapper = characterMapper;
     }
 
-    @EventListener(ContextRefreshedEvent.class)
-    public void init() {
-
+    @Override
+    public void run(String... args) {
         if (characterRepository.count() > 0) {
             return;
         }
-        if (characterRepository.count() == 0) {
-            List<Character> characters = client.fetchAllCharacters().stream()
-                    .map(characterMapper::toModel)
-                    .toList();
-            characterRepository.saveAll(characters);
-        }
+        List<ExternalCharacterDto> externalDtos = client.fetchAllCharacters();
+        List<Character> characters = externalDtos.stream()
+                .map(characterMapper::toModel)
+                .collect(Collectors.toList());
+        characterRepository.saveAll(characters);
     }
 }
 

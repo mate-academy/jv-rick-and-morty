@@ -1,14 +1,19 @@
 package mate.academy.rickandmorty.dto.external;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
+import lombok.Data;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record ApiResponseDto(
-        PageInfo info,
-        List<ExternalCharacterDto> results
-) {
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public record PageInfo(String next) {}
+@Data
+public class ApiResponseDto {
+    private PageInfo info;
+    private List<ExternalCharacterDto> results;
+
+    @Data
+    public static class PageInfo {
+        private int count;
+        private int pages;
+        private String next;
+        private String prev;
+    }
 }
 

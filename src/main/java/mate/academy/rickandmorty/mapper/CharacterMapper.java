@@ -7,23 +7,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CharacterMapper {
+
     public Character toModel(ExternalCharacterDto dto) {
         Character character = new Character();
-        character.setExternalId(String.valueOf(dto.id()));
-        character.setName(dto.name());
-        character.setStatus(dto.status());
-        character.setGender(dto.gender());
+        character.setExternalId(String.valueOf(dto.getId()));
+        character.setName(dto.getName());
+        character.setStatus(dto.getStatus());
+        character.setGender(dto.getGender());
         return character;
     }
 
     public CharacterDto toDto(Character character) {
-        return new CharacterDto(
-                character.getId(),
-                character.getExternalId(),
-                character.getName(),
-                character.getStatus(),
-                character.getGender()
-        );
+        CharacterDto dto = new CharacterDto();
+        dto.setId(character.getId());
+        dto.setExternalId(character.getExternalId());
+        dto.setName(character.getName());
+        dto.setStatus(character.getStatus());
+        dto.setGender(character.getGender());
+        return dto;
     }
 }
 

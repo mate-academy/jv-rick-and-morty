@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RickAndMortyClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private static final long DELAY_MS = 800;
+
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -22,38 +24,36 @@ public class RickAndMortyClient {
         List<ExternalCharacterDto> characters = new ArrayList<>();
         String url = BASE_URL;
 
-        while (url != null && !url.isEmpty()) {
+        while (url != null) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
             try {
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(url))
-                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                        .GET()
-                        .build();
+                HttpResponse<String> response = httpClient.send(
+                        request, HttpResponse.BodyHandlers.ofString());
 
-                HttpResponse<String> response = httpClient.send(request,
-                        HttpResponse.BodyHandlers.ofString());
+                ApiResponseDto apiResponse = objectMapper.readValue(
+                        response.body(), ApiResponseDto.class);
 
-                if (response.statusCode() != 200) {
-                    throw new RuntimeException("API error response code: "
-                            + response.statusCode());
+                if (apiResponse != null && apiResponse.getResults() != null) {
+                    characters.addAll(apiResponse.getResults());
+                    url = apiResponse.getInfo() != null ? apiResponse.getInfo().getNext() : null;
+                } else {
+                    url = null;
                 }
-
-                ApiResponseDto apiResponse = objectMapper.readValue(response.body(),
-                        ApiResponseDto.class);
-
-                if (apiResponse.results() != null) {
-                    characters.addAll(apiResponse.results());
-                }
-                url = apiResponse.info() != null ? apiResponse.info().next() : null;
 
                 if (url != null) {
-                    Thread.sleep(800);
+                    Thread.sleep(DELAY_MS);
                 }
+
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException("Can't fetch data from Rick and Morty API", e);
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Failed to fetch characters from external API", e);
             }
         }
         return characters;
     }
 }
+
 

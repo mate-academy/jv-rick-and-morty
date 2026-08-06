@@ -1,10 +1,16 @@
 package mate.academy.rickandmorty.dto;
 
-public record CharacterDto(
-        Long id,
-        String externalId,
-        String name,
-        String status,
-        String gender
-) {}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CharacterDto {
+    private Long id;
+    private String externalId;
+    private String name;
+    private String status;
+    private String gender;
+}
+
 
