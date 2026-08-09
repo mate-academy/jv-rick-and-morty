@@ -5,5 +5,5 @@ import mate.academy.rickandmorty.model.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CharacterRepository extends JpaRepository<Character, Long> {
-    List<Character> findAllByNameContains(String name);
+    List<Character> findAllByNameContainingIgnoreCase(String name);
 }
