@@ -35,7 +35,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterDto> searchByName(String name) {
-        List<Character> allByNameContains = characterRepository.findAllByNameContainingIgnoreCase(name);
+        List<Character> allByNameContains = characterRepository
+                .findAllByNameContainingIgnoreCase(name);
         List<CharacterDto> characterDtos = new ArrayList<>();
         allByNameContains.forEach((character) -> characterDtos.add(mapper.toDto(character)));
         return characterDtos;
