@@ -6,11 +6,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
-import mate.academy.rickandmorty.dto.external.ExternalCharacterDto;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
@@ -24,7 +21,6 @@ public class RickAndMortyClient {
     private final ObjectMapper objectMapper;
 
     public CharacterResponseDto fetchPage(int page) {
-        List<ExternalCharacterDto> allCharacters = new ArrayList<>();
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()

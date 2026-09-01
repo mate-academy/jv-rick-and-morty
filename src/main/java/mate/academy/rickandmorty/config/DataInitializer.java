@@ -33,7 +33,7 @@ public class DataInitializer implements CommandLineRunner {
 
             List<MovieCharacter> movieCharacters = responseDto.getResults().stream()
                     .map(characterMapper::toModel)
-                    .toList(); //.co
+                    .toList();
 
             characterService.saveAll(movieCharacters);
             log.info("Successfully synchronized page: {}", page);
