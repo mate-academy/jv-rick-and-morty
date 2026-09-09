@@ -8,7 +8,6 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import mate.academy.rickandmorty.service.CharacterService;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,14 +20,12 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterResponseDto getRandomCharacter() {
-        long count = repository.count();
-        if (count == 0) {
+        List<Character> characters = repository.findAll();
+        if (characters.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No characters found");
         }
-        int randomPage = ThreadLocalRandom.current().nextInt(Math.toIntExact(count));
-        Character character = repository.findAll(PageRequest.of(randomPage, 1))
-                .getContent()
-                .get(0);
+        int randomIndex = ThreadLocalRandom.current().nextInt(characters.size());
+        Character character = characters.get(randomIndex);
         return mapper.toDto(character);
     }
 

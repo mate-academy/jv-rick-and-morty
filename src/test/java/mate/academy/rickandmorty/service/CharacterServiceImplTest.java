@@ -1,7 +1,6 @@
 package mate.academy.rickandmorty.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class CharacterServiceImplTest {
@@ -49,9 +46,7 @@ class CharacterServiceImplTest {
     @Test
     void getRandomCharacter_nonEmptyDatabase_returnsCharacter() {
         Character character = createCharacter();
-        when(repository.count()).thenReturn(1L);
-        when(repository.findAll(any(Pageable.class)))
-                .thenReturn(new PageImpl<>(List.of(character)));
+        when(repository.findAll()).thenReturn(List.of(character));
 
         CharacterResponseDto actual = characterService.getRandomCharacter();
 
